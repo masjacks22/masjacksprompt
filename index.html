@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="description" content="RCTC Prompt Generator - Studio Praktik AI Interaktif untuk PID & Smartphone" />
+  <title>RCTC Prompt Studio — Praktik AI Interaktif PID & Mobile</title>
+
+  <!-- PWA Manifest Data URI -->
+  <link
+    rel="manifest"
+    href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22RCTC%20Prompt%20Studio%22%2C%22short_name%22%3A%22RCTC%20Studio%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2722%27%20fill%3D%27%234f46e5%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2766%27%20font-size%3D%2752%27%20font-family%3D%27sans-serif%27%20font-weight%3D%27bold%27%20fill%3D%27white%27%20text-anchor%3D%27middle%27%3ER%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D'
+  />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- jsPDF & AutoTable CDN for Export PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    /* Full-Page Reset (Mendukung Vercel, GitHub Pages, maupun Embed Blogger) */
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #app-root {
+      position: relative;
+      min-height: 100vh;
+      z-index: 50;
+    }
+
+    /* Media Queries Ketat untuk Navigasi Responsif PID/Desktop vs HP */
+    @media (min-width: 1024px) {
+      .desktop-sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 18rem;
+        z-index: 40;
+      }
+      .mobile-bottom-nav {
+        display: none !important;
+      }
+      .main-workspace {
+        margin-left: 18rem;
+        padding-bottom: 2.5rem;
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .desktop-sidebar {
+        display: none !important;
+      }
+      .mobile-bottom-nav {
+        display: flex !important;
+        position: fixed;
+        bottom: 0.75rem;
+        left: 0.75rem;
+        right: 0.75rem;
+        z-index: 45;
+      }
+      .main-workspace {
+        margin-left: 0;
+        padding-bottom: 6.25rem;
+      }
+    }
+
+    /* Glassmorphism & PID Touch Ergonomics */
+    .glass-panel {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .pid-btn {
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+
+    .pid-input {
+      min-height: 48px;
+      font-size: 1rem;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.45);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+
+  <div id="app-root" class="bg-slate-50 dark:bg-slate-950">
+    <!-- DESKTOP / PID FIXED SIDEBAR -->
+    <aside class="desktop-sidebar flex-col justify-between border-r border-slate-200/80 bg-white/90 p-5 glass-panel dark:border-slate-800 dark:bg-slate-900/90">
+      <div>
+        <!-- Brand -->
+        <div class="flex items-center gap-3 pb-6 border-b border-slate-100 dark:border-slate-800">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/25">
+            <i data-lucide="sparkles" class="h-6 w-6"></i>
+          </div>
+          <div>
+            <h1 class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
+              RCTC Prompt Studio
+            </h1>
+            <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+              PID & Mobile Classroom
+            </p>
+          </div>
+        </div>
+
+        <!-- Preview Banner Container (Diisi hanya jika IS_PREVIEW === true) -->
+        <div id="sidebar-preview-badge" class="mt-4"></div>
+
+        <!-- Navigation Menu -->
+        <nav class="mt-6 space-y-2" aria-label="Menu Utama">
+          <button type="button" onclick="window.app.setTab('live')" data-nav="live"
+            class="nav-btn pid-btn flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition-all">
+            <i data-lucide="trophy" class="h-5 w-5 shrink-0"></i>
+            <span>Papan Karya & Skor</span>
+          </button>
+
+          <button type="button" onclick="window.app.setTab('studio')" data-nav="studio"
+            class="nav-btn pid-btn flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition-all">
+            <i data-lucide="wand-2" class="h-5 w-5 shrink-0"></i>
+            <span>Praktik RCTC</span>
+          </button>
+
+          <button type="button" onclick="window.app.setTab('materi')" data-nav="materi"
+            class="nav-btn pid-btn flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition-all">
+            <i data-lucide="book-open" class="h-5 w-5 shrink-0"></i>
+            <span>Materi Belajar</span>
+          </button>
+
+          <button type="button" onclick="window.app.setTab('kuis')" data-nav="kuis"
+            class="nav-btn pid-btn flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition-all">
+            <i data-lucide="help-circle" class="h-5 w-5 shrink-0"></i>
+            <span>Latihan Kuis PG</span>
+          </button>
+
+          <button type="button" onclick="window.app.setTab('guru')" data-nav="guru"
+            class="nav-btn pid-btn flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold transition-all">
+            <i data-lucide="shield-check" class="h-5 w-5 shrink-0"></i>
+            <span id="sidebar-guru-label">Login Guru</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Bottom Sidebar Theme & Status -->
+      <div class="space-y-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+        <button type="button" onclick="window.app.toggleDarkMode()"
+          class="pid-btn flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+          <span class="flex items-center gap-2">
+            <i data-lucide="sun-moon" class="h-4 w-4 text-indigo-600 dark:text-amber-400"></i>
+            <span id="theme-label-desktop">Mode Gelap / Terang</span>
+          </span>
+          <span class="rounded-lg bg-white px-2 py-0.5 text-[11px] shadow-sm dark:bg-slate-700">Ganti</span>
+        </button>
+        <p class="text-center text-[11px] text-slate-400">
+          Role • Context • Task • Constraints
+        </p>
+      </div>
+    </aside>
+
+    <!-- MOBILE FLOATING BOTTOM NAVIGATION BAR -->
+    <nav class="mobile-bottom-nav items-center justify-around rounded-2xl border border-slate-200/90 bg-white/90 px-2 py-2 shadow-2xl shadow-slate-900/10 glass-panel dark:border-slate-700/90 dark:bg-slate-900/90" aria-label="Navigasi Mobile">
+      <button type="button" onclick="window.app.setTab('live')" data-nav="live"
+        class="nav-btn flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition">
+        <i data-lucide="trophy" class="h-5 w-5"></i>
+        <span>Karya</span>
+      </button>
+      <button type="button" onclick="window.app.setTab('studio')" data-nav="studio"
+        class="nav-btn flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition">
+        <i data-lucide="wand-2" class="h-5 w-5"></i>
+        <span>Praktik</span>
+      </button>
+      <button type="button" onclick="window.app.setTab('materi')" data-nav="materi"
+        class="nav-btn flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition">
+        <i data-lucide="book-open" class="h-5 w-5"></i>
+        <span>Materi</span>
+      </button>
+      <button type="button" onclick="window.app.setTab('kuis')" data-nav="kuis"
+        class="nav-btn flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition">
+        <i data-lucide="help-circle" class="h-5 w-5"></i>
+        <span>Kuis</span>
+      </button>
+      <button type="button" onclick="window.app.setTab('guru')" data-nav="guru"
+        class="nav-btn flex flex-1 flex-col items-center justify-center gap-1 rounded-xl py-1.5 text-[11px] font-bold transition">
+        <i data-lucide="shield-check" class="h-5 w-5"></i>
+        <span>Guru</span>
+      </button>
+    </nav>
+
+    <!-- MAIN CONTENT WORKSPACE -->
+    <div class="main-workspace">
+      <!-- Top Mobile / Context Header -->
+      <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 px-4 py-3 glass-panel dark:border-slate-800/80 dark:bg-slate-900/80 lg:px-8">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 lg:hidden">
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
+              <i data-lucide="sparkles" class="h-4 w-4"></i>
+            </div>
+            <div>
+              <span class="block text-sm font-extrabold text-slate-900 dark:text-white">RCTC Prompt Studio</span>
+              <span class="block text-[10px] text-slate-500 dark:text-slate-400">PID & Mobile Classroom</span>
+            </div>
+          </div>
+
+          <div class="hidden lg:block">
+            <h2 id="page-header-title" class="text-lg font-extrabold text-slate-900 dark:text-white">
+              Papan Karya & Peringkat Siswa Live
+            </h2>
+            <p id="page-header-subtitle" class="text-xs text-slate-500 dark:text-slate-400">
+              Belajar kolaboratif & kompetitif — karya RCTC siswa langsung tampil real-time
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div id="topbar-preview-pill"></div>
+            <button type="button" onclick="window.app.toggleDarkMode()" aria-label="Ganti Tema"
+              class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-amber-400 lg:hidden">
+              <i data-lucide="sun-moon" class="h-5 w-5"></i>
+            </button>
+            <button type="button" onclick="window.app.setTab('studio')"
+              class="pid-btn inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-indigo-600/20 transition hover:bg-indigo-700 sm:text-sm">
+              <i data-lucide="plus-circle" class="h-4 w-4"></i>
+              <span>Mulai Praktik RCTC</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dynamic View Container -->
+      <main id="main-content" class="mx-auto max-w-7xl px-4 pt-6 lg:px-8"></main>
+    </div>
+
+    <!-- Modal Container (Pratinjau Drive / Detail Prompt Siswa) -->
+    <div id="modal-container" class="hidden fixed inset-0 z-50 items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-24 right-4 z-50 flex flex-col gap-2 lg:bottom-6 lg:right-6"></div>
+  </div>
+
+  <!-- MAIN APPLICATION MODULE -->
+  <script type="module">
+    // KONFIGURASI APLIKASI
+    const IS_PREVIEW = false; // Ubah menjadi false SAAT DEPLOY / PUBLISH agar terhubung murni ke Firebase tanpa data dummy
+
+    // PASTE FIREBASE CONFIG ANDA DI SINI
+    const firebaseConfig = {
+      apiKey: "AIzaSyB1j9rV8dOUe2T7SWGp9-8iWgp8A7BRpho",
+  authDomain: "rctc-prompt-generator.firebaseapp.com",
+  projectId: "rctc-prompt-generator",
+  storageBucket: "rctc-prompt-generator.firebasestorage.app",
+  messagingSenderId: "959368980535",
+  appId: "1:959368980535:web:6d1adc850081846543b7b2"
+};
+
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      deleteDoc,
+      doc,
+      onSnapshot,
+      query,
+      orderBy,
+      serverTimestamp
+    } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';
+
+    // =========================================================================
+    // 1. PWA SERVICE WORKER DINAMIS (BLOB)
+    // =========================================================================
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE_NAME = 'rctc-prompt-studio-v1';
+        self.addEventListener('install', (e) => {
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', (e) => {
+          e.waitUntil(clients.claim());
+        });
+        self.addEventListener('fetch', (e) => {
+          e.respondWith(fetch(e.request).catch(() => new Response('Offline mode')));
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(() => {});
+    }
+
+    // =========================================================================
+    // 2. TEMPLATE STUDI KASUS RCTC & BANK GENERATOR SOAL OTOMATIS
+    // =========================================================================
+    const RCTC_TEMPLATES = [
+      {
+        id: 'pendidikan',
+        label: 'Pendidikan',
+        icon: 'book-open',
+        role: 'Konsultan Pengembangan Kurikulum dan Inovasi Pendidikan',
+        context: 'Sekolah menengah ingin meningkatkan budaya literasi digital dan kemampuan berpikir kritis siswa di era kecerdasan artifisial.',
+        task: 'Rancang 5 program kegiatan literasi mingguan yang menarik dan interaktif untuk siswa kelas X dan XI.',
+        constraints: 'Gunakan bahasa Indonesia yang jelas, sajikan dalam bentuk tabel, maksimal 300 kata.'
+      },
+      {
+        id: 'marketing',
+        label: 'Marketing',
+        icon: 'megaphone',
+        role: 'Ahli Digital Marketing dan Brand Strategist',
+        context: 'Produk kopi susu kekinian buatan siswa kewirausahaan sekolah dengan target pembeli pelajar dan mahasiswa Gen Z.',
+        task: 'Buat 10 ide konten Instagram Reels dan Carousel yang menarik perhatian dan meningkatkan penjualan.',
+        constraints: 'Gunakan bahasa santai, sertakan CTA di setiap ide, maksimal 100 kata per ide.'
+      },
+      {
+        id: 'konten-kreator',
+        label: 'Konten Kreator',
+        icon: 'video',
+        role: 'Scriptwriter Video Pendek dan Kreator Konten Edukasi',
+        context: 'Akun TikTok dan YouTube Shorts edukasi teknologi untuk pemula dengan durasi video 45 detik.',
+        task: 'Tulis naskah video pendek lengkap dengan hook 3 detik pertama, isi inti, dan ajakan komentar.',
+        constraints: 'Gunakan gaya bahasa komunikatif seperti berbicara dengan teman, sertakan arahan visual layar.'
+      },
+      {
+        id: 'programmer',
+        label: 'Programmer',
+        icon: 'code-2',
+        role: 'Senior Full Stack Web Developer dan UI/UX Engineer',
+        context: 'Pembuatan website profil jurusan DKV sekolah yang harus responsif di HP maupun Papan Interaktif Digital.',
+        task: 'Susun struktur komponen halaman utama beserta tips optimasi kecepatan loading gambar portofolio siswa.',
+        constraints: 'Gunakan format poin terstruktur, hindari istilah teknis tanpa penjelasan sederhana.'
+      },
+      {
+        id: 'guru',
+        label: 'Guru',
+        icon: 'graduation-cap',
+        role: 'Guru Kreatif dan Fasilitator Pembelajaran Berbasis Proyek (PjBL)',
+        context: 'Peserta didik kelas XI SMK dengan gaya belajar visual dan kinestetik membutuhkan praktik desain poster layanan masyarakat.',
+        task: 'Buat langkah kegiatan pembelajaran 2x45 menit lengkap dengan pertanyaan pemantik dan rubrik penilaian karya.',
+        constraints: 'Sajikan rubrik penilaian dalam tabel skala 1-4, gunakan bahasa pedagogis yang mudah dipraktikkan.'
+      },
+      {
+        id: 'kepala-sekolah',
+        label: 'Kepala Sekolah',
+        icon: 'building-2',
+        role: 'Kepala Sekolah Visioner dan Manajer Mutu Pendidikan',
+        context: 'Sekolah akan meluncurkan program digitalisasi kelas berbasis Papan Interaktif Digital (PID) pada semester baru.',
+        task: 'Buat rencana strategis pendampingan guru selama 3 bulan pertama agar pemanfaatan PID berjalan optimal.',
+        constraints: 'Gunakan bahasa manajerial yang lugas, lengkapi indikator keberhasilan terukur, maksimal 400 kata.'
+      },
+      {
+        id: 'supervisi-akademik',
+        label: 'Supervisi Akademik',
+        icon: 'clipboard-check',
+        role: 'Supervisor Akademik dan Instructional Coach Sekolah',
+        context: 'Pelaksanaan supervisi kelas berbasis coaching untuk meningkatkan keaktifan diskusi siswa saat pembelajaran berlangsung.',
+        task: 'Susun 8 pertanyaan reflektif pasca-observasi kelas yang bersifat apresiatif dan membangun solusi bersama guru.',
+        constraints: 'Hindari kalimat menghakimi, gunakan pendekatan coaching alur TIRTA, sajikan dalam poin bernomor.'
+      },
+      {
+        id: 'pembelajaran-mendalam',
+        label: 'Pembelajaran Mendalam',
+        icon: 'brain-circuit',
+        role: 'Pakar Pedagogi Pembelajaran Mendalam (Deep Learning)',
+        context: 'Pembelajaran di kelas diarahkan agar siswa mengalami proses berkesadaran (mindful), bermakna (meaningful), dan menggembirakan (joyful).',
+        task: 'Rancang skenario aktivitas belajar dengan alur Memahami, Mengaplikasikan, dan Merefleksikan pada studi kasus nyata.',
+        constraints: 'Tandai secara eksplisit bagian mindful, meaningful, dan joyful pada setiap langkah kegiatan.'
+      }
+    ];
+
+    const QUICK_CONSTRAINTS = [
+      'Gunakan bahasa Indonesia yang santai namun sopan',
+      'Sajikan jawaban dalam bentuk tabel yang rapi',
+      'Sertakan Call-to-Action (CTA)',
+      'Maksimal 150 kata',
+      'Gunakan poin-poin bernomor',
+      'Sertakan contoh konkret'
+    ];
+
+    // Koleksi Template Generator Soal Otomatis untuk Guru
+    const AUTO_QUESTION_POOL = [
+      {
+        topic: 'Konsep Dasar RCTC',
+        question: 'Apa kepanjangan dari metode RCTC dalam teknik penyusunan prompt AI?',
+        options: [
+          'Role, Context, Task, Constraints',
+          'Reason, Content, Target, Control',
+          'Response, Command, Text, Clarity',
+          'Rule, Concept, Topic, Conclusion'
+        ],
+        answer: 'Role, Context, Task, Constraints'
+      },
+      {
+        topic: 'Menentukan Role & Context',
+        question: 'Fungsi utama komponen Role (R) dalam metode RCTC adalah...',
+        options: [
+          'Menetapkan peran atau keahlian spesifik yang harus dimainkan oleh AI',
+          'Membatasi jumlah maksimal kata pada jawaban AI',
+          'Menghapus informasi latar belakang yang tidak diperlukan',
+          'Menentukan aplikasi AI yang digunakan untuk login'
+        ],
+        answer: 'Menetapkan peran atau keahlian spesifik yang harus dimainkan oleh AI'
+      },
+      {
+        topic: 'Menentukan Role & Context',
+        question: 'Mengapa komponen Context (C) sangat penting diberikan sebelum menuliskan perintah utama?',
+        options: [
+          'Memberikan latar belakang situasi dan target audiens agar jawaban AI relevan',
+          'Memaksa AI menjawab hanya dengan satu kata saja',
+          'Mengubah tampilan antarmuka aplikasi menjadi mode gelap',
+          'Menggantikan tugas utama yang harus dikerjakan AI'
+        ],
+        answer: 'Memberikan latar belakang situasi dan target audiens agar jawaban AI relevan'
+      },
+      {
+        topic: 'Merumuskan Task & Constraints',
+        question: 'Kalimat "Buat 10 ide konten Instagram untuk promosi kopi susu" termasuk ke dalam komponen...',
+        options: [
+          'Task (Tugas)',
+          'Role (Peran)',
+          'Constraints (Batasan)',
+          'Context (Konteks)'
+        ],
+        answer: 'Task (Tugas)'
+      },
+      {
+        topic: 'Merumuskan Task & Constraints',
+        question: 'Manakah di bawah ini yang merupakan contoh penulisan Constraints (Batasan) yang tepat?',
+        options: [
+          'Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide',
+          'Bertindaklah sebagai Ahli Digital Marketing berpengalaman',
+          'Produk minuman kopi susu kekinian untuk kalangan pelajar',
+          'Buatlah rancangan jadwal piket kelas selama satu semester'
+        ],
+        answer: 'Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide'
+      },
+      {
+        topic: 'Studi Kasus Praktik Prompting',
+        question: 'Seorang siswa menulis: "Bertindaklah sebagai Guru DKV". Bagian RCTC apa yang baru saja ditulis siswa tersebut?',
+        options: [
+          'Role',
+          'Context',
+          'Task',
+          'Constraints'
+        ],
+        answer: 'Role'
+      },
+      {
+        topic: 'Studi Kasus Praktik Prompting',
+        question: 'Jika hasil jawaban AI terlalu panjang dan bahasanya terlalu kaku, komponen RCTC mana yang perlu diperbaiki?',
+        options: [
+          'Constraints (Batasan gaya bahasa dan panjang kata)',
+          'Role (Mengganti nama pengguna)',
+          'Context (Menghapus latar belakang produk)',
+          'Mengganti perangkat dari HP ke laptop'
+        ],
+        answer: 'Constraints (Batasan gaya bahasa dan panjang kata)'
+      },
+      {
+        topic: 'Konsep Dasar RCTC',
+        question: 'Keunggulan utama menggunakan struktur RCTC dibandingkan mengetik perintah singkat satu kalimat adalah...',
+        options: [
+          'Output AI menjadi jauh lebih terarah, akurat, dan sesuai format yang diinginkan',
+          'AI tidak lagi membutuhkan koneksi internet untuk menjawab',
+          'Prompt otomatis berubah menjadi file video berdurasi panjang',
+          'Mengurangi kapasitas penyimpanan memori internal HP'
+        ],
+        answer: 'Output AI menjadi jauh lebih terarah, akurat, dan sesuai format yang diinginkan'
+      },
+      {
+        topic: 'Studi Kasus Praktik Prompting',
+        question: 'Dalam skenario promosi produk sekolah, kalimat "Target pembeli adalah siswa SMA/SMK usia 15-18 tahun" sebaiknya diletakkan pada bagian...',
+        options: [
+          'Context',
+          'Role',
+          'Task',
+          'Constraints'
+        ],
+        answer: 'Context'
+      },
+      {
+        topic: 'Merumuskan Task & Constraints',
+        question: 'Kata kerja operasional manakah yang paling tepat digunakan pada bagian Task (Tugas)?',
+        options: [
+          'Rancang, susun, analisis, dan buatlah daftar...',
+          'Bertindaklah sebagai konsultan keuangan...',
+          'Maksimal 200 kata dalam bentuk tabel...',
+          'Situasi sekolah saat ini sedang mengadakan lomba...'
+        ],
+        answer: 'Rancang, susun, analisis, dan buatlah daftar...'
+      },
+      {
+        topic: 'Studi Kasus Praktik Prompting',
+        question: 'Apa akibatnya jika sebuah prompt memiliki Role dan Task yang jelas, tetapi mengosongkan bagian Constraints?',
+        options: [
+          'AI bebas menentukan panjang teks, format, dan gaya bahasa sendiri sehingga sering kurang sesuai kebutuhan',
+          'AI akan menolak menjawab seluruh pertanyaan pengguna',
+          'Prompt tidak dapat disalin ke clipboard komputer',
+          'Sistem otomatis menghapus seluruh teks pada bagian Role'
+        ],
+        answer: 'AI bebas menentukan panjang teks, format, dan gaya bahasa sendiri sehingga sering kurang sesuai kebutuhan'
+      },
+      {
+        topic: 'Konsep Dasar RCTC',
+        question: 'Prompt yang disusun dengan metode RCTC dapat digunakan pada platform AI berikut, KECUALI...',
+        options: [
+          'Kalkulator Ilmiah Offline Standar',
+          'Google Gemini',
+          'ChatGPT',
+          'Claude AI'
+        ],
+        answer: 'Kalkulator Ilmiah Offline Standar'
+      }
+    ];
+
+    // =========================================================================
+    // 3. DATA DUMMY KHUSUS MODE PREVIEW (MAKSIMAL 2 ITEM PER KOLEKSI KRUSIAL)
+    //    ATURAN KERAS: HANYA DIMUAT JIKA IS_PREVIEW === true
+    // =========================================================================
+    const PREVIEW_SUBMISSIONS = IS_PREVIEW ? [
+      {
+        id: 'demo-sub-1',
+        nama_siswa: 'Alya Putri Ramadhani',
+        kelas: 'XI DKV 1',
+        kategori: 'Marketing',
+        role: 'Ahli Digital Marketing dan Spesialis Konten Gen Z',
+        context: 'Produk kopi susu kekinian buatan unit produksi siswa SMK dengan harga ramah pelajar di lingkungan sekolah.',
+        task: 'Buat 10 ide konten Instagram Reels dan Carousel yang menarik perhatian dalam 3 detik pertama.',
+        constraints: 'Gunakan bahasa santai, sertakan CTA di setiap ide, maksimal 100 kata per ide.',
+        skor_role: 23,
+        skor_context: 24,
+        skor_task: 23,
+        skor_constraints: 24,
+        total_skor: 94,
+        hasil_prompt: 'PERAN (ROLE)\nBertindaklah sebagai Ahli Digital Marketing dan Spesialis Konten Gen Z.\n\nKONTEKS (CONTEXT)\nProduk kopi susu kekinian buatan unit produksi siswa SMK dengan harga ramah pelajar di lingkungan sekolah.\n\nTUGAS (TASK)\nBuat 10 ide konten Instagram Reels dan Carousel yang menarik perhatian dalam 3 detik pertama.\n\nBATASAN (CONSTRAINTS)\nGunakan bahasa santai, sertakan CTA di setiap ide, maksimal 100 kata per ide.',
+        waktu: 'Baru saja'
+      },
+      {
+        id: 'demo-sub-2',
+        nama_siswa: 'Rafi Pratama Putra',
+        kelas: 'XI DKV 2',
+        kategori: 'Konten Kreator',
+        role: 'Scriptwriter Video Pendek Edukasi Teknologi',
+        context: 'Akun TikTok edukasi desain grafis untuk pelajar pemula dengan durasi video 45 detik.',
+        task: 'Tulis naskah video pendek tentang 3 prinsip dasar tipografi poster beserta contoh penerapannya.',
+        constraints: 'Gunakan bahasa komunikatif, sertakan arahan teks layar, maksimal 150 kata.',
+        skor_role: 21,
+        skor_context: 21,
+        skor_task: 22,
+        skor_constraints: 22,
+        total_skor: 86,
+        hasil_prompt: 'PERAN (ROLE)\nBertindaklah sebagai Scriptwriter Video Pendek Edukasi Teknologi.\n\nKONTEKS (CONTEXT)\nAkun TikTok edukasi desain grafis untuk pelajar pemula dengan durasi video 45 detik.\n\nTUGAS (TASK)\nTulis naskah video pendek tentang 3 prinsip dasar tipografi poster beserta contoh penerapannya.\n\nBATASAN (CONSTRAINTS)\nGunakan bahasa komunikatif, sertakan arahan teks layar, maksimal 150 kata.',
+        waktu: '5 menit lalu'
+      }
+    ] : [];
+
+    const PREVIEW_MATERIALS = IS_PREVIEW ? [
+      {
+        id: 'demo-mat-1',
+        judul: 'Modul Utama: Teknik Prompt Engineering Metode RCTC',
+        tipe: 'PDF',
+        link_drive: 'https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view',
+        deskripsi: 'Panduan lengkap merumuskan Role, Context, Task, dan Constraints untuk menghasilkan output AI presisi.'
+      },
+      {
+        id: 'demo-mat-2',
+        judul: 'Slide Presentasi: Studi Kasus RCTC di Kelas & Industri Kreatif',
+        tipe: 'PPT',
+        link_drive: 'https://docs.google.com/presentation/d/1E-dkv-demo-slides/view',
+        deskripsi: 'Contoh perbandingan prompt dasar vs prompt terstruktur RCTC untuk proyek desain dan konten digital.'
+      }
+    ] : [];
+
+    const PREVIEW_QUIZ_QUESTIONS = IS_PREVIEW ? [
+      {
+        id: 'demo-q-1',
+        question: 'Apa kepanjangan dari metode RCTC dalam teknik penyusunan prompt AI?',
+        options: [
+          'Role, Context, Task, Constraints',
+          'Reason, Content, Target, Control',
+          'Response, Command, Text, Clarity',
+          'Rule, Concept, Topic, Conclusion'
+        ],
+        answer: 'Role, Context, Task, Constraints'
+      },
+      {
+        id: 'demo-q-2',
+        question: 'Kalimat "Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide" termasuk komponen...',
+        options: [
+          'Constraints (Batasan)',
+          'Role (Peran)',
+          'Context (Konteks)',
+          'Task (Tugas)'
+        ],
+        answer: 'Constraints (Batasan)'
+      }
+    ] : [];
+
+    // =========================================================================
+    // 4. INISIALISASI FIREBASE (HANYA SAAT IS_PREVIEW === false)
+    // =========================================================================
+    let db = null;
+    let auth = null;
+
+    if (!IS_PREVIEW) {
+      try {
+        const fbApp = initializeApp(firebaseConfig);
+        db = getFirestore(fbApp);
+        auth = getAuth(fbApp);
+      } catch (err) {
+        console.error('Gagal inisialisasi Firebase:', err);
+      }
+    }
+
+    // =========================================================================
+    // 5. STATE GLOBAL IN-MEMORY (ZERO LOCALSTORAGE / SESSIONSTORAGE)
+    // =========================================================================
+    const state = {
+      activeTab: 'live', // 'live' | 'studio' | 'materi' | 'kuis' | 'guru'
+      guruSubTab: 'rekap-rctc', // 'rekap-rctc' | 'kelola-materi' | 'bank-soal' | 'rekap-kuis'
+      darkMode: false,
+      guruUser: null, // Firebase Auth User atau objek demo saat IS_PREVIEW === true
+
+      // Koleksi Data (In-memory saat IS_PREVIEW = true, Firestore real-time saat false)
+      submissions: [...PREVIEW_SUBMISSIONS],
+      materials: [...PREVIEW_MATERIALS],
+      quizQuestions: [...PREVIEW_QUIZ_QUESTIONS],
+      quizResults: [],
+
+      // Filter Papan Karya & Rekap
+      filterKelas: 'SEMUA',
+      searchQuery: '',
+
+      // State Form Studio RCTC Siswa
+      form: {
+        nama_siswa: '',
+        kelas: '',
+        kategori: 'Umum',
+        role: '',
+        context: '',
+        task: '',
+        constraints: ''
+      },
+      formErrors: {},
+
+      // State Kuis PG Siswa (10 Soal Acak)
+      quizSession: {
+        started: false,
+        finished: false,
+        nama_siswa: '',
+        kelas: '',
+        questions: [],
+        answers: {},
+        currentIndex: 0,
+        score: 0,
+        correctCount: 0
+      },
+
+      // State Generator Soal Otomatis Guru
+      generatedDraftQuestions: []
+    };
+
+    // =========================================================================
+    // 6. HELPER UTILITAS (FORMATTER, AUTO-SCORING RCTC, DRIVE EMBED, PDF)
+    // =========================================================================
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function ensurePeriod(text) {
+      const t = text.trim();
+      if (!t) return '';
+      return /[.!?]$/.test(t) ? t : `${t}.`;
+    }
+
+    function formatRoleLine(roleText) {
+      const t = roleText.trim();
+      if (!t) return 'Bertindaklah sebagai [Isi Peran AI].';
+      const hasPrefix = /^(bertindaklah sebagai|kamu adalah|anda adalah|berperanlah sebagai)/i.test(t);
+      return ensurePeriod(hasPrefix ? t : `Bertindaklah sebagai ${t}`);
+    }
+
+    function buildRctcPromptText({ role, context, task, constraints }) {
+      const r = formatRoleLine(role);
+      const c = context.trim() ? ensurePeriod(context) : '[Isi informasi latar belakang yang relevan].';
+      const t = task.trim() ? ensurePeriod(task) : '[Isi tugas yang harus dilakukan AI].';
+      const cs = constraints.trim() ? ensurePeriod(constraints) : '[Isi batasan format, gaya bahasa, dan aturan output].';
+
+      return [
+        'PERAN (ROLE)',
+        r,
+        '',
+        'KONTEKS (CONTEXT)',
+        c,
+        '',
+        'TUGAS (TASK)',
+        t,
+        '',
+        'BATASAN (CONSTRAINTS)',
+        cs
+      ].join('\n');
+    }
+
+    // Penilaian Otomatis R-C-T-C (Masing-masing 0-25 poin, Total 100 poin)
+    function evaluateRctcScore({ role, context, task, constraints }) {
+      const countWords = (s) => s.trim().split(/\s+/).filter(Boolean).length;
+
+      // 1. Role (Max 25)
+      const wRole = countWords(role);
+      let sRole = 0;
+      if (wRole >= 7) sRole = 25;
+      else if (wRole === 6) sRole = 23;
+      else if (wRole >= 4) sRole = 20;
+      else if (wRole >= 2) sRole = 15;
+      else if (wRole === 1) sRole = 9;
+
+      // 2. Context (Max 25)
+      const wCtx = countWords(context);
+      let sCtx = 0;
+      if (wCtx >= 20) sCtx = 25;
+      else if (wCtx >= 14) sCtx = 22;
+      else if (wCtx >= 8) sCtx = 18;
+      else if (wCtx >= 4) sCtx = 13;
+      else if (wCtx >= 1) sCtx = 7;
+
+      // 3. Task (Max 25)
+      const wTask = countWords(task);
+      let sTask = 0;
+      if (wTask >= 18) sTask = 25;
+      else if (wTask >= 12) sTask = 22;
+      else if (wTask >= 7) sTask = 18;
+      else if (wTask >= 4) sTask = 13;
+      else if (wTask >= 1) sTask = 7;
+
+      // 4. Constraints (Max 25) - Menghargai jumlah kata & pemisah aturan (koma/titik koma)
+      const wCons = countWords(constraints);
+      const clauseCount = constraints.split(/[,;.\n]+/).filter((x) => x.trim().length > 2).length;
+      let sCons = 0;
+      if (wCons >= 15 || clauseCount >= 3) sCons = 25;
+      else if (wCons >= 10 || clauseCount === 2) sCons = 22;
+      else if (wCons >= 6) sCons = 18;
+      else if (wCons >= 3) sCons = 13;
+      else if (wCons >= 1) sCons = 7;
+
+      const total = sRole + sCtx + sTask + sCons;
+      let predikat = 'Perlu Dilengkapi';
+      if (total >= 90) predikat = 'Sangat Baik (Master Prompt)';
+      else if (total >= 75) predikat = 'Baik (Kompeten)';
+      else if (total >= 50) predikat = 'Cukup (Berkembang)';
+
+      return {
+        skor_role: sRole,
+        skor_context: sCtx,
+        skor_task: sTask,
+        skor_constraints: sCons,
+        total_skor: total,
+        predikat
+      };
+    }
+
+    function getDriveEmbedUrl(rawUrl) {
+      const url = (rawUrl || '').trim();
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://drive.google.com/file/d/${match[1]}/preview`;
+      }
+      return url;
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const colors = {
+        success: 'border-emerald-500/40 bg-slate-900 text-white',
+        error: 'border-rose-500/40 bg-slate-900 text-white',
+        info: 'border-indigo-500/40 bg-slate-900 text-white'
+      };
+      const icons = {
+        success: 'check-circle-2',
+        error: 'alert-circle',
+        info: 'info'
+      };
+      const iconColors = {
+        success: 'text-emerald-400',
+        error: 'text-rose-400',
+        info: 'text-indigo-400'
+      };
+
+      const el = document.createElement('div');
+      el.className = `flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold shadow-2xl transition-all duration-300 ${colors[type] || colors.success}`;
+      el.innerHTML = `
+        <i data-lucide="${icons[type] || 'check-circle-2'}" class="h-5 w-5 shrink-0 ${iconColors[type] || 'text-emerald-400'}"></i>
+        <span>${escapeHtml(message)}</span>
+      `;
+      container.appendChild(el);
+      if (window.lucide) window.lucide.createIcons();
+
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(8px)';
+        setTimeout(() => el.remove(), 300);
+      }, 3200);
+    }
+
+    // Export Single Prompt Siswa ke PDF
+    function exportSinglePromptPdf(data) {
+      if (!window.jspdf) {
+        showToast('Library PDF sedang dimuat, coba sesaat lagi.', 'error');
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const docPdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+      // Header Banner
+      docPdf.setFillColor(79, 70, 229);
+      docPdf.rect(0, 0, 210, 32, 'F');
+      docPdf.setTextColor(255, 255, 255);
+      docPdf.setFont('helvetica', 'bold');
+      docPdf.setFontSize(16);
+      docPdf.text('RCTC PROMPT STUDIO — HASIL PRAKTIK AI', 14, 15);
+      docPdf.setFont('helvetica', 'normal');
+      docPdf.setFontSize(10);
+      docPdf.text('Metode Role • Context • Task • Constraints', 14, 23);
+
+      // Identitas & Skor
+      docPdf.setTextColor(15, 23, 42);
+      docPdf.setFont('helvetica', 'bold');
+      docPdf.setFontSize(11);
+      docPdf.text(`Nama Siswa : ${data.nama_siswa || '-'}`, 14, 43);
+      docPdf.text(`Kelas             : ${data.kelas || '-'}`, 14, 50);
+      docPdf.text(`Kategori        : ${data.kategori || 'Umum'}`, 14, 57);
+
+      // Kotak Skor
+      docPdf.setFillColor(238, 242, 255);
+      docPdf.roundedRect(140, 37, 56, 24, 3, 3, 'F');
+      docPdf.setTextColor(79, 70, 229);
+      docPdf.setFontSize(10);
+      docPdf.text('SKOR OTOMATIS', 168, 44, { align: 'center' });
+      docPdf.setFontSize(16);
+      docPdf.text(`${data.total_skor} / 100`, 168, 54, { align: 'center' });
+
+      // Rincian Skor
+      docPdf.setTextColor(71, 85, 105);
+      docPdf.setFont('helvetica', 'normal');
+      docPdf.setFontSize(9.5);
+      docPdf.text(
+        `Rincian Skor — Role: ${data.skor_role}/25 | Context: ${data.skor_context}/25 | Task: ${data.skor_task}/25 | Constraints: ${data.skor_constraints}/25`,
+        14,
+        68
+      );
+
+      // Garis Pemisah
+      docPdf.setDrawColor(203, 213, 225);
+      docPdf.line(14, 72, 196, 72);
+
+      // Isi Prompt Final
+      docPdf.setTextColor(15, 23, 42);
+      docPdf.setFont('courier', 'normal');
+      docPdf.setFontSize(10.5);
+      const lines = docPdf.splitTextToSize(data.hasil_prompt, 180);
+      docPdf.text(lines, 14, 82);
+
+      const safeName = (data.nama_siswa || 'siswa').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      docPdf.save(`RCTC-Prompt-${safeName}.pdf`);
+      showToast('File PDF berhasil diunduh!', 'success');
+    }
+
+    // Export Rekap Nilai Kelas ke PDF (Khusus Guru)
+    function exportRekapPdf(title, headers, rows, filename) {
+      if (!window.jspdf) {
+        showToast('Library PDF belum siap.', 'error');
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const docPdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+      docPdf.setFillColor(79, 70, 229);
+      docPdf.rect(0, 0, 297, 24, 'F');
+      docPdf.setTextColor(255, 255, 255);
+      docPdf.setFont('helvetica', 'bold');
+      docPdf.setFontSize(14);
+      docPdf.text(title, 14, 15);
+
+      docPdf.autoTable({
+        startY: 30,
+        head: [headers],
+        body: rows,
+        styles: { fontSize: 9, cellPadding: 3 },
+        headStyles: { fillColor: [79, 70, 229], textColor: 255, fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [248, 250, 252] }
+      });
+
+      docPdf.save(filename);
+      showToast(`Rekap "${filename}" berhasil diexport ke PDF!`, 'success');
+    }
+
+    // =========================================================================
+    // 7. LISTENER REAL-TIME FIRESTORE (HANYA AKTIF SAAT IS_PREVIEW === false)
+    // =========================================================================
+    if (!IS_PREVIEW && db && auth) {
+      onAuthStateChanged(auth, (user) => {
+        state.guruUser = user;
+        renderApp();
+      });
+
+      const qSub = query(collection(db, 'submissions'), orderBy('created_at', 'desc'));
+      onSnapshot(qSub, (snap) => {
+        state.submissions = snap.docs.map((d) => {
+          const val = d.data();
+          const dt = val.created_at?.toDate ? val.created_at.toDate() : null;
+          return {
+            id: d.id,
+            ...val,
+            waktu: dt
+              ? dt.toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+              : 'Baru saja'
+          };
+        });
+        renderApp();
+      });
+
+      const qMat = query(collection(db, 'materials'), orderBy('created_at', 'desc'));
+      onSnapshot(qMat, (snap) => {
+        state.materials = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        renderApp();
+      });
+
+      const qQuiz = query(collection(db, 'quiz_questions'), orderBy('created_at', 'desc'));
+      onSnapshot(qQuiz, (snap) => {
+        state.quizQuestions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        renderApp();
+      });
+
+      const qRes = query(collection(db, 'quiz_results'), orderBy('created_at', 'desc'));
+      onSnapshot(qRes, (snap) => {
+        state.quizResults = snap.docs.map((d) => {
+          const val = d.data();
+          const dt = val.created_at?.toDate ? val.created_at.toDate() : null;
+          return {
+            id: d.id,
+            ...val,
+            waktu: dt
+              ? dt.toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+              : 'Baru saja'
+          };
+        });
+        renderApp();
+      });
+    }
+
+    // =========================================================================
+    // 8. RENDER ENGINE & KOMPONEN TAMPILAN PER MENU
+    // =========================================================================
+    function renderPreviewBadges() {
+      const sidebarBadge = document.getElementById('sidebar-preview-badge');
+      const topbarPill = document.getElementById('topbar-preview-pill');
+
+      if (!IS_PREVIEW) {
+        if (sidebarBadge) sidebarBadge.innerHTML = '';
+        if (topbarPill) topbarPill.innerHTML = '';
+        return;
+      }
+
+      if (sidebarBadge) {
+        sidebarBadge.innerHTML = `
+          <div class="rounded-2xl border border-amber-300/80 bg-amber-50/90 p-3 text-xs text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+            <div class="flex items-center gap-1.5 font-extrabold">
+              <i data-lucide="flask-conical" class="h-4 w-4 text-amber-600 dark:text-amber-400"></i>
+              <span>MODE PREVIEW AKTIF</span>
+            </div>
+            <p class="mt-1 text-[11px] leading-relaxed opacity-90">
+              Menggunakan simulasi memori sementara. Ubah <code>IS_PREVIEW = false</code> untuk koneksi Firebase murni.
+            </p>
+          </div>
+        `;
+      }
+
+      if (topbarPill) {
+        topbarPill.innerHTML = `
+          <span class="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+            <i data-lucide="flask-conical" class="h-3.5 w-3.5"></i>
+            Mode Preview
+          </span>
+        `;
+      }
+    }
+
+    function updateNavigationStyles() {
+      const titles = {
+        live: {
+          title: 'Papan Karya & Peringkat Siswa Live',
+          sub: 'Kolaborasi & kompetisi kelas — hasil prompt siswa langsung tampil real-time'
+        },
+        studio: {
+          title: 'Studio Praktik RCTC Prompt Generator',
+          sub: 'Ketik Nama & Kelas, susun Role • Context • Task • Constraints, dan dapatkan skor otomatis'
+        },
+        materi: {
+          title: 'Materi Pembelajaran & Modul Drive',
+          sub: 'Akses slide presentasi (PPT) dan modul PDF langsung di layar PID maupun smartphone'
+        },
+        kuis: {
+          title: 'Latihan Kuis Pilihan Ganda (10 Soal Acak)',
+          sub: 'Uji pemahaman konsep RCTC secara interaktif dengan sistem pengacakan soal otomatis'
+        },
+        guru: {
+          title: state.guruUser ? 'Dashboard Evaluasi & Manajemen Guru' : 'Akses Masuk Khusus Guru',
+          sub: state.guruUser
+            ? 'Kelola rekap nilai RCTC, unggah link materi Drive, dan atur bank soal kuis'
+            : 'Masuk menggunakan akun guru untuk melihat seluruh rekap nilai dan mengelola kelas'
+        }
+      };
+
+      const info = titles[state.activeTab] || titles.live;
+      const titleEl = document.getElementById('page-header-title');
+      const subEl = document.getElementById('page-header-subtitle');
+      if (titleEl) titleEl.textContent = info.title;
+      if (subEl) subEl.textContent = info.sub;
+
+      const guruLabel = document.getElementById('sidebar-guru-label');
+      if (guruLabel) {
+        guruLabel.textContent = state.guruUser ? 'Dashboard Guru' : 'Login Guru';
+      }
+
+      document.querySelectorAll('.nav-btn').forEach((btn) => {
+        const target = btn.getAttribute('data-nav');
+        const isActive = target === state.activeTab;
+        if (isActive) {
+          btn.classList.add('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+          btn.classList.remove('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-800');
+        } else {
+          btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md', 'shadow-indigo-600/20');
+          btn.classList.add('text-slate-600', 'hover:bg-slate-100', 'dark:text-slate-300', 'dark:hover:bg-slate-800');
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // VIEW 1: PAPAN KARYA & LEADERBOARD LIVE (HALAMAN DEPAN)
+    // -------------------------------------------------------------------------
+    function renderLiveView() {
+      const kelasSet = new Set(state.submissions.map((s) => (s.kelas || '').trim()).filter(Boolean));
+      const kelasList = Array.from(kelasSet).sort();
+
+      const filtered = state.submissions.filter((item) => {
+        const matchKelas = state.filterKelas === 'SEMUA' || item.kelas === state.filterKelas;
+        const q = state.searchQuery.toLowerCase();
+        const matchSearch =
+          !q ||
+          (item.nama_siswa || '').toLowerCase().includes(q) ||
+          (item.kelas || '').toLowerCase().includes(q) ||
+          (item.role || '').toLowerCase().includes(q) ||
+          (item.task || '').toLowerCase().includes(q);
+        return matchKelas && matchSearch;
+      });
+
+      const leaderboard = [...filtered]
+        .sort((a, b) => (b.total_skor || 0) - (a.total_skor || 0))
+        .slice(0, 5);
+
+      const avgScore =
+        filtered.length > 0
+          ? Math.round(filtered.reduce((acc, cur) => acc + (cur.total_skor || 0), 0) / filtered.length)
+          : 0;
+
+      return `
+        <div class="space-y-6">
+          <!-- Hero Stat Banner untuk PID -->
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Karya Masuk</span>
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
+                  <i data-lucide="layers" class="h-5 w-5"></i>
+                </div>
+              </div>
+              <p class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white">${filtered.length}</p>
+              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Prompt RCTC terkumpul</p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata Skor Kelas</span>
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
+                  <i data-lucide="bar-chart-3" class="h-5 w-5"></i>
+                </div>
+              </div>
+              <p class="mt-2 text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">${avgScore} <span class="text-base font-semibold text-slate-400">/ 100</span></p>
+              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Penilaian otomatis R-C-T-C</p>
+            </div>
+
+            <div class="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/20">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-100">Skor Tertinggi Saat Ini</span>
+                <i data-lucide="award" class="h-6 w-6 text-amber-300"></i>
+              </div>
+              <p class="mt-2 truncate text-xl font-extrabold">
+                ${leaderboard[0] ? escapeHtml(leaderboard[0].nama_siswa) : 'Menunggu Peserta'}
+              </p>
+              <p class="mt-1 text-xs text-indigo-100">
+                ${leaderboard[0] ? `${escapeHtml(leaderboard[0].kelas)} • Skor ${leaderboard[0].total_skor}/100` : 'Jadilah yang pertama mengirim karya!'}
+              </p>
+            </div>
+          </div>
+
+          <!-- Top 5 Papan Peringkat Kompetitif -->
+          ${
+            leaderboard.length > 0
+              ? `
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="mb-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
+                    <i data-lucide="trophy" class="h-5 w-5"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Top Peringkat Praktik RCTC</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Peringkat otomatis berdasarkan kelengkapan & bobot komponen R-C-T-C</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-3 md:grid-cols-5">
+                ${leaderboard
+                  .map(
+                    (top, idx) => `
+                  <div class="flex items-center justify-between rounded-xl border p-3.5 ${
+                    idx === 0
+                      ? 'border-amber-400/70 bg-amber-50/60 dark:border-amber-500/40 dark:bg-amber-500/10'
+                      : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50'
+                  }">
+                    <div class="min-w-0 pr-2">
+                      <span class="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-extrabold ${
+                        idx === 0
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'
+                      }">
+                        #${idx + 1}
+                      </span>
+                      <p class="mt-1.5 truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHtml(top.nama_siswa)}</p>
+                      <p class="truncate text-xs text-slate-500 dark:text-slate-400">${escapeHtml(top.kelas)}</p>
+                    </div>
+                    <div class="text-right">
+                      <span class="block text-xl font-extrabold text-indigo-600 dark:text-indigo-400">${top.total_skor}</span>
+                      <span class="text-[10px] font-semibold text-slate-400">POIN</span>
+                    </div>
+                  </div>
+                `
+                  )
+                  .join('')}
+              </div>
+            </section>
+          `
+              : ''
+          }
+
+          <!-- Filter Bar Kelas & Pencarian -->
+          <div class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Filter Kelas:</span>
+              <button type="button" onclick="window.app.setFilterKelas('SEMUA')"
+                class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
+                  state.filterKelas === 'SEMUA'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                }">
+                Semua (${state.submissions.length})
+              </button>
+              ${kelasList
+                .map(
+                  (k) => `
+                <button type="button" onclick="window.app.setFilterKelas('${escapeHtml(k)}')"
+                  class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
+                    state.filterKelas === k
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                  }">
+                  ${escapeHtml(k)}
+                </button>
+              `
+                )
+                .join('')}
+            </div>
+
+            <div class="relative w-full sm:w-64">
+              <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
+              <input type="text" value="${escapeHtml(state.searchQuery)}"
+                oninput="window.app.setSearchQuery(this.value)"
+                placeholder="Cari nama siswa atau topik..."
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-xs font-medium text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+            </div>
+          </div>
+
+          <!-- Galeri Live Karya Siswa (Kooperatif) -->
+          ${
+            filtered.length === 0
+              ? `
+            <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
+              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
+                <i data-lucide="sparkles" class="h-7 w-7"></i>
+              </div>
+              <h3 class="mt-4 text-base font-extrabold text-slate-900 dark:text-white">Belum ada karya RCTC yang dikirim</h3>
+              <p class="mx-auto mt-1 max-w-md text-xs text-slate-500 dark:text-slate-400">
+                Siswa dapat langsung masuk ke menu <strong>Praktik RCTC</strong>, mengisi Nama & Kelas, lalu mengirimkan prompt terbaiknya ke papan ini.
+              </p>
+              <button type="button" onclick="window.app.setTab('studio')"
+                class="pid-btn mt-5 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-700">
+                <i data-lucide="wand-2" class="h-4 w-4"></i>
+                Buat Prompt Pertama Sekarang
+              </button>
+            </div>
+          `
+              : `
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              ${filtered
+                .map(
+                  (sub) => `
+                <article class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50">
+                  <div>
+                    <!-- Header Kartu Siswa -->
+                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
+                      <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                          <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-extrabold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                            ${escapeHtml((sub.nama_siswa || 'S').charAt(0).toUpperCase())}
+                          </span>
+                          <div class="min-w-0">
+                            <h4 class="truncate text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(sub.nama_siswa)}</h4>
+                            <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">${escapeHtml(sub.kelas)} • ${escapeHtml(sub.kategori || 'Umum')}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="shrink-0 rounded-xl bg-emerald-50 px-3 py-1.5 text-center dark:bg-emerald-500/15">
+                        <span class="block text-base font-extrabold leading-none text-emerald-700 dark:text-emerald-300">${sub.total_skor}</span>
+                        <span class="text-[9px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Skor</span>
+                      </div>
+                    </div>
+
+                    <!-- Rincian Badge R-C-T-C -->
+                    <div class="mt-3 grid grid-cols-4 gap-1.5 text-center text-[11px] font-bold">
+                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">R: ${sub.skor_role}/25</div>
+                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_context}/25</div>
+                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">T: ${sub.skor_task}/25</div>
+                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_constraints}/25</div>
+                    </div>
+
+                    <!-- Ringkasan Prompt -->
+                    <div class="mt-3.5 space-y-2 text-xs">
+                      <div>
+                        <span class="font-extrabold text-indigo-600 dark:text-indigo-400">ROLE:</span>
+                        <p class="line-clamp-1 text-slate-700 dark:text-slate-300">${escapeHtml(sub.role)}</p>
+                      </div>
+                      <div>
+                        <span class="font-extrabold text-indigo-600 dark:text-indigo-400">TASK:</span>
+                        <p class="line-clamp-2 text-slate-700 dark:text-slate-300">${escapeHtml(sub.task)}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Aksi Kooperatif Siswa -->
+                  <div class="mt-4 flex items-center justify-between gap-2 border-t border-slate-100 pt-3.5 dark:border-slate-800">
+                    <span class="text-[11px] text-slate-400">${escapeHtml(sub.waktu || '')}</span>
+                    <div class="flex items-center gap-2">
+                      <button type="button" onclick="window.app.openSubmissionDetail('${sub.id}')"
+                        class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                        Baca Penuh
+                      </button>
+                      <button type="button" onclick="window.app.copySubmissionPrompt('${sub.id}')"
+                        class="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-indigo-700">
+                        <i data-lucide="copy" class="h-3.5 w-3.5"></i>
+                        Salin
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              `
+                )
+                .join('')}
+            </div>
+          `
+          }
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // VIEW 2: STUDIO PRAKTIK RCTC (FORM INPUT + LIVE SCORE + REALTIME OUTPUT)
+    // -------------------------------------------------------------------------
+    function renderStudioView() {
+      const f = state.form;
+      const err = state.formErrors;
+      const livePrompt = buildRctcPromptText(f);
+      const scoreInfo = evaluateRctcScore(f);
+
+      return `
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-12 xl:items-start">
+          <!-- Kolom Kiri: Identitas, Template, & Form RCTC -->
+          <div class="space-y-6 xl:col-span-7">
+            <!-- Kartu Identitas Siswa Tanpa Login -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div class="mb-4 flex items-center gap-2.5">
+                <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">1</span>
+                <div>
+                  <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Identitas Peserta Praktik</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Tanpa perlu login — langsung ketik Nama Lengkap dan Kelas Anda</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Nama Lengkap Siswa <span class="text-rose-500">*</span>
+                  </label>
+                  <input type="text" value="${escapeHtml(f.nama_siswa)}"
+                    oninput="window.app.updateFormField('nama_siswa', this.value)"
+                    placeholder="Contoh: Ahmad Zaki Pratama"
+                    class="pid-input w-full rounded-xl border ${
+                      err.nama_siswa ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
+                    } px-4 py-2.5 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
+                  ${err.nama_siswa ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.nama_siswa)}</p>` : ''}
+                </div>
+
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Kelas <span class="text-rose-500">*</span>
+                  </label>
+                  <input type="text" value="${escapeHtml(f.kelas)}"
+                    oninput="window.app.updateFormField('kelas', this.value)"
+                    placeholder="Contoh: XI DKV 1"
+                    class="pid-input w-full rounded-xl border ${
+                      err.kelas ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
+                    } px-4 py-2.5 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
+                  ${err.kelas ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.kelas)}</p>` : ''}
+                </div>
+              </div>
+            </section>
+
+            <!-- Kartu Template Siap Pakai (8 Kategori) -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div class="mb-3.5 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">2</span>
+                  <div>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Template Contoh Siap Pakai</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk kategori di layar PID/HP untuk memuat contoh RCTC lalu modifikasi</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                ${RCTC_TEMPLATES.map(
+                  (tpl) => `
+                  <button type="button" onclick="window.app.applyTemplate('${tpl.id}')"
+                    class="pid-btn flex flex-col items-start rounded-xl border p-3 text-left transition ${
+                      f.kategori === tpl.label
+                        ? 'border-indigo-600 bg-indigo-50/80 ring-1 ring-indigo-600 dark:border-indigo-500 dark:bg-indigo-500/15'
+                        : 'border-slate-200 bg-slate-50/70 hover:border-indigo-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/50'
+                    }">
+                    <i data-lucide="${tpl.icon}" class="mb-1.5 h-4 w-4 text-indigo-600 dark:text-indigo-400"></i>
+                    <span class="text-xs font-bold text-slate-900 dark:text-white">${escapeHtml(tpl.label)}</span>
+                  </button>
+                `
+                ).join('')}
+              </div>
+            </section>
+
+            <!-- Kartu Form Input R - C - T - C -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div class="mb-5 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+                <div class="flex items-center gap-2.5">
+                  <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">3</span>
+                  <div>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Susun Komponen R - C - T - C</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Semakin detail & terstruktur tiap kolom, semakin tinggi skor otomatis Anda</p>
+                  </div>
+                </div>
+                <button type="button" onclick="window.app.resetStudioForm()"
+                  class="pid-btn inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800">
+                  <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+                  Reset
+                </button>
+              </div>
+
+              <div class="space-y-5">
+                <!-- R: ROLE -->
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm font-extrabold text-slate-900 dark:text-white">
+                      <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">R</span>
+                      Role (Peran AI) <span class="text-rose-500">*</span>
+                    </label>
+                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                      Skor: ${scoreInfo.skor_role} / 25
+                    </span>
+                  </div>
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan profesi atau keahlian spesifik yang harus diperankan AI.</p>
+                  <input type="text" value="${escapeHtml(f.role)}"
+                    oninput="window.app.updateFormField('role', this.value)"
+                    placeholder="Contoh: Ahli Digital Marketing dan Brand Strategist"
+                    class="pid-input mt-2 w-full rounded-xl border ${
+                      err.role ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                    } bg-slate-50/60 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white" />
+                  ${err.role ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.role)}</p>` : ''}
+                </div>
+
+                <!-- C: CONTEXT -->
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm font-extrabold text-slate-900 dark:text-white">
+                      <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">C</span>
+                      Context (Konteks & Latar Belakang) <span class="text-rose-500">*</span>
+                    </label>
+                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                      Skor: ${scoreInfo.skor_context} / 25
+                    </span>
+                  </div>
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jelaskan situasi, produk/masalah, dan target audiens yang relevan.</p>
+                  <textarea rows="3" oninput="window.app.updateFormField('context', this.value)"
+                    placeholder="Contoh: Produk kopi susu kekinian dengan target Gen Z di kota besar..."
+                    class="mt-2 w-full rounded-xl border ${
+                      err.context ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                    } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.context)}</textarea>
+                  ${err.context ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.context)}</p>` : ''}
+                </div>
+
+                <!-- T: TASK -->
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm font-extrabold text-slate-900 dark:text-white">
+                      <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">T</span>
+                      Task (Tugas Utama) <span class="text-rose-500">*</span>
+                    </label>
+                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                      Skor: ${scoreInfo.skor_task} / 25
+                    </span>
+                  </div>
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tuliskan instruksi konkret apa yang harus dibuat atau dianalisis AI.</p>
+                  <textarea rows="3" oninput="window.app.updateFormField('task', this.value)"
+                    placeholder="Contoh: Buat 10 ide konten Instagram yang menarik perhatian..."
+                    class="mt-2 w-full rounded-xl border ${
+                      err.task ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                    } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.task)}</textarea>
+                  ${err.task ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.task)}</p>` : ''}
+                </div>
+
+                <!-- C: CONSTRAINTS -->
+                <div>
+                  <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 text-sm font-extrabold text-slate-900 dark:text-white">
+                      <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">C</span>
+                      Constraints (Batasan & Aturan Output) <span class="text-rose-500">*</span>
+                    </label>
+                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                      Skor: ${scoreInfo.skor_constraints} / 25
+                    </span>
+                  </div>
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan gaya bahasa, format tampilan, dan batas jumlah kata.</p>
+                  <textarea rows="3" oninput="window.app.updateFormField('constraints', this.value)"
+                    placeholder="Contoh: Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide..."
+                    class="mt-2 w-full rounded-xl border ${
+                      err.constraints ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                    } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.constraints)}</textarea>
+
+                  <!-- Quick Chips untuk PID -->
+                  <div class="mt-2 flex flex-wrap gap-1.5">
+                    ${QUICK_CONSTRAINTS.map(
+                      (chip) => `
+                      <button type="button" onclick="window.app.appendConstraint('${escapeHtml(chip)}')"
+                        class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        + ${escapeHtml(chip)}
+                      </button>
+                    `
+                    ).join('')}
+                  </div>
+                  ${err.constraints ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.constraints)}</p>` : ''}
+                </div>
+              </div>
+
+              <!-- Tombol Submit Karya Siswa ke Papan Live & Firestore -->
+              <div class="mt-6 border-t border-slate-100 pt-5 dark:border-slate-800">
+                <button type="button" onclick="window.app.submitStudentRctc()"
+                  class="pid-btn flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3.5 text-base font-extrabold text-white shadow-lg shadow-indigo-600/25 transition hover:opacity-95 active:scale-[0.99]">
+                  <i data-lucide="send" class="h-5 w-5"></i>
+                  <span>Kirim Karya & Tampilkan di Papan Skor Live</span>
+                </button>
+              </div>
+            </section>
+          </div>
+
+          <!-- Kolom Kanan: Meteran Skor Live & Pratinjau Prompt Real-Time -->
+          <div class="space-y-6 xl:sticky xl:top-24 xl:col-span-5">
+            <!-- Kartu Penilaian Otomatis Live -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Penilaian Otomatis Live</span>
+                  <h4 class="mt-0.5 text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(scoreInfo.predikat)}</h4>
+                </div>
+                <div class="text-right">
+                  <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">${scoreInfo.total_skor}</span>
+                  <span class="text-sm font-bold text-slate-400">/100</span>
+                </div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="mt-3 h-3 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 transition-all duration-300"
+                  style="width: ${scoreInfo.total_skor}%"></div>
+              </div>
+
+              <div class="mt-3 grid grid-cols-4 gap-2 text-center text-xs font-bold">
+                <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
+                  <span class="block text-[10px] text-slate-400">ROLE</span>
+                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_role}/25</span>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
+                  <span class="block text-[10px] text-slate-400">CONTEXT</span>
+                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_context}/25</span>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
+                  <span class="block text-[10px] text-slate-400">TASK</span>
+                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_task}/25</span>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
+                  <span class="block text-[10px] text-slate-400">CONSTR.</span>
+                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_constraints}/25</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Kartu Output Prompt Real-Time + Salin + TXT + PDF -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="mb-3 flex items-center justify-between">
+                <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">Hasil Prompt Real-Time</h3>
+                <span class="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                  Siap ChatGPT / Gemini / Claude
+                </span>
+              </div>
+
+              <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-100">
+                <pre class="max-h-[340px] overflow-y-auto whitespace-pre-wrap break-words font-mono text-xs leading-relaxed sm:text-sm">${escapeHtml(livePrompt)}</pre>
+              </div>
+
+              <!-- Tombol Aksi Salin, Download TXT, Export PDF -->
+              <div class="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                <button type="button" onclick="window.app.copyCurrentPrompt()"
+                  class="pid-btn inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-bold text-white transition hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700">
+                  <i data-lucide="copy" class="h-4 w-4"></i>
+                  <span>Salin Prompt</span>
+                </button>
+
+                <button type="button" onclick="window.app.downloadCurrentTxt()"
+                  class="pid-btn inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                  <i data-lucide="file-text" class="h-4 w-4 text-indigo-600 dark:text-indigo-400"></i>
+                  <span>Download TXT</span>
+                </button>
+
+                <button type="button" onclick="window.app.downloadCurrentPdf()"
+                  class="pid-btn inline-flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-bold text-rose-700 transition hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-300">
+                  <i data-lucide="file-down" class="h-4 w-4"></i>
+                  <span>Export PDF</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // VIEW 3: MATERI BELAJAR (LINK GOOGLE DRIVE PDF / PPT)
+    // -------------------------------------------------------------------------
+    function renderMateriView() {
+      return `
+        <div class="space-y-6">
+          <div class="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5 dark:border-indigo-500/20 dark:bg-indigo-500/10">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 class="text-base font-extrabold text-indigo-950 dark:text-indigo-200">Perpustakaan Materi Kelas (Google Drive PDF & PPT)</h3>
+                <p class="mt-0.5 text-xs text-indigo-800/80 dark:text-indigo-300/80">
+                  Klik <strong>Tampilkan di Layar</strong> untuk membaca materi langsung di Papan Interaktif Digital (PID) atau buka lewat Google Drive.
+                </p>
+              </div>
+              ${
+                state.guruUser
+                  ? `
+                <button type="button" onclick="window.app.goToGuruSubTab('kelola-materi')"
+                  class="pid-btn inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-indigo-700">
+                  <i data-lucide="plus" class="h-4 w-4"></i>
+                  Tambah Link Materi
+                </button>
+              `
+                  : ''
+              }
+            </div>
+          </div>
+
+          ${
+            state.materials.length === 0
+              ? `
+            <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
+              <i data-lucide="folder-open" class="mx-auto h-10 w-10 text-slate-400"></i>
+              <h4 class="mt-3 text-base font-extrabold text-slate-900 dark:text-white">Belum ada materi yang diunggah guru</h4>
+              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Guru dapat menambahkan tautan Google Drive (PDF atau PPT) melalui menu Login Guru.</p>
+            </div>
+          `
+              : `
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              ${state.materials
+                .map(
+                  (mat) => `
+                <div class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 dark:border-slate-800 dark:bg-slate-900">
+                  <div>
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-extrabold ${
+                        mat.tipe === 'PPT'
+                          ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300'
+                          : 'bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-300'
+                      }">
+                        <i data-lucide="${mat.tipe === 'PPT' ? 'presentation' : 'file-text'}" class="h-3.5 w-3.5"></i>
+                        ${escapeHtml(mat.tipe || 'PDF')}
+                      </span>
+                      <span class="text-[11px] font-semibold text-slate-400">Google Drive</span>
+                    </div>
+
+                    <h4 class="mt-3 text-base font-extrabold text-slate-900 dark:text-white">${escapeHtml(mat.judul)}</h4>
+                    <p class="mt-1.5 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                      ${escapeHtml(mat.deskripsi || 'Materi pembelajaran RCTC Prompt Engineering.')}
+                    </p>
+                  </div>
+
+                  <div class="mt-5 grid grid-cols-2 gap-2.5 border-t border-slate-100 pt-4 dark:border-slate-800">
+                    <button type="button" onclick="window.app.previewDriveMaterial('${mat.id}')"
+                      class="pid-btn inline-flex items-center justify-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-2.5 text-xs font-bold text-white transition hover:bg-indigo-700">
+                      <i data-lucide="monitor-play" class="h-4 w-4"></i>
+                      Tampilkan
+                    </button>
+                    <a href="${escapeHtml(mat.link_drive)}" target="_blank" rel="noopener noreferrer"
+                      class="pid-btn inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                      <i data-lucide="external-link" class="h-4 w-4"></i>
+                      Buka Drive
+                    </a>
+                  </div>
+                </div>
+              `
+                )
+                .join('')}
+            </div>
+          `
+          }
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // VIEW 4: LATIHAN KUIS PILIHAN GANDA (10 SOAL ACAK OTOMATIS)
+    // -------------------------------------------------------------------------
+    function renderKuisView() {
+      const qSession = state.quizSession;
+
+      // Layar Awal Kuis (Input Nama & Kelas Siswa)
+      if (!qSession.started) {
+        const availableCount = state.quizQuestions.length;
+        const targetCount = Math.min(10, availableCount);
+
+        return `
+          <div class="mx-auto max-w-2xl">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
+                <i data-lucide="help-circle" class="h-7 w-7"></i>
+              </div>
+              <h3 class="mt-4 text-xl font-extrabold text-slate-900 dark:text-white">
+                Latihan Kuis Pilihan Ganda RCTC
+              </h3>
+              <p class="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
+                Sistem akan mengacak <strong>${targetCount} soal pilihan ganda</strong> secara otomatis untuk setiap peserta. Nilai langsung tercatat ke rekap guru setelah selesai.
+              </p>
+
+              ${
+                availableCount === 0
+                  ? `
+                <div class="mt-6 rounded-xl border border-amber-300 bg-amber-50 p-4 text-xs font-semibold text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+                  Belum ada soal di Bank Soal. Silakan minta Guru untuk menambahkan atau men-generate soal melalui menu Login Guru.
+                </div>
+              `
+                  : `
+                <div class="mt-6 space-y-4">
+                  <div>
+                    <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Nama Lengkap Siswa *</label>
+                    <input type="text" id="quiz-nama-input" value="${escapeHtml(qSession.nama_siswa || state.form.nama_siswa)}"
+                      placeholder="Masukkan nama lengkap Anda"
+                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  </div>
+                  <div>
+                    <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kelas *</label>
+                    <input type="text" id="quiz-kelas-input" value="${escapeHtml(qSession.kelas || state.form.kelas)}"
+                      placeholder="Contoh: XI DKV 1"
+                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  </div>
+
+                  <button type="button" onclick="window.app.startStudentQuiz()"
+                    class="pid-btn mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-base font-extrabold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
+                    <i data-lucide="play" class="h-5 w-5"></i>
+                    <span>Mulai Kuis (${targetCount} Soal Acak)</span>
+                  </button>
+                </div>
+              `
+              }
+            </div>
+          </div>
+        `;
+      }
+
+      // Layar Hasil Akhir Kuis Siswa
+      if (qSession.finished) {
+        return `
+          <div class="mx-auto max-w-3xl space-y-6">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-xs font-extrabold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                <i data-lucide="check-circle-2" class="h-4 w-4"></i>
+                Kuis Selesai & Nilai Tersimpan
+              </span>
+              <h3 class="mt-3 text-xl font-extrabold text-slate-900 dark:text-white">${escapeHtml(qSession.nama_siswa)} (${escapeHtml(qSession.kelas)})</h3>
+              <div class="my-5 inline-flex flex-col items-center justify-center rounded-3xl bg-indigo-50 px-10 py-6 dark:bg-indigo-500/15">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">Skor Akhir Anda</span>
+                <span class="mt-1 text-5xl font-extrabold text-indigo-700 dark:text-indigo-400">${qSession.score}</span>
+                <span class="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                  Benar ${qSession.correctCount} dari ${qSession.questions.length} soal
+                </span>
+              </div>
+
+              <div class="flex flex-wrap justify-center gap-3">
+                <button type="button" onclick="window.app.resetQuizSession()"
+                  class="pid-btn inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white hover:bg-indigo-700">
+                  <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+                  Ulangi Kuis (Acak Soal Baru)
+                </button>
+                <button type="button" onclick="window.app.setTab('studio')"
+                  class="pid-btn inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                  Lanjut ke Praktik RCTC
+                </button>
+              </div>
+            </div>
+
+            <!-- Pembahasan Ringkas -->
+            <div class="space-y-3">
+              <h4 class="text-sm font-extrabold text-slate-900 dark:text-white">Ulasan Jawaban Anda:</h4>
+              ${qSession.questions
+                .map((q, idx) => {
+                  const userAns = qSession.answers[idx] || '(Tidak dijawab)';
+                  const isRight = userAns === q.answer;
+                  return `
+                  <div class="rounded-2xl border p-4 ${
+                    isRight
+                      ? 'border-emerald-200 bg-emerald-50/40 dark:border-emerald-500/30 dark:bg-emerald-500/10'
+                      : 'border-rose-200 bg-rose-50/40 dark:border-rose-500/30 dark:bg-rose-500/10'
+                  }">
+                    <p class="text-sm font-bold text-slate-900 dark:text-white">${idx + 1}. ${escapeHtml(q.question)}</p>
+                    <p class="mt-2 text-xs font-semibold ${isRight ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}">
+                      Jawaban Anda: ${escapeHtml(userAns)} ${isRight ? '✓' : '✗'}
+                    </p>
+                    ${
+                      !isRight
+                        ? `<p class="mt-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">Kunci Benar: ${escapeHtml(q.answer)}</p>`
+                        : ''
+                    }
+                  </div>
+                `;
+                })
+                .join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Layar Pengerjaan Soal Interaktif (PID & Mobile Friendly)
+      const currentQ = qSession.questions[qSession.currentIndex];
+      const selectedAns = qSession.answers[qSession.currentIndex];
+      const letters = ['A', 'B', 'C', 'D'];
+
+      return `
+        <div class="mx-auto max-w-3xl space-y-5">
+          <!-- Header Progres Kuis -->
+          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div>
+              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">${escapeHtml(qSession.nama_siswa)} • ${escapeHtml(qSession.kelas)}</span>
+              <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                Soal ${qSession.currentIndex + 1} dari ${qSession.questions.length}
+              </h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              ${qSession.questions
+                .map((_, i) => {
+                  const answered = Boolean(qSession.answers[i]);
+                  const isCurrent = i === qSession.currentIndex;
+                  return `
+                  <button type="button" onclick="window.app.jumpToQuizQuestion(${i})"
+                    class="h-9 w-9 rounded-xl text-xs font-extrabold transition ${
+                      isCurrent
+                        ? 'bg-indigo-600 text-white ring-2 ring-indigo-400'
+                        : answered
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300'
+                        : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                    }">
+                    ${i + 1}
+                  </button>
+                `;
+                })
+                .join('')}
+            </div>
+          </div>
+
+          <!-- Kartu Pertanyaan & Opsi Jawaban Besar -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+            <p class="text-base font-extrabold leading-relaxed text-slate-900 dark:text-white sm:text-lg">
+              ${escapeHtml(currentQ.question)}
+            </p>
+
+            <div class="mt-6 space-y-3">
+              ${currentQ.shuffledOptions
+                .map((opt, oIdx) => {
+                  const isPicked = selectedAns === opt;
+                  return `
+                  <button type="button" onclick="window.app.selectQuizAnswer(${qSession.currentIndex}, ${oIdx})"
+                    class="pid-btn flex w-full items-center gap-3.5 rounded-2xl border p-4 text-left transition ${
+                      isPicked
+                        ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-600/30 dark:border-indigo-500 dark:bg-indigo-500/20'
+                        : 'border-slate-200 bg-slate-50/70 hover:border-indigo-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/60'
+                    }">
+                    <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-extrabold ${
+                      isPicked
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-white text-slate-700 shadow-sm dark:bg-slate-700 dark:text-slate-200'
+                    }">
+                      ${letters[oIdx] || oIdx + 1}
+                    </span>
+                    <span class="text-sm font-semibold text-slate-800 dark:text-slate-100 sm:text-base">${escapeHtml(opt)}</span>
+                  </button>
+                `;
+                })
+                .join('')}
+            </div>
+
+            <!-- Navigasi Sebelumnya / Selanjutnya / Selesai -->
+            <div class="mt-8 flex items-center justify-between gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+              <button type="button" onclick="window.app.prevQuizQuestion()" ${qSession.currentIndex === 0 ? 'disabled' : ''}
+                class="pid-btn rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-700 disabled:opacity-40 dark:border-slate-700 dark:text-slate-200">
+                Sebelumnya
+              </button>
+
+              ${
+                qSession.currentIndex < qSession.questions.length - 1
+                  ? `
+                <button type="button" onclick="window.app.nextQuizQuestion()"
+                  class="pid-btn rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-bold text-white hover:bg-indigo-700">
+                  Selanjutnya
+                </button>
+              `
+                  : `
+                <button type="button" onclick="window.app.finishStudentQuiz()"
+                  class="pid-btn rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-extrabold text-white shadow-md hover:bg-emerald-700">
+                  Selesai & Lihat Skor
+                </button>
+              `
+              }
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // VIEW 5: LOGIN KHUSUS GURU & DASHBOARD EVALUASI LENGKAP
+    // -------------------------------------------------------------------------
+    function renderGuruView() {
+      // Jika Guru Belum Login -> Tampilkan Form Login Guru
+      if (!state.guruUser) {
+        return `
+          <div class="mx-auto max-w-md">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-md">
+                <i data-lucide="shield-check" class="h-6 w-6"></i>
+              </div>
+              <h3 class="mt-4 text-xl font-extrabold text-slate-900 dark:text-white">Login Khusus Guru</h3>
+              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Masuk untuk melihat rekap seluruh nilai siswa, mengunggah link materi Google Drive (PDF/PPT), dan mengelola bank soal kuis.
+              </p>
+
+              ${
+                IS_PREVIEW
+                  ? `
+                <div class="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+                  <p class="font-extrabold">Akun Simulasi Mode Preview:</p>
+                  <p class="mt-0.5">Email: <code>guru@sekolah.sch.id</code> | Sandi: <code>guru123</code></p>
+                </div>
+              `
+                  : ''
+              }
+
+              <form onsubmit="window.app.handleGuruLogin(event)" class="mt-5 space-y-4">
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Email Guru</label>
+                  <input type="email" id="guru-email-input" required placeholder="nama.guru@sekolah.sch.id"
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                </div>
+
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kata Sandi</label>
+                  <input type="password" id="guru-pass-input" required placeholder="••••••••"
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                </div>
+
+                <button type="submit"
+                  class="pid-btn flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3.5 text-sm font-extrabold text-white shadow-md hover:bg-indigo-700">
+                  <i data-lucide="log-in" class="h-4 w-4"></i>
+                  <span>Masuk ke Dashboard Guru</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        `;
+      }
+
+      // Jika Guru Sudah Login -> Tampilkan 4 Sub-Tab Manajemen Lengkap
+      const sub = state.guruSubTab;
+
+      return `
+        <div class="space-y-6">
+          <!-- Bar Info Guru & Logout -->
+          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
+                <i data-lucide="user-check" class="h-5 w-5"></i>
+              </div>
+              <div>
+                <p class="text-sm font-extrabold text-slate-900 dark:text-white">Sesi Guru Aktif</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(state.guruUser.email || 'Guru Pengampu')}</p>
+              </div>
+            </div>
+
+            <button type="button" onclick="window.app.handleGuruLogout()"
+              class="pid-btn inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-300">
+              <i data-lucide="log-out" class="h-4 w-4"></i>
+              Keluar (Logout)
+            </button>
+          </div>
+
+          <!-- Sub-Tab Navigasi Dashboard Guru -->
+          <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <button type="button" onclick="window.app.setGuruSubTab('rekap-rctc')"
+              class="pid-btn rounded-xl border px-4 py-3 text-xs font-extrabold transition ${
+                sub === 'rekap-rctc'
+                  ? 'border-indigo-600 bg-indigo-600 text-white'
+                  : 'border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
+              }">
+              1. Rekap Nilai RCTC (${state.submissions.length})
+            </button>
+            <button type="button" onclick="window.app.setGuruSubTab('kelola-materi')"
+              class="pid-btn rounded-xl border px-4 py-3 text-xs font-extrabold transition ${
+                sub === 'kelola-materi'
+                  ? 'border-indigo-600 bg-indigo-600 text-white'
+                  : 'border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
+              }">
+              2. Upload Materi Drive (${state.materials.length})
+            </button>
+            <button type="button" onclick="window.app.setGuruSubTab('bank-soal')"
+              class="pid-btn rounded-xl border px-4 py-3 text-xs font-extrabold transition ${
+                sub === 'bank-soal'
+                  ? 'border-indigo-600 bg-indigo-600 text-white'
+                  : 'border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
+              }">
+              3. Bank & Generator Soal (${state.quizQuestions.length})
+            </button>
+            <button type="button" onclick="window.app.setGuruSubTab('rekap-kuis')"
+              class="pid-btn rounded-xl border px-4 py-3 text-xs font-extrabold transition ${
+                sub === 'rekap-kuis'
+                  ? 'border-indigo-600 bg-indigo-600 text-white'
+                  : 'border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200'
+              }">
+              4. Nilai Kuis PG (${state.quizResults.length})
+            </button>
+          </div>
+
+          <!-- Konten Sub-Tab Aktif -->
+          ${sub === 'rekap-rctc' ? renderGuruRekapRctc() : ''}
+          ${sub === 'kelola-materi' ? renderGuruKelolaMateri() : ''}
+          ${sub === 'bank-soal' ? renderGuruBankSoal() : ''}
+          ${sub === 'rekap-kuis' ? renderGuruRekapKuis() : ''}
+        </div>
+      `;
+    }
+
+    function renderGuruRekapRctc() {
+      return `
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Daftar Seluruh Nilai & Pekerjaan RCTC Siswa</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Klik "Detail" untuk memeriksa teks prompt R-C-T-C masing-masing siswa</p>
+            </div>
+            <button type="button" onclick="window.app.exportAllRctcPdf()"
+              class="pid-btn inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-rose-700">
+              <i data-lucide="file-down" class="h-4 w-4"></i>
+              Export Rekap Nilai PDF
+            </button>
+          </div>
+
+          ${
+            state.submissions.length === 0
+              ? `<p class="py-10 text-center text-xs text-slate-500">Belum ada data pekerjaan siswa yang masuk.</p>`
+              : `
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-300">
+                    <th class="p-3 font-extrabold">No</th>
+                    <th class="p-3 font-extrabold">Nama Siswa</th>
+                    <th class="p-3 font-extrabold">Kelas</th>
+                    <th class="p-3 font-extrabold">Kategori</th>
+                    <th class="p-3 font-extrabold">R / C / T / C</th>
+                    <th class="p-3 font-extrabold">Total Skor</th>
+                    <th class="p-3 font-extrabold text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  ${state.submissions
+                    .map(
+                      (s, idx) => `
+                    <tr class="hover:bg-slate-50/70 dark:hover:bg-slate-800/40">
+                      <td class="p-3 font-bold">${idx + 1}</td>
+                      <td class="p-3 font-extrabold text-slate-900 dark:text-white">${escapeHtml(s.nama_siswa)}</td>
+                      <td class="p-3 font-semibold">${escapeHtml(s.kelas)}</td>
+                      <td class="p-3">${escapeHtml(s.kategori || 'Umum')}</td>
+                      <td class="p-3 font-mono text-[11px]">${s.skor_role} • ${s.skor_context} • ${s.skor_task} • ${s.skor_constraints}</td>
+                      <td class="p-3">
+                        <span class="rounded-lg bg-emerald-100 px-2.5 py-1 font-extrabold text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300">
+                          ${s.total_skor}
+                        </span>
+                      </td>
+                      <td class="p-3 text-right">
+                        <div class="inline-flex items-center gap-1.5">
+                          <button type="button" onclick="window.app.openSubmissionDetail('${s.id}')"
+                            class="rounded-lg bg-indigo-50 px-2.5 py-1.5 font-bold text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-500/20 dark:text-indigo-300">
+                            Detail
+                          </button>
+                          <button type="button" onclick="window.app.deleteSubmission('${s.id}')"
+                            class="rounded-lg bg-rose-50 px-2.5 py-1.5 font-bold text-rose-700 hover:bg-rose-100 dark:bg-rose-500/20 dark:text-rose-300">
+                            Hapus
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  `
+                    )
+                    .join('')}
+                </tbody>
+              </table>
+            </div>
+          `
+          }
+        </section>
+      `;
+    }
+
+    function renderGuruKelolaMateri() {
+      return `
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <!-- Form Tambah Link Google Drive -->
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-5">
+            <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Upload Link Materi Google Drive</h4>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Tempelkan tautan berbagi Google Drive (pastikan akses diset ke <em>Siapa saja yang memiliki link</em>).
+            </p>
+
+            <form onsubmit="window.app.handleAddMaterial(event)" class="mt-4 space-y-4">
+              <div>
+                <label class="mb-1 block text-xs font-bold">Judul Materi *</label>
+                <input type="text" id="mat-judul" required placeholder="Contoh: Modul Dasar Prompting RCTC"
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+              </div>
+
+              <div>
+                <label class="mb-1 block text-xs font-bold">Jenis File *</label>
+                <select id="mat-tipe"
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                  <option value="PDF">Dokumen PDF (Drive)</option>
+                  <option value="PPT">Slide Presentasi PPT / Google Slides</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="mb-1 block text-xs font-bold">Link Google Drive *</label>
+                <input type="url" id="mat-link" required placeholder="https://drive.google.com/file/d/..."
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+              </div>
+
+              <div>
+                <label class="mb-1 block text-xs font-bold">Deskripsi Singkat</label>
+                <textarea id="mat-deskripsi" rows="2" placeholder="Ringkasan topik yang dibahas pada file ini..."
+                  class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
+              </div>
+
+              <button type="submit"
+                class="pid-btn flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white hover:bg-indigo-700">
+                <i data-lucide="upload-cloud" class="h-4 w-4"></i>
+                Publikasikan Materi ke Siswa
+              </button>
+            </form>
+          </section>
+
+          <!-- Daftar Materi Terpasang -->
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:col-span-7">
+            <h4 class="mb-4 text-base font-extrabold text-slate-900 dark:text-white">Daftar Materi Aktif (${state.materials.length})</h4>
+            ${
+              state.materials.length === 0
+                ? `<p class="py-10 text-center text-xs text-slate-500">Belum ada materi tersimpan.</p>`
+                : `
+              <div class="space-y-3">
+                ${state.materials
+                  .map(
+                    (m) => `
+                  <div class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-800">
+                    <div class="min-w-0">
+                      <span class="inline-block rounded bg-indigo-50 px-2 py-0.5 text-[10px] font-extrabold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        ${escapeHtml(m.tipe)}
+                      </span>
+                      <p class="mt-1 truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHtml(m.judul)}</p>
+                      <p class="truncate text-xs text-slate-400">${escapeHtml(m.link_drive)}</p>
+                    </div>
+                    <div class="flex shrink-0 items-center gap-2">
+                      <button type="button" onclick="window.app.previewDriveMaterial('${m.id}')"
+                        class="rounded-xl bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200">
+                        Cek
+                      </button>
+                      <button type="button" onclick="window.app.deleteMaterial('${m.id}')"
+                        class="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:bg-rose-500/20 dark:text-rose-300">
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+                `
+                  )
+                  .join('')}
+              </div>
+            `
+            }
+          </section>
+        </div>
+      `;
+    }
+
+    function renderGuruBankSoal() {
+      return `
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- PANEL A: GENERATOR SOAL OTOMATIS -->
+            <section class="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-5 shadow-sm dark:border-indigo-500/30 dark:bg-indigo-500/10">
+              <div class="flex items-center gap-2.5">
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white">
+                  <i data-lucide="sparkles" class="h-5 w-5"></i>
+                </div>
+                <div>
+                  <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Generator Soal Otomatis</h4>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">Buat paket soal pilihan ganda RCTC secara instan dalam 1 klik</p>
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                  <label class="mb-1 block text-xs font-bold">Pilih Topik Materi</label>
+                  <select id="gen-quiz-topic"
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-bold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <option value="SEMUA">Campuran Semua Topik RCTC</option>
+                    <option value="Konsep Dasar RCTC">Konsep Dasar RCTC</option>
+                    <option value="Menentukan Role & Context">Menentukan Role & Context</option>
+                    <option value="Merumuskan Task & Constraints">Merumuskan Task & Constraints</option>
+                    <option value="Studi Kasus Praktik Prompting">Studi Kasus Praktik Prompting</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="mb-1 block text-xs font-bold">Jumlah Soal Digenerate</label>
+                  <select id="gen-quiz-count"
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-bold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <option value="5">5 Soal Pilihan Ganda</option>
+                    <option value="10" selected>10 Soal Pilihan Ganda</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="button" onclick="window.app.generateAutoQuestions()"
+                class="pid-btn mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-xs font-extrabold text-white shadow-md hover:bg-indigo-700">
+                <i data-lucide="wand-2" class="h-4 w-4"></i>
+                Generate Soal Otomatis Sekarang
+              </button>
+
+              ${
+                state.generatedDraftQuestions.length > 0
+                  ? `
+                <div class="mt-4 space-y-2.5 rounded-xl border border-indigo-300 bg-white p-3.5 dark:border-indigo-500/40 dark:bg-slate-900">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400">
+                      ${state.generatedDraftQuestions.length} Soal Siap Disimpan:
+                    </span>
+                    <button type="button" onclick="window.app.saveDraftQuestionsToBank()"
+                      class="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700">
+                      Simpan Semua ke Bank Soal
+                    </button>
+                  </div>
+                  <div class="max-h-52 space-y-2 overflow-y-auto pr-1 text-xs">
+                    ${state.generatedDraftQuestions
+                      .map(
+                        (dq, i) => `
+                      <div class="rounded-lg bg-slate-50 p-2.5 dark:bg-slate-800">
+                        <p class="font-bold">${i + 1}. ${escapeHtml(dq.question)}</p>
+                        <p class="mt-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">Kunci: ${escapeHtml(dq.answer)}</p>
+                      </div>
+                    `
+                      )
+                      .join('')}
+                  </div>
+                </div>
+              `
+                  : ''
+              }
+            </section>
+
+            <!-- PANEL B: INPUT SOAL MANUAL GURU -->
+            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Tambah Soal Pilihan Ganda Manual</h4>
+              <form onsubmit="window.app.handleAddManualQuestion(event)" class="mt-3 space-y-3">
+                <div>
+                  <label class="mb-1 block text-xs font-bold">Pertanyaan *</label>
+                  <textarea id="manual-q-text" rows="2" required placeholder="Tulis pertanyaan pilihan ganda..."
+                    class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <input type="text" id="manual-opt-a" required placeholder="Opsi A *"
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  <input type="text" id="manual-opt-b" required placeholder="Opsi B *"
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  <input type="text" id="manual-opt-c" required placeholder="Opsi C *"
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  <input type="text" id="manual-opt-d" required placeholder="Opsi D *"
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <label class="text-xs font-bold">Kunci Benar:</label>
+                  <select id="manual-q-ans"
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-extrabold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <option value="A">Opsi A</option>
+                    <option value="B">Opsi B</option>
+                    <option value="C">Opsi C</option>
+                    <option value="D">Opsi D</option>
+                  </select>
+                  <button type="submit"
+                    class="pid-btn ml-auto rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 dark:bg-indigo-600">
+                    + Simpan Soal
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+
+          <!-- Daftar Seluruh Bank Soal Aktif -->
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-3 flex items-center justify-between">
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white">
+                Bank Soal Aktif (${state.quizQuestions.length} Soal)
+              </h4>
+              <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                Siswa akan mengerjakan 10 soal acak dari bank ini
+              </span>
+            </div>
+
+            ${
+              state.quizQuestions.length === 0
+                ? `<p class="py-8 text-center text-xs text-slate-500">Bank soal masih kosong. Gunakan Generator Otomatis atau Form Manual di atas.</p>`
+                : `
+              <div class="space-y-2.5">
+                ${state.quizQuestions
+                  .map(
+                    (q, idx) => `
+                  <div class="flex items-start justify-between gap-3 rounded-xl border border-slate-200 p-3.5 dark:border-slate-800">
+                    <div>
+                      <p class="text-xs font-bold text-slate-900 dark:text-white">${idx + 1}. ${escapeHtml(q.question)}</p>
+                      <p class="mt-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                        Kunci Jawaban: ${escapeHtml(q.answer)}
+                      </p>
+                    </div>
+                    <button type="button" onclick="window.app.deleteQuizQuestion('${q.id}')"
+                      class="shrink-0 rounded-lg bg-rose-50 px-2.5 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:bg-rose-500/20 dark:text-rose-300">
+                      Hapus
+                    </button>
+                  </div>
+                `
+                  )
+                  .join('')}
+              </div>
+            `
+            }
+          </section>
+        </div>
+      `;
+    }
+
+    function renderGuruRekapKuis() {
+      return `
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Rekap Nilai Latihan Kuis Pilihan Ganda</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Hasil otomatis pengerjaan 10 soal acak oleh siswa</p>
+            </div>
+            <button type="button" onclick="window.app.exportAllQuizPdf()"
+              class="pid-btn inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-rose-700">
+              <i data-lucide="file-down" class="h-4 w-4"></i>
+              Export Nilai Kuis PDF
+            </button>
+          </div>
+
+          ${
+            state.quizResults.length === 0
+              ? `<p class="py-10 text-center text-xs text-slate-500">Belum ada siswa yang menyelesaikan latihan kuis PG.</p>`
+              : `
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-800/60">
+                    <th class="p-3 font-extrabold">No</th>
+                    <th class="p-3 font-extrabold">Nama Siswa</th>
+                    <th class="p-3 font-extrabold">Kelas</th>
+                    <th class="p-3 font-extrabold">Benar</th>
+                    <th class="p-3 font-extrabold">Skor Akhir</th>
+                    <th class="p-3 font-extrabold">Waktu</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  ${state.quizResults
+                    .map(
+                      (r, i) => `
+                    <tr>
+                      <td class="p-3 font-bold">${i + 1}</td>
+                      <td class="p-3 font-extrabold text-slate-900 dark:text-white">${escapeHtml(r.nama_siswa)}</td>
+                      <td class="p-3 font-semibold">${escapeHtml(r.kelas)}</td>
+                      <td class="p-3">${r.benar} / ${r.total_soal}</td>
+                      <td class="p-3">
+                        <span class="rounded-lg bg-indigo-100 px-2.5 py-1 font-extrabold text-indigo-800 dark:bg-indigo-500/20 dark:text-indigo-300">
+                          ${r.skor}
+                        </span>
+                      </td>
+                      <td class="p-3 text-slate-400">${escapeHtml(r.waktu || '')}</td>
+                    </tr>
+                  `
+                    )
+                    .join('')}
+                </tbody>
+              </table>
+            </div>
+          `
+          }
+        </section>
+      `;
+    }
+
+    function renderApp() {
+      const rootHtml = document.documentElement;
+      if (state.darkMode) rootHtml.classList.add('dark');
+      else rootHtml.classList.remove('dark');
+
+      renderPreviewBadges();
+      updateNavigationStyles();
+
+      const mainEl = document.getElementById('main-content');
+      if (!mainEl) return;
+
+      if (state.activeTab === 'live') mainEl.innerHTML = renderLiveView();
+      else if (state.activeTab === 'studio') mainEl.innerHTML = renderStudioView();
+      else if (state.activeTab === 'materi') mainEl.innerHTML = renderMateriView();
+      else if (state.activeTab === 'kuis') mainEl.innerHTML = renderKuisView();
+      else if (state.activeTab === 'guru') mainEl.innerHTML = renderGuruView();
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // =========================================================================
+    // 9. CONTROLLER INTERAKSI PENGGUNA (WINDOW.APP)
+    // =========================================================================
+    window.app = {
+      setTab(tabName) {
+        state.activeTab = tabName;
+        renderApp();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+
+      setGuruSubTab(subName) {
+        state.guruSubTab = subName;
+        renderApp();
+      },
+
+      goToGuruSubTab(subName) {
+        state.activeTab = 'guru';
+        state.guruSubTab = subName;
+        renderApp();
+      },
+
+      toggleDarkMode() {
+        state.darkMode = !state.darkMode;
+        renderApp();
+      },
+
+      setFilterKelas(kelas) {
+        state.filterKelas = kelas;
+        renderApp();
+      },
+
+      setSearchQuery(val) {
+        state.searchQuery = val;
+        renderApp();
+      },
+
+      // --- STUDIO RCTC ACTIONS ---
+      updateFormField(field, value) {
+        state.form[field] = value;
+        if (state.formErrors[field]) {
+          delete state.formErrors[field];
+        }
+        renderApp();
+      },
+
+      applyTemplate(tplId) {
+        const found = RCTC_TEMPLATES.find((t) => t.id === tplId);
+        if (!found) return;
+        state.form.kategori = found.label;
+        state.form.role = found.role;
+        state.form.context = found.context;
+        state.form.task = found.task;
+        state.form.constraints = found.constraints;
+        state.formErrors = {};
+        renderApp();
+        showToast(`Template "${found.label}" dimuat — silakan sesuaikan!`, 'info');
+      },
+
+      appendConstraint(chipText) {
+        const cur = state.form.constraints.trim();
+        if (cur.toLowerCase().includes(chipText.toLowerCase())) return;
+        state.form.constraints = cur ? `${cur.replace(/\.$/, '')}, ${chipText.toLowerCase()}` : chipText;
+        delete state.formErrors.constraints;
+        renderApp();
+      },
+
+      resetStudioForm() {
+        state.form = {
+          nama_siswa: state.form.nama_siswa,
+          kelas: state.form.kelas,
+          kategori: 'Umum',
+          role: '',
+          context: '',
+          task: '',
+          constraints: ''
+        };
+        state.formErrors = {};
+        renderApp();
+        showToast('Kolom R-C-T-C berhasil direset.', 'info');
+      },
+
+      validateStudioForm() {
+        const f = state.form;
+        const errors = {};
+        if (!f.nama_siswa.trim()) errors.nama_siswa = 'Nama lengkap siswa wajib diisi.';
+        if (!f.kelas.trim()) errors.kelas = 'Kelas siswa wajib diisi.';
+        if (!f.role.trim()) errors.role = 'Peran AI (Role) wajib diisi.';
+        if (!f.context.trim()) errors.context = 'Konteks (Context) wajib diisi.';
+        if (!f.task.trim()) errors.task = 'Tugas (Task) wajib diisi.';
+        if (!f.constraints.trim()) errors.constraints = 'Batasan (Constraints) wajib diisi.';
+        state.formErrors = errors;
+        return Object.keys(errors).length === 0;
+      },
+
+      async submitStudentRctc() {
+        if (!this.validateStudioForm()) {
+          renderApp();
+          showToast('Lengkapi Nama, Kelas, dan seluruh kolom R-C-T-C terlebih dahulu.', 'error');
+          return;
+        }
+
+        const f = state.form;
+        const promptFinal = buildRctcPromptText(f);
+        const scores = evaluateRctcScore(f);
+
+        const payload = {
+          nama_siswa: f.nama_siswa.trim(),
+          kelas: f.kelas.trim().toUpperCase(),
+          kategori: f.kategori || 'Umum',
+          role: f.role.trim(),
+          context: f.context.trim(),
+          task: f.task.trim(),
+          constraints: f.constraints.trim(),
+          skor_role: scores.skor_role,
+          skor_context: scores.skor_context,
+          skor_task: scores.skor_task,
+          skor_constraints: scores.skor_constraints,
+          total_skor: scores.total_skor,
+          hasil_prompt: promptFinal
+        };
+
+        if (IS_PREVIEW) {
+          state.submissions.unshift({
+            id: `preview-${Date.now()}`,
+            ...payload,
+            waktu: 'Baru saja'
+          });
+          showToast(`Berhasil! Skor Anda ${scores.total_skor}/100 & tampil di Papan Live!`, 'success');
+          state.activeTab = 'live';
+          renderApp();
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, 'submissions'), {
+            ...payload,
+            created_at: serverTimestamp()
+          });
+          showToast(`Karya terkirim! Skor Anda ${scores.total_skor}/100 & masuk Papan Live!`, 'success');
+          state.activeTab = 'live';
+          renderApp();
+        } catch (err) {
+          console.error(err);
+          showToast('Gagal menyimpan ke Firestore. Periksa konfigurasi Firebase.', 'error');
+        }
+      },
+
+      async copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+      },
+
+      async copyCurrentPrompt() {
+        const text = buildRctcPromptText(state.form);
+        await this.copyText(text);
+        showToast('Prompt RCTC berhasil disalin ke clipboard!', 'success');
+      },
+
+      downloadCurrentTxt() {
+        const text = buildRctcPromptText(state.form);
+        const slug = (state.form.nama_siswa || 'rctc-prompt').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${slug}-prompt.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('File TXT berhasil diunduh!', 'success');
+      },
+
+      downloadCurrentPdf() {
+        const promptFinal = buildRctcPromptText(state.form);
+        const scores = evaluateRctcScore(state.form);
+        exportSinglePromptPdf({
+          nama_siswa: state.form.nama_siswa || 'Peserta Praktik',
+          kelas: state.form.kelas || '-',
+          kategori: state.form.kategori || 'Umum',
+          ...scores,
+          hasil_prompt: promptFinal
+        });
+      },
+
+      // --- MODAL DETAIL KARYA & PREVIEW MATERI DRIVE ---
+      openSubmissionDetail(id) {
+        const sub = state.submissions.find((s) => s.id === id);
+        if (!sub) return;
+        const modal = document.getElementById('modal-container');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.innerHTML = `
+          <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-4 dark:border-slate-800">
+              <div>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(sub.nama_siswa)}</h3>
+                <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                  ${escapeHtml(sub.kelas)} • Skor Total: ${sub.total_skor}/100
+                </p>
+              </div>
+              <button type="button" onclick="window.app.closeModal()"
+                class="rounded-xl bg-slate-100 p-2 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300">
+                <i data-lucide="x" class="h-5 w-5"></i>
+              </button>
+            </div>
+
+            <div class="mt-4 rounded-xl bg-slate-950 p-4 text-slate-100">
+              <pre class="whitespace-pre-wrap break-words font-mono text-xs leading-relaxed sm:text-sm">${escapeHtml(sub.hasil_prompt)}</pre>
+            </div>
+
+            <div class="mt-5 flex flex-wrap justify-end gap-2.5">
+              <button type="button" onclick="window.app.copySubmissionPrompt('${sub.id}')"
+                class="pid-btn inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-indigo-700">
+                <i data-lucide="copy" class="h-4 w-4"></i>
+                Salin Prompt Ini
+              </button>
+              <button type="button" onclick="window.app.exportSubmissionById('${sub.id}')"
+                class="pid-btn inline-flex items-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-xs font-bold text-rose-700 hover:bg-rose-100 dark:border-rose-500/30 dark:bg-rose-500/15 dark:text-rose-300">
+                <i data-lucide="file-down" class="h-4 w-4"></i>
+                Export PDF
+              </button>
+            </div>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      },
+
+      async copySubmissionPrompt(id) {
+        const sub = state.submissions.find((s) => s.id === id);
+        if (!sub) return;
+        await this.copyText(sub.hasil_prompt);
+        showToast(`Prompt karya ${sub.nama_siswa} berhasil disalin!`, 'success');
+      },
+
+      exportSubmissionById(id) {
+        const sub = state.submissions.find((s) => s.id === id);
+        if (!sub) return;
+        exportSinglePromptPdf(sub);
+      },
+
+      previewDriveMaterial(id) {
+        const mat = state.materials.find((m) => m.id === id);
+        if (!mat) return;
+        const embedUrl = getDriveEmbedUrl(mat.link_drive);
+        const modal = document.getElementById('modal-container');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.innerHTML = `
+          <div class="flex h-[88vh] w-full max-w-5xl flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+            <div class="flex items-center justify-between gap-3 border-b border-slate-100 pb-3 dark:border-slate-800">
+              <div class="min-w-0">
+                <h3 class="truncate text-base font-extrabold text-slate-900 dark:text-white">${escapeHtml(mat.judul)}</h3>
+                <p class="text-xs text-slate-500">Pratinjau Google Drive (${escapeHtml(mat.tipe)})</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="${escapeHtml(mat.link_drive)}" target="_blank" rel="noopener noreferrer"
+                  class="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white hover:bg-indigo-700">
+                  Buka Tab Baru
+                </a>
+                <button type="button" onclick="window.app.closeModal()"
+                  class="rounded-xl bg-slate-100 p-2 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300">
+                  <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+              </div>
+            </div>
+            <iframe src="${escapeHtml(embedUrl)}" class="mt-3 h-full w-full flex-1 rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-800" allow="autoplay"></iframe>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+      },
+
+      closeModal() {
+        const modal = document.getElementById('modal-container');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.innerHTML = '';
+      },
+
+      // --- KUIS PILIHAN GANDA 10 SOAL ACAK ---
+      startStudentQuiz() {
+        const nama = (document.getElementById('quiz-nama-input')?.value || '').trim();
+        const kelas = (document.getElementById('quiz-kelas-input')?.value || '').trim().toUpperCase();
+
+        if (!nama || !kelas) {
+          showToast('Masukkan Nama Lengkap dan Kelas sebelum memulai kuis.', 'error');
+          return;
+        }
+
+        const randomizedPool = shuffleArray(state.quizQuestions)
+          .slice(0, 10)
+          .map((q) => ({
+            ...q,
+            shuffledOptions: shuffleArray(q.options || [])
+          }));
+
+        state.quizSession = {
+          started: true,
+          finished: false,
+          nama_siswa: nama,
+          kelas: kelas,
+          questions: randomizedPool,
+          answers: {},
+          currentIndex: 0,
+          score: 0,
+          correctCount: 0
+        };
+        renderApp();
+      },
+
+      selectQuizAnswer(qIdx, optIdx) {
+        const q = state.quizSession.questions[qIdx];
+        if (!q) return;
+        state.quizSession.answers[qIdx] = q.shuffledOptions[optIdx];
+        renderApp();
+      },
+
+      jumpToQuizQuestion(idx) {
+        state.quizSession.currentIndex = idx;
+        renderApp();
+      },
+
+      prevQuizQuestion() {
+        if (state.quizSession.currentIndex > 0) {
+          state.quizSession.currentIndex--;
+          renderApp();
+        }
+      },
+
+      nextQuizQuestion() {
+        if (state.quizSession.currentIndex < state.quizSession.questions.length - 1) {
+          state.quizSession.currentIndex++;
+          renderApp();
+        }
+      },
+
+      async finishStudentQuiz() {
+        const qs = state.quizSession;
+        let benar = 0;
+        qs.questions.forEach((q, idx) => {
+          if (qs.answers[idx] === q.answer) benar++;
+        });
+        const skor = Math.round((benar / qs.questions.length) * 100);
+
+        state.quizSession.correctCount = benar;
+        state.quizSession.score = skor;
+        state.quizSession.finished = true;
+
+        const resultRecord = {
+          nama_siswa: qs.nama_siswa,
+          kelas: qs.kelas,
+          benar,
+          total_soal: qs.questions.length,
+          skor
+        };
+
+        if (IS_PREVIEW) {
+          state.quizResults.unshift({
+            id: `qres-${Date.now()}`,
+            ...resultRecord,
+            waktu: 'Baru saja'
+          });
+          showToast(`Kuis selesai! Skor Anda: ${skor}/100`, 'success');
+          renderApp();
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, 'quiz_results'), {
+            ...resultRecord,
+            created_at: serverTimestamp()
+          });
+          showToast(`Kuis selesai! Skor ${skor}/100 tersimpan ke rekap guru.`, 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('Skor dihitung, namun gagal tersimpan ke Firestore.', 'error');
+        }
+        renderApp();
+      },
+
+      resetQuizSession() {
+        state.quizSession = {
+          started: false,
+          finished: false,
+          nama_siswa: state.quizSession.nama_siswa,
+          kelas: state.quizSession.kelas,
+          questions: [],
+          answers: {},
+          currentIndex: 0,
+          score: 0,
+          correctCount: 0
+        };
+        renderApp();
+      },
+
+      // --- LOGIN & DASHBOARD KHUSUS GURU ---
+      async handleGuruLogin(e) {
+        e.preventDefault();
+        const email = (document.getElementById('guru-email-input')?.value || '').trim();
+        const pass = (document.getElementById('guru-pass-input')?.value || '').trim();
+
+        if (IS_PREVIEW) {
+          if (email === 'guru@sekolah.sch.id' && pass === 'guru123') {
+            state.guruUser = { email };
+            showToast('Berhasil masuk ke Dashboard Guru (Mode Preview)!', 'success');
+            renderApp();
+          } else {
+            showToast('Email atau sandi demo tidak cocok (gunakan guru@sekolah.sch.id / guru123).', 'error');
+          }
+          return;
+        }
+
+        try {
+          await signInWithEmailAndPassword(auth, email, pass);
+          showToast('Login Guru berhasil!', 'success');
+        } catch (err) {
+          console.error(err);
+          showToast('Login gagal. Periksa email & kata sandi akun Guru di Firebase Auth.', 'error');
+        }
+      },
+
+      async handleGuruLogout() {
+        if (IS_PREVIEW) {
+          state.guruUser = null;
+          renderApp();
+          showToast('Anda telah keluar dari sesi Guru.', 'info');
+          return;
+        }
+        await signOut(auth);
+        showToast('Logout berhasil.', 'info');
+      },
+
+      async deleteSubmission(id) {
+        if (IS_PREVIEW) {
+          state.submissions = state.submissions.filter((s) => s.id !== id);
+          renderApp();
+          showToast('Data karya siswa dihapus.', 'info');
+          return;
+        }
+        try {
+          await deleteDoc(doc(db, 'submissions', id));
+          showToast('Data karya siswa dihapus dari Firestore.', 'info');
+        } catch (err) {
+          showToast('Gagal menghapus data.', 'error');
+        }
+      },
+
+      async handleAddMaterial(e) {
+        e.preventDefault();
+        const judul = (document.getElementById('mat-judul')?.value || '').trim();
+        const tipe = document.getElementById('mat-tipe')?.value || 'PDF';
+        const link_drive = (document.getElementById('mat-link')?.value || '').trim();
+        const deskripsi = (document.getElementById('mat-deskripsi')?.value || '').trim();
+
+        if (!judul || !link_drive) return;
+
+        if (IS_PREVIEW) {
+          state.materials.unshift({
+            id: `mat-${Date.now()}`,
+            judul,
+            tipe,
+            link_drive,
+            deskripsi
+          });
+          renderApp();
+          showToast('Link materi Drive berhasil dipublikasikan!', 'success');
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, 'materials'), {
+            judul,
+            tipe,
+            link_drive,
+            deskripsi,
+            created_at: serverTimestamp()
+          });
+          showToast('Materi Google Drive berhasil disimpan ke Firestore!', 'success');
+        } catch (err) {
+          showToast('Gagal menyimpan materi.', 'error');
+        }
+      },
+
+      async deleteMaterial(id) {
+        if (IS_PREVIEW) {
+          state.materials = state.materials.filter((m) => m.id !== id);
+          renderApp();
+          showToast('Materi dihapus.', 'info');
+          return;
+        }
+        try {
+          await deleteDoc(doc(db, 'materials', id));
+          showToast('Materi dihapus dari Firestore.', 'info');
+        } catch (err) {
+          showToast('Gagal menghapus materi.', 'error');
+        }
+      },
+
+      generateAutoQuestions() {
+        const topic = document.getElementById('gen-quiz-topic')?.value || 'SEMUA';
+        const count = parseInt(document.getElementById('gen-quiz-count')?.value || '10', 10);
+
+        const filteredPool =
+          topic === 'SEMUA'
+            ? AUTO_QUESTION_POOL
+            : AUTO_QUESTION_POOL.filter((item) => item.topic === topic);
+
+        const picked = shuffleArray(filteredPool).slice(0, count);
+        state.generatedDraftQuestions = picked.map((q) => ({
+          question: q.question,
+          options: [...q.options],
+          answer: q.answer
+        }));
+
+        renderApp();
+        showToast(`${state.generatedDraftQuestions.length} soal otomatis siap diperiksa & disimpan!`, 'info');
+      },
+
+      async saveDraftQuestionsToBank() {
+        if (state.generatedDraftQuestions.length === 0) return;
+
+        if (IS_PREVIEW) {
+          const added = state.generatedDraftQuestions.map((dq, i) => ({
+            id: `auto-q-${Date.now()}-${i}`,
+            ...dq
+          }));
+          state.quizQuestions = [...added, ...state.quizQuestions];
+          state.generatedDraftQuestions = [];
+          renderApp();
+          showToast(`${added.length} soal berhasil ditambahkan ke Bank Soal!`, 'success');
+          return;
+        }
+
+        try {
+          for (const dq of state.generatedDraftQuestions) {
+            await addDoc(collection(db, 'quiz_questions'), {
+              question: dq.question,
+              options: dq.options,
+              answer: dq.answer,
+              created_at: serverTimestamp()
+            });
+          }
+          const totalAdded = state.generatedDraftQuestions.length;
+          state.generatedDraftQuestions = [];
+          renderApp();
+          showToast(`${totalAdded} soal otomatis tersimpan ke Firestore!`, 'success');
+        } catch (err) {
+          showToast('Gagal menyimpan soal otomatis ke Firestore.', 'error');
+        }
+      },
+
+      async handleAddManualQuestion(e) {
+        e.preventDefault();
+        const question = (document.getElementById('manual-q-text')?.value || '').trim();
+        const optA = (document.getElementById('manual-opt-a')?.value || '').trim();
+        const optB = (document.getElementById('manual-opt-b')?.value || '').trim();
+        const optC = (document.getElementById('manual-opt-c')?.value || '').trim();
+        const optD = (document.getElementById('manual-opt-d')?.value || '').trim();
+        const ansKey = document.getElementById('manual-q-ans')?.value || 'A';
+
+        const options = [optA, optB, optC, optD];
+        const keyIndex = { A: 0, B: 1, C: 2, D: 3 }[ansKey] ?? 0;
+        const answer = options[keyIndex];
+
+        if (IS_PREVIEW) {
+          state.quizQuestions.unshift({
+            id: `man-q-${Date.now()}`,
+            question,
+            options,
+            answer
+          });
+          renderApp();
+          showToast('Soal manual berhasil ditambahkan!', 'success');
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, 'quiz_questions'), {
+            question,
+            options,
+            answer,
+            created_at: serverTimestamp()
+          });
+          showToast('Soal manual tersimpan ke Firestore!', 'success');
+        } catch (err) {
+          showToast('Gagal menyimpan soal manual.', 'error');
+        }
+      },
+
+      async deleteQuizQuestion(id) {
+        if (IS_PREVIEW) {
+          state.quizQuestions = state.quizQuestions.filter((q) => q.id !== id);
+          renderApp();
+          showToast('Soal dihapus.', 'info');
+          return;
+        }
+        try {
+          await deleteDoc(doc(db, 'quiz_questions', id));
+          showToast('Soal dihapus dari Firestore.', 'info');
+        } catch (err) {
+          showToast('Gagal menghapus soal.', 'error');
+        }
+      },
+
+      exportAllRctcPdf() {
+        if (state.submissions.length === 0) {
+          showToast('Belum ada data nilai RCTC untuk diexport.', 'error');
+          return;
+        }
+        const headers = ['No', 'Nama Siswa', 'Kelas', 'Kategori', 'Role', 'Context', 'Task', 'Constr.', 'Total Skor'];
+        const rows = state.submissions.map((s, i) => [
+          i + 1,
+          s.nama_siswa,
+          s.kelas,
+          s.kategori || 'Umum',
+          `${s.skor_role}/25`,
+          `${s.skor_context}/25`,
+          `${s.skor_task}/25`,
+          `${s.skor_constraints}/25`,
+          `${s.total_skor}/100`
+        ]);
+        exportRekapPdf('REKAP NILAI PRAKTIK RCTC PROMPT GENERATOR', headers, rows, 'Rekap-Nilai-RCTC-Siswa.pdf');
+      },
+
+      exportAllQuizPdf() {
+        if (state.quizResults.length === 0) {
+          showToast('Belum ada data nilai kuis untuk diexport.', 'error');
+          return;
+        }
+        const headers = ['No', 'Nama Siswa', 'Kelas', 'Jawaban Benar', 'Skor Akhir', 'Waktu'];
+        const rows = state.quizResults.map((r, i) => [
+          i + 1,
+          r.nama_siswa,
+          r.kelas,
+          `${r.benar} / ${r.total_soal}`,
+          `${r.skor}/100`,
+          r.waktu || '-'
+        ]);
+        exportRekapPdf('REKAP NILAI KUIS PILIHAN GANDA RCTC', headers, rows, 'Rekap-Nilai-Kuis-RCTC.pdf');
+      }
+    };
+
+    // Render Perdana
+    renderApp();
+  </script>
+</body>
+</html>
