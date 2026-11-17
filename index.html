@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#4f46e5" />
-  <meta name="description" content="RCTC Prompt Generator - Studio Praktik AI Interaktif untuk PID & Smartphone" />
-  <title>RCTC Prompt Studio — Praktik AI Interaktif PID & Mobile</title>
+  <meta name="description" content="RCTC Prompt Studio - Studio Praktik AI Interaktif oleh Ja'far Shodiq, S.Kom., MM" />
+  <title>RCTC Prompt Studio — Ja'far Shodiq, S.Kom., MM</title>
 
   <!-- PWA Manifest Data URI -->
   <link
@@ -104,13 +104,13 @@
     }
 
     .pid-btn {
-      min-height: 48px;
+      min-height: 44px;
       touch-action: manipulation;
     }
 
     .pid-input {
       min-height: 48px;
-      font-size: 1rem;
+      font-size: 16px; /* Mencegah auto-zoom & gangguan keyboard di iOS/Android */
     }
 
     /* Custom Scrollbar */
@@ -133,16 +133,19 @@
     <!-- DESKTOP / PID FIXED SIDEBAR -->
     <aside class="desktop-sidebar flex-col justify-between border-r border-slate-200/80 bg-white/90 p-5 glass-panel dark:border-slate-800 dark:bg-slate-900/90">
       <div>
-        <!-- Brand -->
-        <div class="flex items-center gap-3 pb-6 border-b border-slate-100 dark:border-slate-800">
+        <!-- Brand & Nama Guru -->
+        <div class="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-800">
           <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/25">
             <i data-lucide="sparkles" class="h-6 w-6"></i>
           </div>
-          <div>
+          <div class="min-w-0">
             <h1 class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
               RCTC Prompt Studio
             </h1>
-            <p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+            <p class="truncate text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+              Ja'far Shodiq, S.Kom., MM
+            </p>
+            <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400">
               PID & Mobile Classroom
             </p>
           </div>
@@ -233,15 +236,20 @@
     <!-- MAIN CONTENT WORKSPACE -->
     <div class="main-workspace">
       <!-- Top Mobile / Context Header -->
-      <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 px-4 py-3 glass-panel dark:border-slate-800/80 dark:bg-slate-900/80 lg:px-8">
-        <div class="mx-auto flex max-w-7xl items-center justify-between gap-3">
-          <div class="flex items-center gap-2.5 lg:hidden">
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white">
+      <header class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/90 px-3.5 py-2.5 glass-panel dark:border-slate-800/80 dark:bg-slate-900/90 sm:px-4 lg:px-8 lg:py-3">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-2">
+          <!-- Identitas Aplikasi & Guru Pengajar di HP -->
+          <div class="flex min-w-0 flex-1 items-center gap-2.5 lg:hidden">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-sm">
               <i data-lucide="sparkles" class="h-4 w-4"></i>
             </div>
-            <div>
-              <span class="block text-sm font-extrabold text-slate-900 dark:text-white">RCTC Prompt Studio</span>
-              <span class="block text-[10px] text-slate-500 dark:text-slate-400">PID & Mobile Classroom</span>
+            <div class="min-w-0">
+              <span class="block truncate text-sm font-extrabold leading-tight text-slate-900 dark:text-white">
+                RCTC Prompt Studio
+              </span>
+              <span class="block truncate text-[11px] font-semibold text-indigo-600 dark:text-indigo-400">
+                Ja'far Shodiq, S.Kom., MM
+              </span>
             </div>
           </div>
 
@@ -254,23 +262,24 @@
             </p>
           </div>
 
-          <div class="flex items-center gap-2">
+          <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <div id="topbar-preview-pill"></div>
             <button type="button" onclick="window.app.toggleDarkMode()" aria-label="Ganti Tema"
-              class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-amber-400 lg:hidden">
-              <i data-lucide="sun-moon" class="h-5 w-5"></i>
+              class="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-amber-400 lg:hidden">
+              <i data-lucide="sun-moon" class="h-4 w-4"></i>
             </button>
             <button type="button" onclick="window.app.setTab('studio')"
-              class="pid-btn inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-indigo-600/20 transition hover:bg-indigo-700 sm:text-sm">
-              <i data-lucide="plus-circle" class="h-4 w-4"></i>
-              <span>Mulai Praktik RCTC</span>
+              class="pid-btn inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white shadow-md shadow-indigo-600/20 transition hover:bg-indigo-700 sm:px-4 sm:text-sm">
+              <i data-lucide="plus-circle" class="h-4 w-4 shrink-0"></i>
+              <span class="sm:hidden">Praktik</span>
+              <span class="hidden sm:inline">Mulai Praktik RCTC</span>
             </button>
           </div>
         </div>
       </header>
 
       <!-- Dynamic View Container -->
-      <main id="main-content" class="mx-auto max-w-7xl px-4 pt-6 lg:px-8"></main>
+      <main id="main-content" class="mx-auto max-w-7xl px-4 pt-5 lg:px-8 lg:pt-6"></main>
     </div>
 
     <!-- Modal Container (Pratinjau Drive / Detail Prompt Siswa) -->
@@ -288,12 +297,12 @@
     // PASTE FIREBASE CONFIG ANDA DI SINI
     const firebaseConfig = {
       apiKey: "AIzaSyB1j9rV8dOUe2T7SWGp9-8iWgp8A7BRpho",
-  authDomain: "rctc-prompt-generator.firebaseapp.com",
-  projectId: "rctc-prompt-generator",
-  storageBucket: "rctc-prompt-generator.firebasestorage.app",
-  messagingSenderId: "959368980535",
-  appId: "1:959368980535:web:6d1adc850081846543b7b2"
-};
+      authDomain: "rctc-prompt-generator.firebaseapp.com",
+      projectId: "rctc-prompt-generator",
+      storageBucket: "rctc-prompt-generator.firebasestorage.app",
+      messagingSenderId: "959368980535",
+      appId: "1:959368980535:web:6d1adc850081846543b7b2"
+    };
 
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
     import {
@@ -319,7 +328,7 @@
     // =========================================================================
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE_NAME = 'rctc-prompt-studio-v1';
+        const CACHE_NAME = 'rctc-prompt-studio-v2';
         self.addEventListener('install', (e) => {
           self.skipWaiting();
         });
@@ -336,7 +345,7 @@
     }
 
     // =========================================================================
-    // 2. TEMPLATE STUDI KASUS RCTC & BANK GENERATOR SOAL OTOMATIS
+    // 2. TEMPLATE CONTOH, STUDI KASUS MANDIRI, & BANK GENERATOR SOAL
     // =========================================================================
     const RCTC_TEMPLATES = [
       {
@@ -410,6 +419,25 @@
         context: 'Pembelajaran di kelas diarahkan agar siswa mengalami proses berkesadaran (mindful), bermakna (meaningful), dan menggembirakan (joyful).',
         task: 'Rancang skenario aktivitas belajar dengan alur Memahami, Mengaplikasikan, dan Merefleksikan pada studi kasus nyata.',
         constraints: 'Tandai secara eksplisit bagian mindful, meaningful, dan joyful pada setiap langkah kegiatan.'
+      }
+    ];
+
+    // Daftar Studi Kasus Praktik Mandiri (Siswa memilih studi kasus lalu menulis manual di kolom RCTC)
+    const RCTC_CASE_STUDIES = [
+      {
+        id: 'hgn-2026',
+        badge: 'Studi Kasus Utama',
+        title: 'Poster / Banner Peringatan Hari Guru Nasional 2026',
+        kategoriLabel: 'Studi Kasus: Poster HGN 2026',
+        icon: 'award',
+        scenario:
+          'Dalam rangka memperingati Hari Guru Nasional (25 November 2026), sekolah mengadakan lomba dan publikasi media visual bertema apresiasi jasa guru di era transformasi digital. Anda diminta menyusun prompt AI (untuk AI Image Generator seperti Gemini/Imagen/Canva AI atau konsep desain) untuk merancang Poster atau Banner Peringatan Hari Guru Nasional 2026.',
+        hints: [
+          { code: 'R', label: 'Role', text: 'Tentukan peran AI yang ahli (misal: Desainer Grafis Senior & Ilustrator Poster Pendidikan).' },
+          { code: 'C', label: 'Context', text: 'Jelaskan momen Hari Guru Nasional 2026 di lingkungan sekolah, suasana hangat penuh penghargaan, dan target audiens siswa serta guru.' },
+          { code: 'T', label: 'Task', text: 'Perintahkan AI merancang konsep atau visual poster/banner lengkap dengan objek utama, latar kelas/sekolah modern, dan penempatan judul "Selamat Hari Guru Nasional 2026".' },
+          { code: 'C', label: 'Constraints', text: 'Tentukan rasio ukuran (misal 3:4 untuk poster atau 16:9 untuk banner), gaya ilustrasi, perpaduan warna cerah elegan, dan pastikan teks mudah terbaca.' }
+        ]
       }
     ];
 
@@ -664,9 +692,9 @@
       activeTab: 'live', // 'live' | 'studio' | 'materi' | 'kuis' | 'guru'
       guruSubTab: 'rekap-rctc', // 'rekap-rctc' | 'kelola-materi' | 'bank-soal' | 'rekap-kuis'
       darkMode: false,
-      guruUser: null, // Firebase Auth User atau objek demo saat IS_PREVIEW === true
+      guruUser: null,
 
-      // Koleksi Data (In-memory saat IS_PREVIEW = true, Firestore real-time saat false)
+      // Koleksi Data
       submissions: [...PREVIEW_SUBMISSIONS],
       materials: [...PREVIEW_MATERIALS],
       quizQuestions: [...PREVIEW_QUIZ_QUESTIONS],
@@ -675,6 +703,9 @@
       // Filter Papan Karya & Rekap
       filterKelas: 'SEMUA',
       searchQuery: '',
+
+      // State Studi Kasus Terpilih
+      selectedCaseStudyId: null,
 
       // State Form Studio RCTC Siswa
       form: {
@@ -783,7 +814,7 @@
       else if (wTask >= 4) sTask = 13;
       else if (wTask >= 1) sTask = 7;
 
-      // 4. Constraints (Max 25) - Menghargai jumlah kata & pemisah aturan (koma/titik koma)
+      // 4. Constraints (Max 25)
       const wCons = countWords(constraints);
       const clauseCount = constraints.split(/[,;.\n]+/).filter((x) => x.trim().length > 2).length;
       let sCons = 0;
@@ -874,31 +905,31 @@
 
       // Header Banner
       docPdf.setFillColor(79, 70, 229);
-      docPdf.rect(0, 0, 210, 32, 'F');
+      docPdf.rect(0, 0, 210, 34, 'F');
       docPdf.setTextColor(255, 255, 255);
       docPdf.setFont('helvetica', 'bold');
       docPdf.setFontSize(16);
       docPdf.text('RCTC PROMPT STUDIO — HASIL PRAKTIK AI', 14, 15);
       docPdf.setFont('helvetica', 'normal');
       docPdf.setFontSize(10);
-      docPdf.text('Metode Role • Context • Task • Constraints', 14, 23);
+      docPdf.text("Guru Pengajar: Ja'far Shodiq, S.Kom., MM | Metode Role • Context • Task • Constraints", 14, 24);
 
       // Identitas & Skor
       docPdf.setTextColor(15, 23, 42);
       docPdf.setFont('helvetica', 'bold');
       docPdf.setFontSize(11);
-      docPdf.text(`Nama Siswa : ${data.nama_siswa || '-'}`, 14, 43);
-      docPdf.text(`Kelas             : ${data.kelas || '-'}`, 14, 50);
-      docPdf.text(`Kategori        : ${data.kategori || 'Umum'}`, 14, 57);
+      docPdf.text(`Nama Siswa : ${data.nama_siswa || '-'}`, 14, 45);
+      docPdf.text(`Kelas             : ${data.kelas || '-'}`, 14, 52);
+      docPdf.text(`Kategori        : ${data.kategori || 'Umum'}`, 14, 59);
 
       // Kotak Skor
       docPdf.setFillColor(238, 242, 255);
-      docPdf.roundedRect(140, 37, 56, 24, 3, 3, 'F');
+      docPdf.roundedRect(140, 39, 56, 24, 3, 3, 'F');
       docPdf.setTextColor(79, 70, 229);
       docPdf.setFontSize(10);
-      docPdf.text('SKOR OTOMATIS', 168, 44, { align: 'center' });
+      docPdf.text('SKOR OTOMATIS', 168, 46, { align: 'center' });
       docPdf.setFontSize(16);
-      docPdf.text(`${data.total_skor} / 100`, 168, 54, { align: 'center' });
+      docPdf.text(`${data.total_skor} / 100`, 168, 56, { align: 'center' });
 
       // Rincian Skor
       docPdf.setTextColor(71, 85, 105);
@@ -907,19 +938,19 @@
       docPdf.text(
         `Rincian Skor — Role: ${data.skor_role}/25 | Context: ${data.skor_context}/25 | Task: ${data.skor_task}/25 | Constraints: ${data.skor_constraints}/25`,
         14,
-        68
+        70
       );
 
       // Garis Pemisah
       docPdf.setDrawColor(203, 213, 225);
-      docPdf.line(14, 72, 196, 72);
+      docPdf.line(14, 74, 196, 74);
 
       // Isi Prompt Final
       docPdf.setTextColor(15, 23, 42);
       docPdf.setFont('courier', 'normal');
       docPdf.setFontSize(10.5);
       const lines = docPdf.splitTextToSize(data.hasil_prompt, 180);
-      docPdf.text(lines, 14, 82);
+      docPdf.text(lines, 14, 84);
 
       const safeName = (data.nama_siswa || 'siswa').toLowerCase().replace(/[^a-z0-9]+/g, '-');
       docPdf.save(`RCTC-Prompt-${safeName}.pdf`);
@@ -936,14 +967,17 @@
       const docPdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
       docPdf.setFillColor(79, 70, 229);
-      docPdf.rect(0, 0, 297, 24, 'F');
+      docPdf.rect(0, 0, 297, 26, 'F');
       docPdf.setTextColor(255, 255, 255);
       docPdf.setFont('helvetica', 'bold');
       docPdf.setFontSize(14);
-      docPdf.text(title, 14, 15);
+      docPdf.text(title, 14, 13);
+      docPdf.setFont('helvetica', 'normal');
+      docPdf.setFontSize(9.5);
+      docPdf.text("RCTC Prompt Studio — Guru Pengajar: Ja'far Shodiq, S.Kom., MM", 14, 21);
 
       docPdf.autoTable({
-        startY: 30,
+        startY: 32,
         head: [headers],
         body: rows,
         styles: { fontSize: 9, cellPadding: 3 },
@@ -956,12 +990,27 @@
     }
 
     // =========================================================================
-    // 7. LISTENER REAL-TIME FIRESTORE (HANYA AKTIF SAAT IS_PREVIEW === false)
+    // 7. LISTENER REAL-TIME FIRESTORE (DENGAN PERLINDUNGAN FOKUS KEYBOARD)
     // =========================================================================
+    function isUserActivelyTyping() {
+      const active = document.activeElement;
+      if (!active) return false;
+      const tag = active.tagName;
+      return (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') && active.closest('#main-content');
+    }
+
+    function safeBackgroundRender() {
+      // Cegah re-render penuh jika siswa sedang mengetik di Studio atau mengerjakan Kuis agar keyboard HP tidak tertutup
+      if (isUserActivelyTyping()) return;
+      if (state.activeTab === 'studio') return;
+      if (state.activeTab === 'kuis' && state.quizSession.started && !state.quizSession.finished) return;
+      renderApp();
+    }
+
     if (!IS_PREVIEW && db && auth) {
       onAuthStateChanged(auth, (user) => {
         state.guruUser = user;
-        renderApp();
+        safeBackgroundRender();
       });
 
       const qSub = query(collection(db, 'submissions'), orderBy('created_at', 'desc'));
@@ -977,19 +1026,19 @@
               : 'Baru saja'
           };
         });
-        renderApp();
+        safeBackgroundRender();
       });
 
       const qMat = query(collection(db, 'materials'), orderBy('created_at', 'desc'));
       onSnapshot(qMat, (snap) => {
         state.materials = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        renderApp();
+        safeBackgroundRender();
       });
 
       const qQuiz = query(collection(db, 'quiz_questions'), orderBy('created_at', 'desc'));
       onSnapshot(qQuiz, (snap) => {
         state.quizQuestions = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        renderApp();
+        safeBackgroundRender();
       });
 
       const qRes = query(collection(db, 'quiz_results'), orderBy('created_at', 'desc'));
@@ -1005,7 +1054,7 @@
               : 'Baru saja'
           };
         });
-        renderApp();
+        safeBackgroundRender();
       });
     }
 
@@ -1054,7 +1103,7 @@
         },
         studio: {
           title: 'Studio Praktik RCTC Prompt Generator',
-          sub: 'Ketik Nama & Kelas, susun Role • Context • Task • Constraints, dan dapatkan skor otomatis'
+          sub: 'Ketik Nama & Kelas, pilih template atau studi kasus, susun R • C • T • C, dan raih skor otomatis'
         },
         materi: {
           title: 'Materi Pembelajaran & Modul Drive',
@@ -1099,7 +1148,7 @@
     // -------------------------------------------------------------------------
     // VIEW 1: PAPAN KARYA & LEADERBOARD LIVE (HALAMAN DEPAN)
     // -------------------------------------------------------------------------
-    function renderLiveView() {
+    function renderLiveDynamicContent() {
       const kelasSet = new Set(state.submissions.map((s) => (s.kelas || '').trim()).filter(Boolean));
       const kelasList = Array.from(kelasSet).sort();
 
@@ -1125,242 +1174,283 @@
           : 0;
 
       return `
-        <div class="space-y-6">
-          <!-- Hero Stat Banner untuk PID -->
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Karya Masuk</span>
-                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
-                  <i data-lucide="layers" class="h-5 w-5"></i>
-                </div>
+        <!-- Hero Stat Banner untuk PID -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Karya Masuk</span>
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
+                <i data-lucide="layers" class="h-5 w-5"></i>
               </div>
-              <p class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white">${filtered.length}</p>
-              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Prompt RCTC terkumpul</p>
             </div>
-
-            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata Skor Kelas</span>
-                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
-                  <i data-lucide="bar-chart-3" class="h-5 w-5"></i>
-                </div>
-              </div>
-              <p class="mt-2 text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">${avgScore} <span class="text-base font-semibold text-slate-400">/ 100</span></p>
-              <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Penilaian otomatis R-C-T-C</p>
-            </div>
-
-            <div class="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/20">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-100">Skor Tertinggi Saat Ini</span>
-                <i data-lucide="award" class="h-6 w-6 text-amber-300"></i>
-              </div>
-              <p class="mt-2 truncate text-xl font-extrabold">
-                ${leaderboard[0] ? escapeHtml(leaderboard[0].nama_siswa) : 'Menunggu Peserta'}
-              </p>
-              <p class="mt-1 text-xs text-indigo-100">
-                ${leaderboard[0] ? `${escapeHtml(leaderboard[0].kelas)} • Skor ${leaderboard[0].total_skor}/100` : 'Jadilah yang pertama mengirim karya!'}
-              </p>
-            </div>
+            <p class="mt-2 text-3xl font-extrabold text-slate-900 dark:text-white">${filtered.length}</p>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Prompt RCTC terkumpul</p>
           </div>
 
-          <!-- Top 5 Papan Peringkat Kompetitif -->
-          ${
-            leaderboard.length > 0
-              ? `
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <div class="mb-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                  <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
-                    <i data-lucide="trophy" class="h-5 w-5"></i>
-                  </div>
-                  <div>
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Top Peringkat Praktik RCTC</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Peringkat otomatis berdasarkan kelengkapan & bobot komponen R-C-T-C</p>
-                  </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Rata-rata Skor Kelas</span>
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
+                <i data-lucide="bar-chart-3" class="h-5 w-5"></i>
+              </div>
+            </div>
+            <p class="mt-2 text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">${avgScore} <span class="text-base font-semibold text-slate-400">/ 100</span></p>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Penilaian otomatis R-C-T-C</p>
+          </div>
+
+          <div class="rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/20">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-100">Skor Tertinggi Saat Ini</span>
+              <i data-lucide="award" class="h-6 w-6 text-amber-300"></i>
+            </div>
+            <p class="mt-2 truncate text-xl font-extrabold">
+              ${leaderboard[0] ? escapeHtml(leaderboard[0].nama_siswa) : 'Menunggu Peserta'}
+            </p>
+            <p class="mt-1 text-xs text-indigo-100">
+              ${leaderboard[0] ? `${escapeHtml(leaderboard[0].kelas)} • Skor ${leaderboard[0].total_skor}/100` : 'Jadilah yang pertama mengirim karya!'}
+            </p>
+          </div>
+        </div>
+
+        <!-- Top 5 Papan Peringkat Kompetitif -->
+        ${
+          leaderboard.length > 0
+            ? `
+          <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-4 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400">
+                  <i data-lucide="trophy" class="h-5 w-5"></i>
+                </div>
+                <div>
+                  <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Top Peringkat Praktik RCTC</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Peringkat otomatis berdasarkan kelengkapan & bobot komponen R-C-T-C</p>
                 </div>
               </div>
+            </div>
 
-              <div class="grid grid-cols-1 gap-3 md:grid-cols-5">
-                ${leaderboard
-                  .map(
-                    (top, idx) => `
-                  <div class="flex items-center justify-between rounded-xl border p-3.5 ${
-                    idx === 0
-                      ? 'border-amber-400/70 bg-amber-50/60 dark:border-amber-500/40 dark:bg-amber-500/10'
-                      : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50'
-                  }">
-                    <div class="min-w-0 pr-2">
-                      <span class="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-extrabold ${
-                        idx === 0
-                          ? 'bg-amber-500 text-white'
-                          : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'
-                      }">
-                        #${idx + 1}
-                      </span>
-                      <p class="mt-1.5 truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHtml(top.nama_siswa)}</p>
-                      <p class="truncate text-xs text-slate-500 dark:text-slate-400">${escapeHtml(top.kelas)}</p>
-                    </div>
-                    <div class="text-right">
-                      <span class="block text-xl font-extrabold text-indigo-600 dark:text-indigo-400">${top.total_skor}</span>
-                      <span class="text-[10px] font-semibold text-slate-400">POIN</span>
-                    </div>
-                  </div>
-                `
-                  )
-                  .join('')}
-              </div>
-            </section>
-          `
-              : ''
-          }
-
-          <!-- Filter Bar Kelas & Pencarian -->
-          <div class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Filter Kelas:</span>
-              <button type="button" onclick="window.app.setFilterKelas('SEMUA')"
-                class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
-                  state.filterKelas === 'SEMUA'
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
-                }">
-                Semua (${state.submissions.length})
-              </button>
-              ${kelasList
+            <div class="grid grid-cols-1 gap-3 md:grid-cols-5">
+              ${leaderboard
                 .map(
-                  (k) => `
-                <button type="button" onclick="window.app.setFilterKelas('${escapeHtml(k)}')"
-                  class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
-                    state.filterKelas === k
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
-                  }">
-                  ${escapeHtml(k)}
-                </button>
+                  (top, idx) => `
+                <div class="flex items-center justify-between rounded-xl border p-3.5 ${
+                  idx === 0
+                    ? 'border-amber-400/70 bg-amber-50/60 dark:border-amber-500/40 dark:bg-amber-500/10'
+                    : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50'
+                }">
+                  <div class="min-w-0 pr-2">
+                    <span class="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-extrabold ${
+                      idx === 0
+                        ? 'bg-amber-500 text-white'
+                        : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'
+                    }">
+                      #${idx + 1}
+                    </span>
+                    <p class="mt-1.5 truncate text-sm font-bold text-slate-900 dark:text-white">${escapeHtml(top.nama_siswa)}</p>
+                    <p class="truncate text-xs text-slate-500 dark:text-slate-400">${escapeHtml(top.kelas)}</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="block text-xl font-extrabold text-indigo-600 dark:text-indigo-400">${top.total_skor}</span>
+                    <span class="text-[10px] font-semibold text-slate-400">POIN</span>
+                  </div>
+                </div>
               `
                 )
                 .join('')}
             </div>
+          </section>
+        `
+            : ''
+        }
 
-            <div class="relative w-full sm:w-64">
+        <!-- Filter Kelas Pills -->
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400">Filter Kelas:</span>
+          <button type="button" onclick="window.app.setFilterKelas('SEMUA')"
+            class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
+              state.filterKelas === 'SEMUA'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+            }">
+            Semua (${state.submissions.length})
+          </button>
+          ${kelasList
+            .map(
+              (k) => `
+            <button type="button" onclick="window.app.setFilterKelas('${escapeHtml(k)}')"
+              class="rounded-xl px-3.5 py-2 text-xs font-bold transition ${
+                state.filterKelas === k
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+              }">
+              ${escapeHtml(k)}
+            </button>
+          `
+            )
+            .join('')}
+        </div>
+
+        <!-- Galeri Live Karya Siswa (Kooperatif) -->
+        ${
+          filtered.length === 0
+            ? `
+          <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
+            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
+              <i data-lucide="sparkles" class="h-7 w-7"></i>
+            </div>
+            <h3 class="mt-4 text-base font-extrabold text-slate-900 dark:text-white">Belum ada karya RCTC yang dikirim</h3>
+            <p class="mx-auto mt-1 max-w-md text-xs text-slate-500 dark:text-slate-400">
+              Siswa dapat langsung masuk ke menu <strong>Praktik RCTC</strong>, mengisi Nama & Kelas, lalu mengirimkan prompt terbaiknya ke papan ini.
+            </p>
+            <button type="button" onclick="window.app.setTab('studio')"
+              class="pid-btn mt-5 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-700">
+              <i data-lucide="wand-2" class="h-4 w-4"></i>
+              Buat Prompt Pertama Sekarang
+            </button>
+          </div>
+        `
+            : `
+          <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+            ${filtered
+              .map(
+                (sub) => `
+              <article class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50">
+                <div>
+                  <!-- Header Kartu Siswa -->
+                  <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2">
+                        <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-extrabold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                          ${escapeHtml((sub.nama_siswa || 'S').charAt(0).toUpperCase())}
+                        </span>
+                        <div class="min-w-0">
+                          <h4 class="truncate text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(sub.nama_siswa)}</h4>
+                          <p class="truncate text-xs font-semibold text-indigo-600 dark:text-indigo-400">${escapeHtml(sub.kelas)} • ${escapeHtml(sub.kategori || 'Umum')}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="shrink-0 rounded-xl bg-emerald-50 px-3 py-1.5 text-center dark:bg-emerald-500/15">
+                      <span class="block text-base font-extrabold leading-none text-emerald-700 dark:text-emerald-300">${sub.total_skor}</span>
+                      <span class="text-[9px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Skor</span>
+                    </div>
+                  </div>
+
+                  <!-- Rincian Badge R-C-T-C -->
+                  <div class="mt-3 grid grid-cols-4 gap-1.5 text-center text-[11px] font-bold">
+                    <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">R: ${sub.skor_role}/25</div>
+                    <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_context}/25</div>
+                    <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">T: ${sub.skor_task}/25</div>
+                    <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_constraints}/25</div>
+                  </div>
+
+                  <!-- Ringkasan Prompt -->
+                  <div class="mt-3.5 space-y-2 text-xs">
+                    <div>
+                      <span class="font-extrabold text-indigo-600 dark:text-indigo-400">ROLE:</span>
+                      <p class="line-clamp-1 text-slate-700 dark:text-slate-300">${escapeHtml(sub.role)}</p>
+                    </div>
+                    <div>
+                      <span class="font-extrabold text-indigo-600 dark:text-indigo-400">TASK:</span>
+                      <p class="line-clamp-2 text-slate-700 dark:text-slate-300">${escapeHtml(sub.task)}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Aksi Kooperatif Siswa -->
+                <div class="mt-4 flex items-center justify-between gap-2 border-t border-slate-100 pt-3.5 dark:border-slate-800">
+                  <span class="text-[11px] text-slate-400">${escapeHtml(sub.waktu || '')}</span>
+                  <div class="flex items-center gap-2">
+                    <button type="button" onclick="window.app.openSubmissionDetail('${sub.id}')"
+                      class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
+                      Baca Penuh
+                    </button>
+                    <button type="button" onclick="window.app.copySubmissionPrompt('${sub.id}')"
+                      class="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-indigo-700">
+                      <i data-lucide="copy" class="h-3.5 w-3.5"></i>
+                      Salin
+                    </button>
+                  </div>
+                </div>
+              </article>
+            `
+              )
+              .join('')}
+          </div>
+        `
+        }
+      `;
+    }
+
+    function renderLiveView() {
+      return `
+        <div class="space-y-6">
+          <!-- Kartu Identitas Aplikasi & Guru Pengajar (Tampil Jelas di Bagian Awal HP & PID) -->
+          <section class="relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/15 sm:p-6">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm">
+                  <i data-lucide="sparkles" class="h-3.5 w-3.5 text-amber-300"></i>
+                  <span>PID & Mobile Classroom</span>
+                </div>
+                <h1 class="text-xl font-extrabold tracking-tight sm:text-2xl">
+                  RCTC Prompt Studio
+                </h1>
+                <p class="flex items-center gap-2 text-xs font-bold text-indigo-100 sm:text-sm">
+                  <i data-lucide="graduation-cap" class="h-4 w-4 shrink-0 text-amber-300"></i>
+                  <span>Guru Pengajar: Ja'far Shodiq, S.Kom., MM</span>
+                </p>
+                <p class="max-w-2xl pt-0.5 text-xs leading-relaxed text-indigo-100/90">
+                  Media praktik interaktif menyusun Prompt AI terstruktur dengan metode <strong>Role • Context • Task • Constraints</strong>.
+                </p>
+              </div>
+
+              <div class="flex shrink-0 flex-wrap gap-2">
+                <button type="button" onclick="window.app.setTab('studio')"
+                  class="pid-btn inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-indigo-700 shadow-md transition hover:bg-indigo-50 sm:text-sm">
+                  <i data-lucide="wand-2" class="h-4 w-4"></i>
+                  <span>Mulai Praktik RCTC</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Kolom Pencarian Terpisah (Tidak ikut ter-replace saat mengetik agar keyboard HP tetap stabil) -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="relative w-full">
               <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
               <input type="text" value="${escapeHtml(state.searchQuery)}"
                 oninput="window.app.setSearchQuery(this.value)"
-                placeholder="Cari nama siswa atau topik..."
-                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-xs font-medium text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                placeholder="Cari nama siswa, kelas, atau topik prompt..."
+                class="pid-input w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm font-medium text-slate-900 focus:border-indigo-500 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
             </div>
           </div>
 
-          <!-- Galeri Live Karya Siswa (Kooperatif) -->
-          ${
-            filtered.length === 0
-              ? `
-            <div class="rounded-2xl border-2 border-dashed border-slate-200 bg-white px-6 py-14 text-center dark:border-slate-800 dark:bg-slate-900">
-              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400">
-                <i data-lucide="sparkles" class="h-7 w-7"></i>
-              </div>
-              <h3 class="mt-4 text-base font-extrabold text-slate-900 dark:text-white">Belum ada karya RCTC yang dikirim</h3>
-              <p class="mx-auto mt-1 max-w-md text-xs text-slate-500 dark:text-slate-400">
-                Siswa dapat langsung masuk ke menu <strong>Praktik RCTC</strong>, mengisi Nama & Kelas, lalu mengirimkan prompt terbaiknya ke papan ini.
-              </p>
-              <button type="button" onclick="window.app.setTab('studio')"
-                class="pid-btn mt-5 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-700">
-                <i data-lucide="wand-2" class="h-4 w-4"></i>
-                Buat Prompt Pertama Sekarang
-              </button>
-            </div>
-          `
-              : `
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-              ${filtered
-                .map(
-                  (sub) => `
-                <article class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-indigo-500/50">
-                  <div>
-                    <!-- Header Kartu Siswa -->
-                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-                      <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-extrabold text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
-                            ${escapeHtml((sub.nama_siswa || 'S').charAt(0).toUpperCase())}
-                          </span>
-                          <div class="min-w-0">
-                            <h4 class="truncate text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(sub.nama_siswa)}</h4>
-                            <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">${escapeHtml(sub.kelas)} • ${escapeHtml(sub.kategori || 'Umum')}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="shrink-0 rounded-xl bg-emerald-50 px-3 py-1.5 text-center dark:bg-emerald-500/15">
-                        <span class="block text-base font-extrabold leading-none text-emerald-700 dark:text-emerald-300">${sub.total_skor}</span>
-                        <span class="text-[9px] font-bold uppercase text-emerald-600 dark:text-emerald-400">Skor</span>
-                      </div>
-                    </div>
-
-                    <!-- Rincian Badge R-C-T-C -->
-                    <div class="mt-3 grid grid-cols-4 gap-1.5 text-center text-[11px] font-bold">
-                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">R: ${sub.skor_role}/25</div>
-                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_context}/25</div>
-                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">T: ${sub.skor_task}/25</div>
-                      <div class="rounded-lg bg-slate-50 py-1 text-slate-700 dark:bg-slate-800 dark:text-slate-300">C: ${sub.skor_constraints}/25</div>
-                    </div>
-
-                    <!-- Ringkasan Prompt -->
-                    <div class="mt-3.5 space-y-2 text-xs">
-                      <div>
-                        <span class="font-extrabold text-indigo-600 dark:text-indigo-400">ROLE:</span>
-                        <p class="line-clamp-1 text-slate-700 dark:text-slate-300">${escapeHtml(sub.role)}</p>
-                      </div>
-                      <div>
-                        <span class="font-extrabold text-indigo-600 dark:text-indigo-400">TASK:</span>
-                        <p class="line-clamp-2 text-slate-700 dark:text-slate-300">${escapeHtml(sub.task)}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Aksi Kooperatif Siswa -->
-                  <div class="mt-4 flex items-center justify-between gap-2 border-t border-slate-100 pt-3.5 dark:border-slate-800">
-                    <span class="text-[11px] text-slate-400">${escapeHtml(sub.waktu || '')}</span>
-                    <div class="flex items-center gap-2">
-                      <button type="button" onclick="window.app.openSubmissionDetail('${sub.id}')"
-                        class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
-                        Baca Penuh
-                      </button>
-                      <button type="button" onclick="window.app.copySubmissionPrompt('${sub.id}')"
-                        class="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-indigo-700">
-                        <i data-lucide="copy" class="h-3.5 w-3.5"></i>
-                        Salin
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              `
-                )
-                .join('')}
-            </div>
-          `
-          }
+          <!-- Kontainer Dinamis Statistik, Peringkat, Filter & Galeri -->
+          <div id="live-dynamic-area" class="space-y-6">
+            ${renderLiveDynamicContent()}
+          </div>
         </div>
       `;
     }
 
     // -------------------------------------------------------------------------
-    // VIEW 2: STUDIO PRAKTIK RCTC (FORM INPUT + LIVE SCORE + REALTIME OUTPUT)
+    // VIEW 2: STUDIO PRAKTIK RCTC (FORM INPUT + STUDI KASUS + LIVE SCORE)
     // -------------------------------------------------------------------------
     function renderStudioView() {
       const f = state.form;
       const err = state.formErrors;
       const livePrompt = buildRctcPromptText(f);
       const scoreInfo = evaluateRctcScore(f);
+      const activeCase = RCTC_CASE_STUDIES.find((c) => c.id === state.selectedCaseStudyId) || null;
 
       return `
         <div class="grid grid-cols-1 gap-6 xl:grid-cols-12 xl:items-start">
-          <!-- Kolom Kiri: Identitas, Template, & Form RCTC -->
+          <!-- Kolom Kiri: Identitas, Template, Studi Kasus, & Form RCTC -->
           <div class="space-y-6 xl:col-span-7">
-            <!-- Kartu Identitas Siswa Tanpa Login -->
+            <!-- 1. Kartu Identitas Siswa Tanpa Login -->
             <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
               <div class="mb-4 flex items-center gap-2.5">
-                <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">1</span>
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">1</span>
                 <div>
                   <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Identitas Peserta Praktik</h3>
                   <p class="text-xs text-slate-500 dark:text-slate-400">Tanpa perlu login — langsung ketik Nama Lengkap dan Kelas Anda</p>
@@ -1372,38 +1462,38 @@
                   <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">
                     Nama Lengkap Siswa <span class="text-rose-500">*</span>
                   </label>
-                  <input type="text" value="${escapeHtml(f.nama_siswa)}"
-                    oninput="window.app.updateFormField('nama_siswa', this.value)"
+                  <input type="text" id="input-nama_siswa" value="${escapeHtml(f.nama_siswa)}"
+                    oninput="window.app.updateFormField('nama_siswa', this.value, this)"
                     placeholder="Contoh: Ahmad Zaki Pratama"
                     class="pid-input w-full rounded-xl border ${
                       err.nama_siswa ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
-                    } px-4 py-2.5 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
-                  ${err.nama_siswa ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.nama_siswa)}</p>` : ''}
+                    } px-4 py-2.5 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
+                  <p id="err-field-nama_siswa" class="mt-1 text-xs font-semibold text-rose-500 ${err.nama_siswa ? '' : 'hidden'}">${escapeHtml(err.nama_siswa || '')}</p>
                 </div>
 
                 <div>
                   <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">
                     Kelas <span class="text-rose-500">*</span>
                   </label>
-                  <input type="text" value="${escapeHtml(f.kelas)}"
-                    oninput="window.app.updateFormField('kelas', this.value)"
+                  <input type="text" id="input-kelas" value="${escapeHtml(f.kelas)}"
+                    oninput="window.app.updateFormField('kelas', this.value, this)"
                     placeholder="Contoh: XI DKV 1"
                     class="pid-input w-full rounded-xl border ${
                       err.kelas ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
-                    } px-4 py-2.5 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
-                  ${err.kelas ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.kelas)}</p>` : ''}
+                    } px-4 py-2.5 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
+                  <p id="err-field-kelas" class="mt-1 text-xs font-semibold text-rose-500 ${err.kelas ? '' : 'hidden'}">${escapeHtml(err.kelas || '')}</p>
                 </div>
               </div>
             </section>
 
-            <!-- Kartu Template Siap Pakai (8 Kategori) -->
+            <!-- 2. Kartu Template Contoh Siap Pakai (8 Kategori) -->
             <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
               <div class="mb-3.5 flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-2.5">
-                  <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">2</span>
+                  <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">2</span>
                   <div>
                     <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Template Contoh Siap Pakai</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk kategori di layar PID/HP untuk memuat contoh RCTC lalu modifikasi</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk kategori untuk melihat contoh pengisian RCTC otomatis</p>
                   </div>
                 </div>
               </div>
@@ -1413,7 +1503,7 @@
                   (tpl) => `
                   <button type="button" onclick="window.app.applyTemplate('${tpl.id}')"
                     class="pid-btn flex flex-col items-start rounded-xl border p-3 text-left transition ${
-                      f.kategori === tpl.label
+                      !state.selectedCaseStudyId && f.kategori === tpl.label
                         ? 'border-indigo-600 bg-indigo-50/80 ring-1 ring-indigo-600 dark:border-indigo-500 dark:bg-indigo-500/15'
                         : 'border-slate-200 bg-slate-50/70 hover:border-indigo-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/50'
                     }">
@@ -1425,14 +1515,106 @@
               </div>
             </section>
 
-            <!-- Kartu Form Input R - C - T - C -->
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-              <div class="mb-5 flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+            <!-- 3. Kartu Studi Kasus Praktik Mandiri (Siswa Memilih Studi Kasus & Menulis Manual di Kolom RCTC) -->
+            <section class="rounded-2xl border-2 border-amber-300/80 bg-gradient-to-br from-amber-50/70 via-white to-indigo-50/40 p-5 shadow-sm dark:border-amber-500/30 dark:from-amber-500/10 dark:via-slate-900 dark:to-indigo-500/10 sm:p-6">
+              <div class="mb-3.5 flex items-center gap-2.5">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-xs font-extrabold text-white shadow-sm">3</span>
+                <div>
+                  <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Studi Kasus Praktik Mandiri</h3>
+                  <p class="text-xs text-slate-600 dark:text-slate-300">
+                    Pilih studi kasus di bawah ini, lalu <strong>tuliskan secara manual</strong> jawaban Anda pada kolom R-C-T-C berikutnya
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                ${RCTC_CASE_STUDIES.map((cs) => {
+                  const isSelected = state.selectedCaseStudyId === cs.id;
+                  return `
+                    <div class="rounded-2xl border p-4 transition ${
+                      isSelected
+                        ? 'border-amber-500 bg-white ring-2 ring-amber-500/30 dark:border-amber-400 dark:bg-slate-900'
+                        : 'border-amber-200/90 bg-white/90 hover:border-amber-400 dark:border-slate-700 dark:bg-slate-900/90'
+                    }">
+                      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex items-start gap-3">
+                          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300">
+                            <i data-lucide="${cs.icon}" class="h-5 w-5"></i>
+                          </div>
+                          <div>
+                            <span class="inline-block rounded-md bg-amber-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-amber-800 dark:bg-amber-500/20 dark:text-amber-300">
+                              ${escapeHtml(cs.badge)}
+                            </span>
+                            <h4 class="mt-1 text-sm font-extrabold text-slate-900 dark:text-white sm:text-base">
+                              ${escapeHtml(cs.title)}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <button type="button" onclick="window.app.selectCaseStudy('${cs.id}')"
+                          class="pid-btn shrink-0 inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-extrabold transition ${
+                            isSelected
+                              ? 'bg-emerald-600 text-white shadow-sm'
+                              : 'bg-amber-500 text-white shadow-sm hover:bg-amber-600'
+                          }">
+                          <i data-lucide="${isSelected ? 'check-circle-2' : 'mouse-pointer-click'}" class="h-4 w-4"></i>
+                          <span>${isSelected ? 'Studi Kasus Dipilih' : 'Pilih Studi Kasus Ini'}</span>
+                        </button>
+                      </div>
+
+                      ${
+                        isSelected
+                          ? `
+                        <div class="mt-4 space-y-3 border-t border-slate-100 pt-3.5 dark:border-slate-800">
+                          <div class="rounded-xl bg-slate-50 p-3.5 text-xs leading-relaxed text-slate-700 dark:bg-slate-800/80 dark:text-slate-200">
+                            <p class="font-extrabold text-slate-900 dark:text-white">Deskripsi Tantangan:</p>
+                            <p class="mt-1">${escapeHtml(cs.scenario)}</p>
+                          </div>
+
+                          <div>
+                            <p class="mb-2 text-xs font-extrabold text-indigo-700 dark:text-indigo-300">
+                              Panduan Menulis Manual pada Kolom R-C-T-C di Bawah:
+                            </p>
+                            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                              ${cs.hints
+                                .map(
+                                  (h) => `
+                                <div class="rounded-xl border border-slate-200/80 bg-white p-2.5 text-xs dark:border-slate-700 dark:bg-slate-800/50">
+                                  <span class="inline-flex h-5 w-5 items-center justify-center rounded bg-indigo-600 text-[10px] font-extrabold text-white">${h.code}</span>
+                                  <strong class="ml-1 text-slate-900 dark:text-white">${escapeHtml(h.label)}:</strong>
+                                  <p class="mt-1 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">${escapeHtml(h.text)}</p>
+                                </div>
+                              `
+                                )
+                                .join('')}
+                            </div>
+                          </div>
+                        </div>
+                      `
+                          : ''
+                      }
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+
+            <!-- 4. Kartu Form Input Manual R - C - T - C -->
+            <section id="rctc-manual-section" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+              <div class="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4 dark:border-slate-800">
                 <div class="flex items-center gap-2.5">
-                  <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">3</span>
+                  <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">4</span>
                   <div>
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Susun Komponen R - C - T - C</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Semakin detail & terstruktur tiap kolom, semakin tinggi skor otomatis Anda</p>
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                      ${activeCase ? 'Tuliskan Manual R-C-T-C (Studi Kasus)' : 'Susun Komponen R - C - T - C'}
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                      ${
+                        activeCase
+                          ? `Kategori Aktif: ${escapeHtml(activeCase.kategoriLabel)}`
+                          : 'Semakin detail & terstruktur tiap kolom, semakin tinggi skor otomatis Anda'
+                      }
+                    </p>
                   </div>
                 </div>
                 <button type="button" onclick="window.app.resetStudioForm()"
@@ -1450,18 +1632,22 @@
                       <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">R</span>
                       Role (Peran AI) <span class="text-rose-500">*</span>
                     </label>
-                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                    <span id="score-badge-role" class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
                       Skor: ${scoreInfo.skor_role} / 25
                     </span>
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan profesi atau keahlian spesifik yang harus diperankan AI.</p>
-                  <input type="text" value="${escapeHtml(f.role)}"
-                    oninput="window.app.updateFormField('role', this.value)"
-                    placeholder="Contoh: Ahli Digital Marketing dan Brand Strategist"
+                  <input type="text" id="input-role" value="${escapeHtml(f.role)}"
+                    oninput="window.app.updateFormField('role', this.value, this)"
+                    placeholder="${
+                      activeCase
+                        ? 'Contoh: Desainer Grafis Senior dan Ilustrator Poster Pendidikan'
+                        : 'Contoh: Ahli Digital Marketing dan Brand Strategist'
+                    }"
                     class="pid-input mt-2 w-full rounded-xl border ${
                       err.role ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
-                    } bg-slate-50/60 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white" />
-                  ${err.role ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.role)}</p>` : ''}
+                    } bg-slate-50/60 px-4 py-3 focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white" />
+                  <p id="err-field-role" class="mt-1 text-xs font-semibold text-rose-500 ${err.role ? '' : 'hidden'}">${escapeHtml(err.role || '')}</p>
                 </div>
 
                 <!-- C: CONTEXT -->
@@ -1471,17 +1657,21 @@
                       <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">C</span>
                       Context (Konteks & Latar Belakang) <span class="text-rose-500">*</span>
                     </label>
-                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                    <span id="score-badge-context" class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
                       Skor: ${scoreInfo.skor_context} / 25
                     </span>
                   </div>
-                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jelaskan situasi, produk/masalah, dan target audiens yang relevan.</p>
-                  <textarea rows="3" oninput="window.app.updateFormField('context', this.value)"
-                    placeholder="Contoh: Produk kopi susu kekinian dengan target Gen Z di kota besar..."
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jelaskan situasi, momen/produk, dan target audiens yang relevan.</p>
+                  <textarea id="input-context" rows="3" oninput="window.app.updateFormField('context', this.value, this)"
+                    placeholder="${
+                      activeCase
+                        ? 'Contoh: Peringatan Hari Guru Nasional 25 November 2026 di sekolah dengan nuansa hangat, inspiratif, dan penuh apresiasi bagi guru serta siswa...'
+                        : 'Contoh: Produk kopi susu kekinian dengan target Gen Z di kota besar...'
+                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.context ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.context)}</textarea>
-                  ${err.context ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.context)}</p>` : ''}
+                  <p id="err-field-context" class="mt-1 text-xs font-semibold text-rose-500 ${err.context ? '' : 'hidden'}">${escapeHtml(err.context || '')}</p>
                 </div>
 
                 <!-- T: TASK -->
@@ -1491,17 +1681,21 @@
                       <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">T</span>
                       Task (Tugas Utama) <span class="text-rose-500">*</span>
                     </label>
-                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                    <span id="score-badge-task" class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
                       Skor: ${scoreInfo.skor_task} / 25
                     </span>
                   </div>
-                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tuliskan instruksi konkret apa yang harus dibuat atau dianalisis AI.</p>
-                  <textarea rows="3" oninput="window.app.updateFormField('task', this.value)"
-                    placeholder="Contoh: Buat 10 ide konten Instagram yang menarik perhatian..."
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tuliskan instruksi konkret apa yang harus dibuat atau dirancang AI.</p>
+                  <textarea id="input-task" rows="3" oninput="window.app.updateFormField('task', this.value, this)"
+                    placeholder="${
+                      activeCase
+                        ? 'Contoh: Buatkan desain poster peringatan Hari Guru Nasional 2026 yang menampilkan interaksi guru membimbing siswa dengan teknologi digital dan judul besar Selamat Hari Guru Nasional 2026...'
+                        : 'Contoh: Buat 10 ide konten Instagram yang menarik perhatian...'
+                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.task ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.task)}</textarea>
-                  ${err.task ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.task)}</p>` : ''}
+                  <p id="err-field-task" class="mt-1 text-xs font-semibold text-rose-500 ${err.task ? '' : 'hidden'}">${escapeHtml(err.task || '')}</p>
                 </div>
 
                 <!-- C: CONSTRAINTS -->
@@ -1511,13 +1705,17 @@
                       <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-indigo-600 text-xs text-white">C</span>
                       Constraints (Batasan & Aturan Output) <span class="text-rose-500">*</span>
                     </label>
-                    <span class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+                    <span id="score-badge-constraints" class="rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
                       Skor: ${scoreInfo.skor_constraints} / 25
                     </span>
                   </div>
-                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan gaya bahasa, format tampilan, dan batas jumlah kata.</p>
-                  <textarea rows="3" oninput="window.app.updateFormField('constraints', this.value)"
-                    placeholder="Contoh: Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide..."
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan gaya visual/bahasa, rasio/format tampilan, dan batas aturan output.</p>
+                  <textarea id="input-constraints" rows="3" oninput="window.app.updateFormField('constraints', this.value, this)"
+                    placeholder="${
+                      activeCase
+                        ? 'Contoh: Ukuran poster vertikal rasio 3:4, gaya ilustrasi semi-realis modern, palet warna biru-emas hangat, tipografi tebal mudah terbaca...'
+                        : 'Contoh: Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide...'
+                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.constraints ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.constraints)}</textarea>
@@ -1533,7 +1731,7 @@
                     `
                     ).join('')}
                   </div>
-                  ${err.constraints ? `<p class="mt-1 text-xs font-semibold text-rose-500">${escapeHtml(err.constraints)}</p>` : ''}
+                  <p id="err-field-constraints" class="mt-1 text-xs font-semibold text-rose-500 ${err.constraints ? '' : 'hidden'}">${escapeHtml(err.constraints || '')}</p>
                 </div>
               </div>
 
@@ -1555,36 +1753,36 @@
               <div class="flex items-center justify-between">
                 <div>
                   <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Penilaian Otomatis Live</span>
-                  <h4 class="mt-0.5 text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(scoreInfo.predikat)}</h4>
+                  <h4 id="live-score-predikat" class="mt-0.5 text-sm font-extrabold text-slate-900 dark:text-white">${escapeHtml(scoreInfo.predikat)}</h4>
                 </div>
                 <div class="text-right">
-                  <span class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">${scoreInfo.total_skor}</span>
+                  <span id="live-score-total" class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">${scoreInfo.total_skor}</span>
                   <span class="text-sm font-bold text-slate-400">/100</span>
                 </div>
               </div>
 
               <!-- Progress Bar -->
               <div class="mt-3 h-3 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
-                <div class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 transition-all duration-300"
+                <div id="live-score-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 transition-all duration-300"
                   style="width: ${scoreInfo.total_skor}%"></div>
               </div>
 
               <div class="mt-3 grid grid-cols-4 gap-2 text-center text-xs font-bold">
                 <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
                   <span class="block text-[10px] text-slate-400">ROLE</span>
-                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_role}/25</span>
+                  <span id="live-score-role" class="text-slate-800 dark:text-white">${scoreInfo.skor_role}/25</span>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
                   <span class="block text-[10px] text-slate-400">CONTEXT</span>
-                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_context}/25</span>
+                  <span id="live-score-context" class="text-slate-800 dark:text-white">${scoreInfo.skor_context}/25</span>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
                   <span class="block text-[10px] text-slate-400">TASK</span>
-                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_task}/25</span>
+                  <span id="live-score-task" class="text-slate-800 dark:text-white">${scoreInfo.skor_task}/25</span>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-2 dark:bg-slate-800">
                   <span class="block text-[10px] text-slate-400">CONSTR.</span>
-                  <span class="text-slate-800 dark:text-white">${scoreInfo.skor_constraints}/25</span>
+                  <span id="live-score-constraints" class="text-slate-800 dark:text-white">${scoreInfo.skor_constraints}/25</span>
                 </div>
               </div>
             </section>
@@ -1599,7 +1797,7 @@
               </div>
 
               <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 text-slate-100">
-                <pre class="max-h-[340px] overflow-y-auto whitespace-pre-wrap break-words font-mono text-xs leading-relaxed sm:text-sm">${escapeHtml(livePrompt)}</pre>
+                <pre id="live-prompt-preview" class="max-h-[340px] overflow-y-auto whitespace-pre-wrap break-words font-mono text-xs leading-relaxed sm:text-sm">${escapeHtml(livePrompt)}</pre>
               </div>
 
               <!-- Tombol Aksi Salin, Download TXT, Export PDF -->
@@ -1750,13 +1948,13 @@
                     <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Nama Lengkap Siswa *</label>
                     <input type="text" id="quiz-nama-input" value="${escapeHtml(qSession.nama_siswa || state.form.nama_siswa)}"
                       placeholder="Masukkan nama lengkap Anda"
-                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </div>
                   <div>
                     <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kelas *</label>
                     <input type="text" id="quiz-kelas-input" value="${escapeHtml(qSession.kelas || state.form.kelas)}"
                       placeholder="Contoh: XI DKV 1"
-                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                      class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </div>
 
                   <button type="button" onclick="window.app.startStudentQuiz()"
@@ -1934,7 +2132,6 @@
     // VIEW 5: LOGIN KHUSUS GURU & DASHBOARD EVALUASI LENGKAP
     // -------------------------------------------------------------------------
     function renderGuruView() {
-      // Jika Guru Belum Login -> Tampilkan Form Login Guru
       if (!state.guruUser) {
         return `
           <div class="mx-auto max-w-md">
@@ -1962,13 +2159,13 @@
                 <div>
                   <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Email Guru</label>
                   <input type="email" id="guru-email-input" required placeholder="nama.guru@sekolah.sch.id"
-                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                 </div>
 
                 <div>
                   <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kata Sandi</label>
                   <input type="password" id="guru-pass-input" required placeholder="••••••••"
-                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                 </div>
 
                 <button type="submit"
@@ -1982,7 +2179,6 @@
         `;
       }
 
-      // Jika Guru Sudah Login -> Tampilkan 4 Sub-Tab Manajemen Lengkap
       const sub = state.guruSubTab;
 
       return `
@@ -1994,7 +2190,7 @@
                 <i data-lucide="user-check" class="h-5 w-5"></i>
               </div>
               <div>
-                <p class="text-sm font-extrabold text-slate-900 dark:text-white">Sesi Guru Aktif</p>
+                <p class="text-sm font-extrabold text-slate-900 dark:text-white">Ja'far Shodiq, S.Kom., MM</p>
                 <p class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(state.guruUser.email || 'Guru Pengampu')}</p>
               </div>
             </div>
@@ -2137,13 +2333,13 @@
               <div>
                 <label class="mb-1 block text-xs font-bold">Judul Materi *</label>
                 <input type="text" id="mat-judul" required placeholder="Contoh: Modul Dasar Prompting RCTC"
-                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
               </div>
 
               <div>
                 <label class="mb-1 block text-xs font-bold">Jenis File *</label>
                 <select id="mat-tipe"
-                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 font-semibold dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                   <option value="PDF">Dokumen PDF (Drive)</option>
                   <option value="PPT">Slide Presentasi PPT / Google Slides</option>
                 </select>
@@ -2152,13 +2348,13 @@
               <div>
                 <label class="mb-1 block text-xs font-bold">Link Google Drive *</label>
                 <input type="url" id="mat-link" required placeholder="https://drive.google.com/file/d/..."
-                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
               </div>
 
               <div>
                 <label class="mb-1 block text-xs font-bold">Deskripsi Singkat</label>
                 <textarea id="mat-deskripsi" rows="2" placeholder="Ringkasan topik yang dibahas pada file ini..."
-                  class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
+                  class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3.5 py-2.5 text-base dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
               </div>
 
               <button type="submit"
@@ -2292,18 +2488,18 @@
                 <div>
                   <label class="mb-1 block text-xs font-bold">Pertanyaan *</label>
                   <textarea id="manual-q-text" rows="2" required placeholder="Tulis pertanyaan pilihan ganda..."
-                    class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
+                    class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-base dark:border-slate-700 dark:bg-slate-800 dark:text-white"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <input type="text" id="manual-opt-a" required placeholder="Opsi A *"
-                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   <input type="text" id="manual-opt-b" required placeholder="Opsi B *"
-                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   <input type="text" id="manual-opt-c" required placeholder="Opsi C *"
-                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   <input type="text" id="manual-opt-d" required placeholder="Opsi D *"
-                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    class="rounded-xl border border-slate-300 bg-slate-50 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -2445,6 +2641,40 @@
       if (window.lucide) window.lucide.createIcons();
     }
 
+    // Update hanya indikator skor & pratinjau prompt tanpa mengganti DOM input (mencegah keyboard HP tertutup)
+    function updateStudioLivePreviewOnly() {
+      const scoreInfo = evaluateRctcScore(state.form);
+      const livePrompt = buildRctcPromptText(state.form);
+
+      const badgeRole = document.getElementById('score-badge-role');
+      const badgeCtx = document.getElementById('score-badge-context');
+      const badgeTask = document.getElementById('score-badge-task');
+      const badgeCons = document.getElementById('score-badge-constraints');
+
+      if (badgeRole) badgeRole.textContent = `Skor: ${scoreInfo.skor_role} / 25`;
+      if (badgeCtx) badgeCtx.textContent = `Skor: ${scoreInfo.skor_context} / 25`;
+      if (badgeTask) badgeTask.textContent = `Skor: ${scoreInfo.skor_task} / 25`;
+      if (badgeCons) badgeCons.textContent = `Skor: ${scoreInfo.skor_constraints} / 25`;
+
+      const livePredikat = document.getElementById('live-score-predikat');
+      const liveTotal = document.getElementById('live-score-total');
+      const liveBar = document.getElementById('live-score-bar');
+      const liveRole = document.getElementById('live-score-role');
+      const liveCtx = document.getElementById('live-score-context');
+      const liveTask = document.getElementById('live-score-task');
+      const liveCons = document.getElementById('live-score-constraints');
+      const previewEl = document.getElementById('live-prompt-preview');
+
+      if (livePredikat) livePredikat.textContent = scoreInfo.predikat;
+      if (liveTotal) liveTotal.textContent = String(scoreInfo.total_skor);
+      if (liveBar) liveBar.style.width = `${scoreInfo.total_skor}%`;
+      if (liveRole) liveRole.textContent = `${scoreInfo.skor_role}/25`;
+      if (liveCtx) liveCtx.textContent = `${scoreInfo.skor_context}/25`;
+      if (liveTask) liveTask.textContent = `${scoreInfo.skor_task}/25`;
+      if (liveCons) liveCons.textContent = `${scoreInfo.skor_constraints}/25`;
+      if (previewEl) previewEl.textContent = livePrompt;
+    }
+
     // =========================================================================
     // 9. CONTROLLER INTERAKSI PENGGUNA (WINDOW.APP)
     // =========================================================================
@@ -2473,26 +2703,46 @@
 
       setFilterKelas(kelas) {
         state.filterKelas = kelas;
-        renderApp();
+        const dynamicArea = document.getElementById('live-dynamic-area');
+        if (dynamicArea) {
+          dynamicArea.innerHTML = renderLiveDynamicContent();
+          if (window.lucide) window.lucide.createIcons();
+        } else {
+          renderApp();
+        }
       },
 
       setSearchQuery(val) {
         state.searchQuery = val;
-        renderApp();
+        // Perbarui hanya area hasil di bawah input pencarian agar keyboard HP tidak tertutup
+        const dynamicArea = document.getElementById('live-dynamic-area');
+        if (dynamicArea) {
+          dynamicArea.innerHTML = renderLiveDynamicContent();
+          if (window.lucide) window.lucide.createIcons();
+        }
       },
 
-      // --- STUDIO RCTC ACTIONS ---
-      updateFormField(field, value) {
+      // --- STUDIO RCTC ACTIONS (ANTI-KEYBOARD-CLOSE) ---
+      updateFormField(field, value, el) {
         state.form[field] = value;
         if (state.formErrors[field]) {
           delete state.formErrors[field];
+          const errEl = document.getElementById(`err-field-${field}`);
+          if (errEl) {
+            errEl.textContent = '';
+            errEl.classList.add('hidden');
+          }
+          if (el) {
+            el.classList.remove('border-rose-500', 'bg-rose-50/40');
+          }
         }
-        renderApp();
+        updateStudioLivePreviewOnly();
       },
 
       applyTemplate(tplId) {
         const found = RCTC_TEMPLATES.find((t) => t.id === tplId);
         if (!found) return;
+        state.selectedCaseStudyId = null;
         state.form.kategori = found.label;
         state.form.role = found.role;
         state.form.context = found.context;
@@ -2503,19 +2753,58 @@
         showToast(`Template "${found.label}" dimuat — silakan sesuaikan!`, 'info');
       },
 
+      selectCaseStudy(csId) {
+        const cs = RCTC_CASE_STUDIES.find((c) => c.id === csId);
+        if (!cs) return;
+
+        // Cek apakah kolom saat ini masih berisi contoh template otomatis; jika ya, kosongkan agar siswa menulis manual
+        const matchesPresetTemplate = RCTC_TEMPLATES.some(
+          (tpl) =>
+            state.form.role === tpl.role &&
+            state.form.context === tpl.context &&
+            state.form.task === tpl.task
+        );
+
+        state.selectedCaseStudyId = cs.id;
+        state.form.kategori = cs.kategoriLabel;
+
+        if (matchesPresetTemplate) {
+          state.form.role = '';
+          state.form.context = '';
+          state.form.task = '';
+          state.form.constraints = '';
+        }
+
+        state.formErrors = {};
+        renderApp();
+        showToast(`Studi kasus "${cs.title}" dipilih! Silakan tulis manual di kolom R-C-T-C.`, 'info');
+      },
+
       appendConstraint(chipText) {
         const cur = state.form.constraints.trim();
         if (cur.toLowerCase().includes(chipText.toLowerCase())) return;
         state.form.constraints = cur ? `${cur.replace(/\.$/, '')}, ${chipText.toLowerCase()}` : chipText;
         delete state.formErrors.constraints;
-        renderApp();
+
+        const consInput = document.getElementById('input-constraints');
+        if (consInput) {
+          consInput.value = state.form.constraints;
+          consInput.classList.remove('border-rose-500');
+        }
+        const errEl = document.getElementById('err-field-constraints');
+        if (errEl) {
+          errEl.textContent = '';
+          errEl.classList.add('hidden');
+        }
+        updateStudioLivePreviewOnly();
       },
 
       resetStudioForm() {
+        const activeCase = RCTC_CASE_STUDIES.find((c) => c.id === state.selectedCaseStudyId);
         state.form = {
           nama_siswa: state.form.nama_siswa,
           kelas: state.form.kelas,
-          kategori: 'Umum',
+          kategori: activeCase ? activeCase.kategoriLabel : 'Umum',
           role: '',
           context: '',
           task: '',
@@ -2653,7 +2942,7 @@
               <div>
                 <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">${escapeHtml(sub.nama_siswa)}</h3>
                 <p class="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                  ${escapeHtml(sub.kelas)} • Skor Total: ${sub.total_skor}/100
+                  ${escapeHtml(sub.kelas)} • ${escapeHtml(sub.kategori || 'Umum')} • Skor Total: ${sub.total_skor}/100
                 </p>
               </div>
               <button type="button" onclick="window.app.closeModal()"
@@ -2870,6 +3159,7 @@
         try {
           await signInWithEmailAndPassword(auth, email, pass);
           showToast('Login Guru berhasil!', 'success');
+          renderApp();
         } catch (err) {
           console.error(err);
           showToast('Login gagal. Periksa email & kata sandi akun Guru di Firebase Auth.', 'error');
@@ -2884,6 +3174,8 @@
           return;
         }
         await signOut(auth);
+        state.guruUser = null;
+        renderApp();
         showToast('Logout berhasil.', 'info');
       },
 
@@ -2932,6 +3224,7 @@
             deskripsi,
             created_at: serverTimestamp()
           });
+          e.target.reset();
           showToast('Materi Google Drive berhasil disimpan ke Firestore!', 'success');
         } catch (err) {
           showToast('Gagal menyimpan materi.', 'error');
@@ -3038,6 +3331,7 @@
             answer,
             created_at: serverTimestamp()
           });
+          e.target.reset();
           showToast('Soal manual tersimpan ke Firestore!', 'success');
         } catch (err) {
           showToast('Gagal menyimpan soal manual.', 'error');
