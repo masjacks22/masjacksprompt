@@ -1477,7 +1477,7 @@
                   </label>
                   <input type="text" id="input-kelas" value="${escapeHtml(f.kelas)}"
                     oninput="window.app.updateFormField('kelas', this.value, this)"
-                    placeholder="Contoh: XI DKV 1"
+                    placeholder="Contoh: X DKV"
                     class="pid-input w-full rounded-xl border ${
                       err.kelas ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
                     } px-4 py-2.5 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
@@ -1639,11 +1639,6 @@
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan profesi atau keahlian spesifik yang harus diperankan AI.</p>
                   <input type="text" id="input-role" value="${escapeHtml(f.role)}"
                     oninput="window.app.updateFormField('role', this.value, this)"
-                    placeholder="${
-                      activeCase
-                        ? 'Contoh: Desainer Grafis Senior dan Ilustrator Poster Pendidikan'
-                        : 'Contoh: Ahli Digital Marketing dan Brand Strategist'
-                    }"
                     class="pid-input mt-2 w-full rounded-xl border ${
                       err.role ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white" />
@@ -1663,11 +1658,6 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jelaskan situasi, momen/produk, dan target audiens yang relevan.</p>
                   <textarea id="input-context" rows="3" oninput="window.app.updateFormField('context', this.value, this)"
-                    placeholder="${
-                      activeCase
-                        ? 'Contoh: Peringatan Hari Guru Nasional 25 November 2026 di sekolah dengan nuansa hangat, inspiratif, dan penuh apresiasi bagi guru serta siswa...'
-                        : 'Contoh: Produk kopi susu kekinian dengan target Gen Z di kota besar...'
-                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.context ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.context)}</textarea>
@@ -1687,11 +1677,6 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tuliskan instruksi konkret apa yang harus dibuat atau dirancang AI.</p>
                   <textarea id="input-task" rows="3" oninput="window.app.updateFormField('task', this.value, this)"
-                    placeholder="${
-                      activeCase
-                        ? 'Contoh: Buatkan desain poster peringatan Hari Guru Nasional 2026 yang menampilkan interaksi guru membimbing siswa dengan teknologi digital dan judul besar Selamat Hari Guru Nasional 2026...'
-                        : 'Contoh: Buat 10 ide konten Instagram yang menarik perhatian...'
-                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.task ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.task)}</textarea>
@@ -1711,11 +1696,6 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan gaya visual/bahasa, rasio/format tampilan, dan batas aturan output.</p>
                   <textarea id="input-constraints" rows="3" oninput="window.app.updateFormField('constraints', this.value, this)"
-                    placeholder="${
-                      activeCase
-                        ? 'Contoh: Ukuran poster vertikal rasio 3:4, gaya ilustrasi semi-realis modern, palet warna biru-emas hangat, tipografi tebal mudah terbaca...'
-                        : 'Contoh: Gunakan bahasa santai, sertakan CTA, maksimal 100 kata per ide...'
-                    }"
                     class="mt-2 w-full rounded-xl border ${
                       err.constraints ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.constraints)}</textarea>
@@ -1953,7 +1933,7 @@
                   <div>
                     <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kelas *</label>
                     <input type="text" id="quiz-kelas-input" value="${escapeHtml(qSession.kelas || state.form.kelas)}"
-                      placeholder="Contoh: XI DKV 1"
+                      placeholder="Contoh: X DKV "
                       class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </div>
 
