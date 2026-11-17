@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <meta name="theme-color" content="#4f46e5" />
-  <meta name="description" content="RCTC Prompt Studio - Studio Praktik AI Interaktif oleh Ja'far Shodiq, S.Kom., MM" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>RCTC Prompt Studio — Ja'far Shodiq, S.Kom., MM</title>
 
-  <!-- PWA Manifest Data URI -->
-  <link
-    rel="manifest"
-    href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22RCTC%20Prompt%20Studio%22%2C%22short_name%22%3A%22RCTC%20Studio%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2722%27%20fill%3D%27%234f46e5%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2766%27%20font-size%3D%2752%27%20font-family%3D%27sans-serif%27%20font-weight%3D%27bold%27%20fill%3D%27white%27%20text-anchor%3D%27middle%27%3ER%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D'
-  />
+  <!-- PWA Manifest (Data URI 1 File) -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22RCTC%20Prompt%20Studio%22%2C%22short_name%22%3A%22RCTC%20Studio%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8fafc%22%2C%22theme_color%22%3A%22%234f46e5%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%2520viewBox%3D%270%200%20100%20100%27%253E%253Crect%2520width%3D%27100%27%2520height%3D%27100%27%2520rx%3D%2724%27%2520fill%3D%27%25234f46e5%27%2F%253E%253Ctext%2520x%3D%2750%27%2520y%3D%2766%27%2520font-size%3D%2752%27%2520text-anchor%3D%27middle%27%2520fill%3D%27white%27%2520font-family%3D%27sans-serif%27%2520font-weight%3D%27bold%27%253ER%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D" />
 
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,22 +22,26 @@
         extend: {
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-        },
-      },
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
     };
   </script>
 
-  <!-- Lucide Icons CDN -->
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- jsPDF & AutoTable CDN for Export PDF -->
+  <!-- jsPDF & AutoTable untuk Export PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
   <style>
-    /* Full-Page Reset (Mendukung Vercel, GitHub Pages, maupun Embed Blogger) */
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -53,32 +49,32 @@
       overflow-x: hidden;
     }
 
+    /* Full Page Wrapper (Menutup elemen bawaan Blogger jika disematkan di widget) */
     #app-root {
-      position: relative;
       min-height: 100vh;
-      z-index: 50;
+      width: 100%;
+      position: relative;
+      z-index: 40;
     }
 
-    /* Media Queries Ketat untuk Navigasi Responsif PID/Desktop vs HP */
-    @media (min-width: 1024px) {
-      .desktop-sidebar {
-        display: flex !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 18rem;
-        z-index: 40;
-      }
-      .mobile-bottom-nav {
-        display: none !important;
-      }
-      .main-workspace {
-        margin-left: 18rem;
-        padding-bottom: 2.5rem;
-      }
+    /* Glassmorphism Panel */
+    .glass-panel {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
+    /* Touch Target Optimal untuk Layar Sentuh PID & Smartphone */
+    .pid-btn {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+
+    .pid-input {
+      min-height: 46px;
+      font-size: 16px; /* Mencegah auto-zoom di iOS Safari */
+    }
+
+    /* Responsive Layout: Mobile Bottom Nav vs Desktop/PID Fixed Sidebar */
     @media (max-width: 1023px) {
       .desktop-sidebar {
         display: none !important;
@@ -92,38 +88,29 @@
         z-index: 45;
       }
       .main-workspace {
-        margin-left: 0;
-        padding-bottom: 6.25rem;
+        width: 100%;
+        padding-bottom: 6rem;
       }
     }
 
-    /* Glassmorphism & PID Touch Ergonomics */
-    .glass-panel {
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .pid-btn {
-      min-height: 44px;
-      touch-action: manipulation;
-    }
-
-    .pid-input {
-      min-height: 48px;
-      font-size: 16px; /* Mencegah auto-zoom & gangguan keyboard di iOS/Android */
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(148, 163, 184, 0.45);
-      border-radius: 9999px;
+    @media (min-width: 1024px) {
+      .desktop-sidebar {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 17.5rem;
+        z-index: 45;
+      }
+      .mobile-bottom-nav {
+        display: none !important;
+      }
+      .main-workspace {
+        margin-left: 17.5rem;
+        min-height: 100vh;
+        padding-bottom: 2.5rem;
+      }
     }
   </style>
 </head>
@@ -317,6 +304,7 @@
       addDoc,
       deleteDoc,
       doc,
+      setDoc,
       onSnapshot,
       query,
       orderBy,
@@ -328,7 +316,7 @@
     // =========================================================================
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE_NAME = 'rctc-prompt-studio-v2';
+        const CACHE_NAME = 'rctc-prompt-studio-v4';
         self.addEventListener('install', (e) => {
           self.skipWaiting();
         });
@@ -422,7 +410,7 @@
       }
     ];
 
-    // Daftar Studi Kasus Praktik Mandiri (Siswa memilih studi kasus lalu menulis manual di kolom RCTC)
+    // Daftar Studi Kasus Praktik Mandiri (Tanpa bocoran jawaban agar siswa berpikir mandiri)
     const RCTC_CASE_STUDIES = [
       {
         id: 'hgn-2026',
@@ -431,12 +419,12 @@
         kategoriLabel: 'Studi Kasus: Poster HGN 2026',
         icon: 'award',
         scenario:
-          'Dalam rangka memperingati Hari Guru Nasional (25 November 2026), sekolah mengadakan lomba dan publikasi media visual bertema apresiasi jasa guru di era transformasi digital. Anda diminta menyusun prompt AI (untuk AI Image Generator seperti Gemini/Imagen/Canva AI atau konsep desain) untuk merancang Poster atau Banner Peringatan Hari Guru Nasional 2026.',
+          'Dalam rangka memperingati Hari Guru Nasional (25 November 2026), sekolah mengadakan lomba dan publikasi media visual bertema apresiasi jasa guru di era transformasi digital. Anda diminta menyusun prompt AI untuk merancang Poster atau Banner Peringatan Hari Guru Nasional 2026.',
         hints: [
-          { code: 'R', label: 'Role', text: 'Tentukan peran AI yang ahli (misal: Desainer Grafis Senior & Ilustrator Poster Pendidikan).' },
-          { code: 'C', label: 'Context', text: 'Jelaskan momen Hari Guru Nasional 2026 di lingkungan sekolah, suasana hangat penuh penghargaan, dan target audiens siswa serta guru.' },
-          { code: 'T', label: 'Task', text: 'Perintahkan AI merancang konsep atau visual poster/banner lengkap dengan objek utama, latar kelas/sekolah modern, dan penempatan judul "Selamat Hari Guru Nasional 2026".' },
-          { code: 'C', label: 'Constraints', text: 'Tentukan rasio ukuran (misal 3:4 untuk poster atau 16:9 untuk banner), gaya ilustrasi, perpaduan warna cerah elegan, dan pastikan teks mudah terbaca.' }
+          { code: 'R', label: 'Role', text: 'Tentukan keahlian atau profesi spesifik yang harus diperankan AI.' },
+          { code: 'C', label: 'Context', text: 'Jelaskan situasi peringatan Hari Guru Nasional 2026, suasana, serta target audiensnya.' },
+          { code: 'T', label: 'Task', text: 'Tuliskan perintah pembuatan visual poster/banner, objek utama, latar, dan teks judulnya.' },
+          { code: 'C', label: 'Constraints', text: 'Tetapkan rasio ukuran, gaya visual, komposisi warna, dan aturan keterbacaan teks.' }
         ]
       }
     ];
@@ -688,6 +676,8 @@
     // =========================================================================
     // 5. STATE GLOBAL IN-MEMORY (ZERO LOCALSTORAGE / SESSIONSTORAGE)
     // =========================================================================
+    let quizTimerInterval = null;
+
     const state = {
       activeTab: 'live', // 'live' | 'studio' | 'materi' | 'kuis' | 'guru'
       guruSubTab: 'rekap-rctc', // 'rekap-rctc' | 'kelola-materi' | 'bank-soal' | 'rekap-kuis'
@@ -700,6 +690,9 @@
       quizQuestions: [...PREVIEW_QUIZ_QUESTIONS],
       quizResults: [],
 
+      // Pengaturan Timer Kuis (Detik per soal: 30 - 60 detik, default 45 detik)
+      quizSecondsPerQuestion: 45,
+
       // Filter Papan Karya & Rekap
       filterKelas: 'SEMUA',
       searchQuery: '',
@@ -707,7 +700,7 @@
       // State Studi Kasus Terpilih
       selectedCaseStudyId: null,
 
-      // State Form Studio RCTC Siswa
+      // State Form Studio RCTC Siswa (Dibiarkan kosong agar siswa berpikir mandiri)
       form: {
         nama_siswa: '',
         kelas: '',
@@ -719,17 +712,21 @@
       },
       formErrors: {},
 
-      // State Kuis PG Siswa (10 Soal Acak)
+      // State Kuis PG Siswa (10 Soal Acak + Timer)
       quizSession: {
         started: false,
         finished: false,
+        timedOut: false,
         nama_siswa: '',
         kelas: '',
         questions: [],
         answers: {},
         currentIndex: 0,
         score: 0,
-        correctCount: 0
+        correctCount: 0,
+        totalSeconds: 0,
+        remainingSeconds: 0,
+        elapsedSeconds: 0
       },
 
       // State Generator Soal Otomatis Guru
@@ -737,7 +734,7 @@
     };
 
     // =========================================================================
-    // 6. HELPER UTILITAS (FORMATTER, AUTO-SCORING RCTC, DRIVE EMBED, PDF)
+    // 6. HELPER UTILITAS (FORMATTER, TIMER, AUTO-SCORING, DRIVE EMBED, PDF)
     // =========================================================================
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
@@ -747,6 +744,13 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function formatSecondsToClock(sec) {
+      const safe = Math.max(0, Math.floor(sec || 0));
+      const m = Math.floor(safe / 60);
+      const s = safe % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
     function ensurePeriod(text) {
@@ -1000,7 +1004,6 @@
     }
 
     function safeBackgroundRender() {
-      // Cegah re-render penuh jika siswa sedang mengetik di Studio atau mengerjakan Kuis agar keyboard HP tidak tertutup
       if (isUserActivelyTyping()) return;
       if (state.activeTab === 'studio') return;
       if (state.activeTab === 'kuis' && state.quizSession.started && !state.quizSession.finished) return;
@@ -1056,6 +1059,17 @@
         });
         safeBackgroundRender();
       });
+
+      // Sinkronisasi pengaturan timer kuis dari guru secara real-time
+      onSnapshot(doc(db, 'settings', 'quiz'), (snap) => {
+        if (snap.exists() && snap.data().secondsPerQuestion) {
+          const sec = Number(snap.data().secondsPerQuestion);
+          if (sec >= 15 && sec <= 180) {
+            state.quizSecondsPerQuestion = sec;
+            safeBackgroundRender();
+          }
+        }
+      });
     }
 
     // =========================================================================
@@ -1103,20 +1117,20 @@
         },
         studio: {
           title: 'Studio Praktik RCTC Prompt Generator',
-          sub: 'Ketik Nama & Kelas, pilih template atau studi kasus, susun R • C • T • C, dan raih skor otomatis'
+          sub: 'Ketik Nama & Kelas, pilih studi kasus, susun R • C • T • C secara mandiri, dan raih skor otomatis'
         },
         materi: {
           title: 'Materi Pembelajaran & Modul Drive',
           sub: 'Akses slide presentasi (PPT) dan modul PDF langsung di layar PID maupun smartphone'
         },
         kuis: {
-          title: 'Latihan Kuis Pilihan Ganda (10 Soal Acak)',
-          sub: 'Uji pemahaman konsep RCTC secara interaktif dengan sistem pengacakan soal otomatis'
+          title: 'Latihan Kuis Pilihan Ganda (Berbatas Waktu)',
+          sub: `Uji pemahaman konsep RCTC secara mandiri (${state.quizSecondsPerQuestion} detik per soal)`
         },
         guru: {
           title: state.guruUser ? 'Dashboard Evaluasi & Manajemen Guru' : 'Akses Masuk Khusus Guru',
           sub: state.guruUser
-            ? 'Kelola rekap nilai RCTC, unggah link materi Drive, dan atur bank soal kuis'
+            ? 'Kelola rekap nilai RCTC, unggah link materi Drive, dan atur bank soal serta durasi kuis'
             : 'Masuk menggunakan akun guru untuk melihat seluruh rekap nilai dan mengelola kelas'
         }
       };
@@ -1384,7 +1398,7 @@
     function renderLiveView() {
       return `
         <div class="space-y-6">
-          <!-- Kartu Identitas Aplikasi & Guru Pengajar (Tampil Jelas di Bagian Awal HP & PID) -->
+          <!-- Kartu Identitas Aplikasi & Guru Pengajar -->
           <section class="relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 p-5 text-white shadow-lg shadow-indigo-600/15 sm:p-6">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div class="space-y-1.5">
@@ -1414,7 +1428,7 @@
             </div>
           </section>
 
-          <!-- Kolom Pencarian Terpisah (Tidak ikut ter-replace saat mengetik agar keyboard HP tetap stabil) -->
+          <!-- Kolom Pencarian Terpisah -->
           <div class="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <div class="relative w-full">
               <i data-lucide="search" class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
@@ -1434,7 +1448,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // VIEW 2: STUDIO PRAKTIK RCTC (FORM INPUT + STUDI KASUS + LIVE SCORE)
+    // VIEW 2: STUDIO PRAKTIK RCTC (KOLOM ISIAN KOSONG TANPA CONTOH + STUDI KASUS)
     // -------------------------------------------------------------------------
     function renderStudioView() {
       const f = state.form;
@@ -1464,7 +1478,7 @@
                   </label>
                   <input type="text" id="input-nama_siswa" value="${escapeHtml(f.nama_siswa)}"
                     oninput="window.app.updateFormField('nama_siswa', this.value, this)"
-                    placeholder="Contoh: Ahmad Zaki Pratama"
+                    placeholder="Ketik nama lengkap Anda"
                     class="pid-input w-full rounded-xl border ${
                       err.nama_siswa ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
                     } px-4 py-2.5 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
@@ -1477,7 +1491,7 @@
                   </label>
                   <input type="text" id="input-kelas" value="${escapeHtml(f.kelas)}"
                     oninput="window.app.updateFormField('kelas', this.value, this)"
-                    placeholder="Contoh: X DKV"
+                    placeholder="Ketik kelas Anda"
                     class="pid-input w-full rounded-xl border ${
                       err.kelas ? 'border-rose-500 bg-rose-50/40' : 'border-slate-300 bg-slate-50/60 dark:border-slate-700 dark:bg-slate-800'
                     } px-4 py-2.5 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:text-white" />
@@ -1493,7 +1507,7 @@
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-xs font-extrabold text-white">2</span>
                   <div>
                     <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Template Contoh Siap Pakai</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk kategori untuk melihat contoh pengisian RCTC otomatis</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Ketuk kategori untuk melihat contoh struktur RCTC</p>
                   </div>
                 </div>
               </div>
@@ -1515,14 +1529,14 @@
               </div>
             </section>
 
-            <!-- 3. Kartu Studi Kasus Praktik Mandiri (Siswa Memilih Studi Kasus & Menulis Manual di Kolom RCTC) -->
+            <!-- 3. Kartu Studi Kasus Praktik Mandiri -->
             <section class="rounded-2xl border-2 border-amber-300/80 bg-gradient-to-br from-amber-50/70 via-white to-indigo-50/40 p-5 shadow-sm dark:border-amber-500/30 dark:from-amber-500/10 dark:via-slate-900 dark:to-indigo-500/10 sm:p-6">
               <div class="mb-3.5 flex items-center gap-2.5">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-xs font-extrabold text-white shadow-sm">3</span>
                 <div>
                   <h3 class="text-base font-extrabold text-slate-900 dark:text-white">Studi Kasus Praktik Mandiri</h3>
                   <p class="text-xs text-slate-600 dark:text-slate-300">
-                    Pilih studi kasus di bawah ini, lalu <strong>tuliskan secara manual</strong> jawaban Anda pada kolom R-C-T-C berikutnya
+                    Pilih studi kasus di bawah ini, lalu <strong>tuliskan secara mandiri</strong> jawaban Anda pada kolom R-C-T-C berikutnya
                   </p>
                 </div>
               </div>
@@ -1573,7 +1587,7 @@
 
                           <div>
                             <p class="mb-2 text-xs font-extrabold text-indigo-700 dark:text-indigo-300">
-                              Panduan Menulis Manual pada Kolom R-C-T-C di Bawah:
+                              Kerangka Penyusunan Manual pada Kolom R-C-T-C di Bawah:
                             </p>
                             <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                               ${cs.hints
@@ -1599,7 +1613,7 @@
               </div>
             </section>
 
-            <!-- 4. Kartu Form Input Manual R - C - T - C -->
+            <!-- 4. Kartu Form Input Manual R - C - T - C (Kolom Kosong Tanpa Contoh) -->
             <section id="rctc-manual-section" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
               <div class="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4 dark:border-slate-800">
                 <div class="flex items-center gap-2.5">
@@ -1612,7 +1626,7 @@
                       ${
                         activeCase
                           ? `Kategori Aktif: ${escapeHtml(activeCase.kategoriLabel)}`
-                          : 'Semakin detail & terstruktur tiap kolom, semakin tinggi skor otomatis Anda'
+                          : 'Kolom dibiarkan kosong agar Anda menyusun prompt dengan pemikiran sendiri'
                       }
                     </p>
                   </div>
@@ -1639,6 +1653,7 @@
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan profesi atau keahlian spesifik yang harus diperankan AI.</p>
                   <input type="text" id="input-role" value="${escapeHtml(f.role)}"
                     oninput="window.app.updateFormField('role', this.value, this)"
+                    placeholder=""
                     class="pid-input mt-2 w-full rounded-xl border ${
                       err.role ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white" />
@@ -1658,6 +1673,7 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Jelaskan situasi, momen/produk, dan target audiens yang relevan.</p>
                   <textarea id="input-context" rows="3" oninput="window.app.updateFormField('context', this.value, this)"
+                    placeholder=""
                     class="mt-2 w-full rounded-xl border ${
                       err.context ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.context)}</textarea>
@@ -1677,6 +1693,7 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tuliskan instruksi konkret apa yang harus dibuat atau dirancang AI.</p>
                   <textarea id="input-task" rows="3" oninput="window.app.updateFormField('task', this.value, this)"
+                    placeholder=""
                     class="mt-2 w-full rounded-xl border ${
                       err.task ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.task)}</textarea>
@@ -1696,6 +1713,7 @@
                   </div>
                   <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Tentukan gaya visual/bahasa, rasio/format tampilan, dan batas aturan output.</p>
                   <textarea id="input-constraints" rows="3" oninput="window.app.updateFormField('constraints', this.value, this)"
+                    placeholder=""
                     class="mt-2 w-full rounded-xl border ${
                       err.constraints ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
                     } bg-slate-50/60 px-4 py-3 text-base focus:border-indigo-600 focus:bg-white focus:outline-none dark:bg-slate-800 dark:text-white">${escapeHtml(f.constraints)}</textarea>
@@ -1892,27 +1910,41 @@
     }
 
     // -------------------------------------------------------------------------
-    // VIEW 4: LATIHAN KUIS PILIHAN GANDA (10 SOAL ACAK OTOMATIS)
+    // VIEW 4: LATIHAN KUIS PILIHAN GANDA (10 SOAL ACAK + TIMER HITUNG MUNDUR)
     // -------------------------------------------------------------------------
     function renderKuisView() {
       const qSession = state.quizSession;
 
-      // Layar Awal Kuis (Input Nama & Kelas Siswa)
+      // Layar Awal Kuis (Input Nama & Kelas Siswa + Info Waktu)
       if (!qSession.started) {
         const availableCount = state.quizQuestions.length;
         const targetCount = Math.min(10, availableCount);
+        const totalDurationSec = targetCount * state.quizSecondsPerQuestion;
 
         return `
           <div class="mx-auto max-w-2xl">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-              <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
-                <i data-lucide="help-circle" class="h-7 w-7"></i>
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
+                  <i data-lucide="help-circle" class="h-7 w-7"></i>
+                </div>
+                ${
+                  availableCount > 0
+                    ? `
+                  <div class="inline-flex items-center gap-2 rounded-2xl border border-amber-300 bg-amber-50 px-3.5 py-2 text-xs font-extrabold text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-200">
+                    <i data-lucide="timer" class="h-4 w-4 text-amber-600 dark:text-amber-400"></i>
+                    <span>Batas Waktu: ${formatSecondsToClock(totalDurationSec)}</span>
+                  </div>
+                `
+                    : ''
+                }
               </div>
+
               <h3 class="mt-4 text-xl font-extrabold text-slate-900 dark:text-white">
                 Latihan Kuis Pilihan Ganda RCTC
               </h3>
               <p class="mt-1.5 text-sm text-slate-600 dark:text-slate-400">
-                Sistem akan mengacak <strong>${targetCount} soal pilihan ganda</strong> secara otomatis untuk setiap peserta. Nilai langsung tercatat ke rekap guru setelah selesai.
+                Sistem akan mengacak <strong>${targetCount} soal pilihan ganda</strong> secara otomatis dengan batas waktu <strong>${state.quizSecondsPerQuestion} detik per soal</strong> (Total <strong>${formatSecondsToClock(totalDurationSec)}</strong>). Jika waktu habis, jawaban otomatis dikumpulkan.
               </p>
 
               ${
@@ -1933,14 +1965,14 @@
                   <div>
                     <label class="mb-1.5 block text-xs font-bold text-slate-700 dark:text-slate-300">Kelas *</label>
                     <input type="text" id="quiz-kelas-input" value="${escapeHtml(qSession.kelas || state.form.kelas)}"
-                      placeholder="Contoh: X DKV "
+                      placeholder="Masukkan kelas Anda"
                       class="pid-input w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-medium focus:border-indigo-600 focus:bg-white focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </div>
 
                   <button type="button" onclick="window.app.startStudentQuiz()"
                     class="pid-btn mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-base font-extrabold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700">
                     <i data-lucide="play" class="h-5 w-5"></i>
-                    <span>Mulai Kuis (${targetCount} Soal Acak)</span>
+                    <span>Mulai Kuis (${targetCount} Soal • ${formatSecondsToClock(totalDurationSec)})</span>
                   </button>
                 </div>
               `
@@ -1955,16 +1987,20 @@
         return `
           <div class="mx-auto max-w-3xl space-y-6">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-xs font-extrabold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
-                <i data-lucide="check-circle-2" class="h-4 w-4"></i>
-                Kuis Selesai & Nilai Tersimpan
+              <span class="inline-flex items-center gap-1.5 rounded-full ${
+                qSession.timedOut
+                  ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300'
+                  : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
+              } px-3.5 py-1 text-xs font-extrabold">
+                <i data-lucide="${qSession.timedOut ? 'alarm-clock-off' : 'check-circle-2'}" class="h-4 w-4"></i>
+                ${qSession.timedOut ? 'Waktu Habis — Jawaban Otomatis Dikumpulkan' : 'Kuis Selesai & Nilai Tersimpan'}
               </span>
               <h3 class="mt-3 text-xl font-extrabold text-slate-900 dark:text-white">${escapeHtml(qSession.nama_siswa)} (${escapeHtml(qSession.kelas)})</h3>
               <div class="my-5 inline-flex flex-col items-center justify-center rounded-3xl bg-indigo-50 px-10 py-6 dark:bg-indigo-500/15">
                 <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">Skor Akhir Anda</span>
                 <span class="mt-1 text-5xl font-extrabold text-indigo-700 dark:text-indigo-400">${qSession.score}</span>
                 <span class="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
-                  Benar ${qSession.correctCount} dari ${qSession.questions.length} soal
+                  Benar ${qSession.correctCount} dari ${qSession.questions.length} soal • Durasi ${formatSecondsToClock(qSession.elapsedSeconds)}
                 </span>
               </div>
 
@@ -2012,22 +2048,48 @@
         `;
       }
 
-      // Layar Pengerjaan Soal Interaktif (PID & Mobile Friendly)
+      // Layar Pengerjaan Soal Interaktif + Countdown Timer
       const currentQ = qSession.questions[qSession.currentIndex];
       const selectedAns = qSession.answers[qSession.currentIndex];
       const letters = ['A', 'B', 'C', 'D'];
+      const pctLeft = qSession.totalSeconds > 0 ? Math.max(0, Math.round((qSession.remainingSeconds / qSession.totalSeconds) * 100)) : 0;
+      const isUrgent = qSession.remainingSeconds <= 20;
+      const isWarning = !isUrgent && qSession.remainingSeconds <= 60;
 
       return `
         <div class="mx-auto max-w-3xl space-y-5">
-          <!-- Header Progres Kuis -->
-          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div>
-              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">${escapeHtml(qSession.nama_siswa)} • ${escapeHtml(qSession.kelas)}</span>
-              <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
-                Soal ${qSession.currentIndex + 1} dari ${qSession.questions.length}
-              </h3>
+          <!-- Header Progres Kuis & Timer Hitung Mundur -->
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">${escapeHtml(qSession.nama_siswa)} • ${escapeHtml(qSession.kelas)}</span>
+                <h3 class="text-base font-extrabold text-slate-900 dark:text-white">
+                  Soal ${qSession.currentIndex + 1} dari ${qSession.questions.length}
+                </h3>
+              </div>
+
+              <!-- Badge Countdown Timer -->
+              <div id="quiz-timer-box" class="flex items-center gap-2 rounded-2xl border px-4 py-2 font-mono text-base font-extrabold transition-colors ${
+                isUrgent
+                  ? 'animate-pulse border-rose-500 bg-rose-50 text-rose-700 dark:border-rose-500/60 dark:bg-rose-500/20 dark:text-rose-300'
+                  : isWarning
+                  ? 'border-amber-400 bg-amber-50 text-amber-800 dark:border-amber-500/50 dark:bg-amber-500/20 dark:text-amber-200'
+                  : 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/40 dark:bg-indigo-500/15 dark:text-indigo-300'
+              }">
+                <i data-lucide="timer" class="h-5 w-5 shrink-0"></i>
+                <span id="quiz-timer-text">${formatSecondsToClock(qSession.remainingSeconds)}</span>
+              </div>
             </div>
-            <div class="flex flex-wrap gap-1.5">
+
+            <!-- Bar Sisa Waktu -->
+            <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+              <div id="quiz-timer-bar" class="h-full rounded-full transition-all duration-500 ${
+                isUrgent ? 'bg-rose-500' : isWarning ? 'bg-amber-500' : 'bg-indigo-600'
+              }" style="width: ${pctLeft}%"></div>
+            </div>
+
+            <!-- Navigasi Nomor Soal -->
+            <div class="mt-3.5 flex flex-wrap gap-1.5 border-t border-slate-100 pt-3 dark:border-slate-800">
               ${qSession.questions
                 .map((_, i) => {
                   const answered = Boolean(qSession.answers[i]);
@@ -2096,7 +2158,7 @@
                 </button>
               `
                   : `
-                <button type="button" onclick="window.app.finishStudentQuiz()"
+                <button type="button" onclick="window.app.finishStudentQuiz(false)"
                   class="pid-btn rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-extrabold text-white shadow-md hover:bg-emerald-700">
                   Selesai & Lihat Skor
                 </button>
@@ -2121,7 +2183,7 @@
               </div>
               <h3 class="mt-4 text-xl font-extrabold text-slate-900 dark:text-white">Login Khusus Guru</h3>
               <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                Masuk untuk melihat rekap seluruh nilai siswa, mengunggah link materi Google Drive (PDF/PPT), dan mengelola bank soal kuis.
+                Masuk untuk melihat rekap seluruh nilai siswa, mengunggah link materi Google Drive (PDF/PPT), dan mengelola bank soal serta waktu kuis.
               </p>
 
               ${
@@ -2389,6 +2451,38 @@
     function renderGuruBankSoal() {
       return `
         <div class="space-y-6">
+          <!-- Pengaturan Batas Waktu Per Soal -->
+          <section class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50/70 p-4 dark:border-amber-500/30 dark:bg-amber-500/10">
+            <div class="flex items-center gap-2.5">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white">
+                <i data-lucide="timer" class="h-5 w-5"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-extrabold text-slate-900 dark:text-white">Pengaturan Durasi Waktu Kuis PG</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Saat ini: <strong>${state.quizSecondsPerQuestion} detik/soal</strong> (Untuk 10 soal = <strong>${formatSecondsToClock(10 * state.quizSecondsPerQuestion)}</strong>)
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              ${[30, 40, 45, 60]
+                .map(
+                  (sec) => `
+                <button type="button" onclick="window.app.updateQuizTimerSetting(${sec})"
+                  class="pid-btn rounded-xl px-3.5 py-2 text-xs font-extrabold transition ${
+                    state.quizSecondsPerQuestion === sec
+                      ? 'bg-amber-600 text-white shadow-sm'
+                      : 'border border-amber-300 bg-white text-amber-900 hover:bg-amber-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
+                  }">
+                  ${sec}s / soal
+                </button>
+              `
+                )
+                .join('')}
+            </div>
+          </section>
+
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <!-- PANEL A: GENERATOR SOAL OTOMATIS -->
             <section class="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-5 shadow-sm dark:border-indigo-500/30 dark:bg-indigo-500/10">
@@ -2507,7 +2601,7 @@
                 Bank Soal Aktif (${state.quizQuestions.length} Soal)
               </h4>
               <span class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                Siswa akan mengerjakan 10 soal acak dari bank ini
+                Siswa akan mengerjakan maks. 10 soal acak (${state.quizSecondsPerQuestion}s/soal)
               </span>
             </div>
 
@@ -2548,7 +2642,7 @@
           <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
               <h4 class="text-base font-extrabold text-slate-900 dark:text-white">Rekap Nilai Latihan Kuis Pilihan Ganda</h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Hasil otomatis pengerjaan 10 soal acak oleh siswa</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Hasil otomatis pengerjaan 10 soal acak berbatas waktu oleh siswa</p>
             </div>
             <button type="button" onclick="window.app.exportAllQuizPdf()"
               class="pid-btn inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-rose-700">
@@ -2621,7 +2715,7 @@
       if (window.lucide) window.lucide.createIcons();
     }
 
-    // Update hanya indikator skor & pratinjau prompt tanpa mengganti DOM input (mencegah keyboard HP tertutup)
+    // Update hanya indikator skor & pratinjau prompt tanpa mengganti DOM input
     function updateStudioLivePreviewOnly() {
       const scoreInfo = evaluateRctcScore(state.form);
       const livePrompt = buildRctcPromptText(state.form);
@@ -2653,6 +2747,67 @@
       if (liveTask) liveTask.textContent = `${scoreInfo.skor_task}/25`;
       if (liveCons) liveCons.textContent = `${scoreInfo.skor_constraints}/25`;
       if (previewEl) previewEl.textContent = livePrompt;
+    }
+
+    // Manajemen Timer Kuis PG
+    function stopQuizTimer() {
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+    }
+
+    function updateQuizTimerDom() {
+      const qs = state.quizSession;
+      if (!qs.started || qs.finished) return;
+
+      const textEl = document.getElementById('quiz-timer-text');
+      const barEl = document.getElementById('quiz-timer-bar');
+      const boxEl = document.getElementById('quiz-timer-box');
+
+      if (textEl) {
+        textEl.textContent = formatSecondsToClock(qs.remainingSeconds);
+      }
+
+      if (barEl && qs.totalSeconds > 0) {
+        const pct = Math.max(0, Math.round((qs.remainingSeconds / qs.totalSeconds) * 100));
+        barEl.style.width = `${pct}%`;
+        barEl.classList.remove('bg-indigo-600', 'bg-amber-500', 'bg-rose-500');
+        if (qs.remainingSeconds <= 20) barEl.classList.add('bg-rose-500');
+        else if (qs.remainingSeconds <= 60) barEl.classList.add('bg-amber-500');
+        else barEl.classList.add('bg-indigo-600');
+      }
+
+      if (boxEl) {
+        boxEl.className = `flex items-center gap-2 rounded-2xl border px-4 py-2 font-mono text-base font-extrabold transition-colors ${
+          qs.remainingSeconds <= 20
+            ? 'animate-pulse border-rose-500 bg-rose-50 text-rose-700 dark:border-rose-500/60 dark:bg-rose-500/20 dark:text-rose-300'
+            : qs.remainingSeconds <= 60
+            ? 'border-amber-400 bg-amber-50 text-amber-800 dark:border-amber-500/50 dark:bg-amber-500/20 dark:text-amber-200'
+            : 'border-indigo-200 bg-indigo-50 text-indigo-700 dark:border-indigo-500/40 dark:bg-indigo-500/15 dark:text-indigo-300'
+        }`;
+      }
+    }
+
+    function startQuizTimer() {
+      stopQuizTimer();
+      quizTimerInterval = setInterval(() => {
+        const qs = state.quizSession;
+        if (!qs.started || qs.finished) {
+          stopQuizTimer();
+          return;
+        }
+
+        qs.remainingSeconds = Math.max(0, qs.remainingSeconds - 1);
+        qs.elapsedSeconds += 1;
+        updateQuizTimerDom();
+
+        if (qs.remainingSeconds <= 0) {
+          stopQuizTimer();
+          showToast('Waktu habis! Jawaban Anda otomatis dikumpulkan.', 'error');
+          window.app.finishStudentQuiz(true);
+        }
+      }, 1000);
     }
 
     // =========================================================================
@@ -2694,7 +2849,6 @@
 
       setSearchQuery(val) {
         state.searchQuery = val;
-        // Perbarui hanya area hasil di bawah input pencarian agar keyboard HP tidak tertutup
         const dynamicArea = document.getElementById('live-dynamic-area');
         if (dynamicArea) {
           dynamicArea.innerHTML = renderLiveDynamicContent();
@@ -2702,7 +2856,7 @@
         }
       },
 
-      // --- STUDIO RCTC ACTIONS (ANTI-KEYBOARD-CLOSE) ---
+      // --- STUDIO RCTC ACTIONS ---
       updateFormField(field, value, el) {
         state.form[field] = value;
         if (state.formErrors[field]) {
@@ -2737,27 +2891,16 @@
         const cs = RCTC_CASE_STUDIES.find((c) => c.id === csId);
         if (!cs) return;
 
-        // Cek apakah kolom saat ini masih berisi contoh template otomatis; jika ya, kosongkan agar siswa menulis manual
-        const matchesPresetTemplate = RCTC_TEMPLATES.some(
-          (tpl) =>
-            state.form.role === tpl.role &&
-            state.form.context === tpl.context &&
-            state.form.task === tpl.task
-        );
-
         state.selectedCaseStudyId = cs.id;
         state.form.kategori = cs.kategoriLabel;
-
-        if (matchesPresetTemplate) {
-          state.form.role = '';
-          state.form.context = '';
-          state.form.task = '';
-          state.form.constraints = '';
-        }
-
+        // Kosongkan kolom R-C-T-C agar siswa menuliskan sendiri dari nol sesuai studi kasus
+        state.form.role = '';
+        state.form.context = '';
+        state.form.task = '';
+        state.form.constraints = '';
         state.formErrors = {};
         renderApp();
-        showToast(`Studi kasus "${cs.title}" dipilih! Silakan tulis manual di kolom R-C-T-C.`, 'info');
+        showToast(`Studi kasus "${cs.title}" dipilih! Silakan tulis jawaban Anda pada kolom R-C-T-C.`, 'info');
       },
 
       appendConstraint(chipText) {
@@ -3003,7 +3146,7 @@
         modal.innerHTML = '';
       },
 
-      // --- KUIS PILIHAN GANDA 10 SOAL ACAK ---
+      // --- KUIS PILIHAN GANDA 10 SOAL ACAK + TIMER ---
       startStudentQuiz() {
         const nama = (document.getElementById('quiz-nama-input')?.value || '').trim();
         const kelas = (document.getElementById('quiz-kelas-input')?.value || '').trim().toUpperCase();
@@ -3020,33 +3163,43 @@
             shuffledOptions: shuffleArray(q.options || [])
           }));
 
+        const totalSec = randomizedPool.length * state.quizSecondsPerQuestion;
+
         state.quizSession = {
           started: true,
           finished: false,
+          timedOut: false,
           nama_siswa: nama,
           kelas: kelas,
           questions: randomizedPool,
           answers: {},
           currentIndex: 0,
           score: 0,
-          correctCount: 0
+          correctCount: 0,
+          totalSeconds: totalSec,
+          remainingSeconds: totalSec,
+          elapsedSeconds: 0
         };
+
         renderApp();
+        startQuizTimer();
       },
 
       selectQuizAnswer(qIdx, optIdx) {
         const q = state.quizSession.questions[qIdx];
-        if (!q) return;
+        if (!q || state.quizSession.finished) return;
         state.quizSession.answers[qIdx] = q.shuffledOptions[optIdx];
         renderApp();
       },
 
       jumpToQuizQuestion(idx) {
+        if (state.quizSession.finished) return;
         state.quizSession.currentIndex = idx;
         renderApp();
       },
 
       prevQuizQuestion() {
+        if (state.quizSession.finished) return;
         if (state.quizSession.currentIndex > 0) {
           state.quizSession.currentIndex--;
           renderApp();
@@ -3054,14 +3207,19 @@
       },
 
       nextQuizQuestion() {
+        if (state.quizSession.finished) return;
         if (state.quizSession.currentIndex < state.quizSession.questions.length - 1) {
           state.quizSession.currentIndex++;
           renderApp();
         }
       },
 
-      async finishStudentQuiz() {
+      async finishStudentQuiz(isTimeout = false) {
         const qs = state.quizSession;
+        if (qs.finished) return;
+
+        stopQuizTimer();
+
         let benar = 0;
         qs.questions.forEach((q, idx) => {
           if (qs.answers[idx] === q.answer) benar++;
@@ -3071,6 +3229,7 @@
         state.quizSession.correctCount = benar;
         state.quizSession.score = skor;
         state.quizSession.finished = true;
+        state.quizSession.timedOut = Boolean(isTimeout);
 
         const resultRecord = {
           nama_siswa: qs.nama_siswa,
@@ -3086,7 +3245,9 @@
             ...resultRecord,
             waktu: 'Baru saja'
           });
-          showToast(`Kuis selesai! Skor Anda: ${skor}/100`, 'success');
+          if (!isTimeout) {
+            showToast(`Kuis selesai! Skor Anda: ${skor}/100`, 'success');
+          }
           renderApp();
           return;
         }
@@ -3096,7 +3257,9 @@
             ...resultRecord,
             created_at: serverTimestamp()
           });
-          showToast(`Kuis selesai! Skor ${skor}/100 tersimpan ke rekap guru.`, 'success');
+          if (!isTimeout) {
+            showToast(`Kuis selesai! Skor ${skor}/100 tersimpan ke rekap guru.`, 'success');
+          }
         } catch (err) {
           console.error(err);
           showToast('Skor dihitung, namun gagal tersimpan ke Firestore.', 'error');
@@ -3105,16 +3268,21 @@
       },
 
       resetQuizSession() {
+        stopQuizTimer();
         state.quizSession = {
           started: false,
           finished: false,
+          timedOut: false,
           nama_siswa: state.quizSession.nama_siswa,
           kelas: state.quizSession.kelas,
           questions: [],
           answers: {},
           currentIndex: 0,
           score: 0,
-          correctCount: 0
+          correctCount: 0,
+          totalSeconds: 0,
+          remainingSeconds: 0,
+          elapsedSeconds: 0
         };
         renderApp();
       },
@@ -3157,6 +3325,23 @@
         state.guruUser = null;
         renderApp();
         showToast('Logout berhasil.', 'info');
+      },
+
+      async updateQuizTimerSetting(seconds) {
+        state.quizSecondsPerQuestion = seconds;
+        renderApp();
+        showToast(`Durasi kuis diatur menjadi ${seconds} detik per soal (${formatSecondsToClock(10 * seconds)} untuk 10 soal).`, 'success');
+
+        if (!IS_PREVIEW && db) {
+          try {
+            await setDoc(doc(db, 'settings', 'quiz'), {
+              secondsPerQuestion: seconds,
+              updated_at: serverTimestamp()
+            }, { merge: true });
+          } catch (err) {
+            console.error(err);
+          }
+        }
       },
 
       async deleteSubmission(id) {
